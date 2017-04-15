@@ -19,6 +19,12 @@ pub struct Packages {
     pub all: HashMap<String, Package>,
 }
 
+impl Packages {
+    pub fn new () -> Packages {
+        Packages { all: HashMap::new() }
+    }
+}
+
 
 //"all": {
 //    "core": {

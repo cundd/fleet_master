@@ -1,34 +1,19 @@
-use std::collections::HashMap;
-
-#[derive(Serialize, Deserialize, Debug)]
-pub struct Application {
-    pub name: String,
-    pub version: String,
-    pub branch: String,
-    pub meta: HashMap<String, String>,
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-pub struct Os {
-    pub vendor: String,
-    pub version: String,
-    pub machine: String,
-    pub info: String,
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-pub struct Platform {
-    pub language: String,
-    pub version: String,
-    pub sapi: String,
-    pub host: String,
-    pub os: Os,
-}
+use super::platform::*;
+use super::application::*;
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct System {
     pub platform: Platform,
     pub application: Application,
+}
+
+impl System {
+    pub fn new_for_current_env() -> System {
+        System {
+            platform: Platform::new_for_current_env(),
+            application: Application::new_for_current_env()
+        }
+    }
 }
 
 //"system": {
@@ -47,8 +32,8 @@ pub struct System {
 //    "application": {
 //        "name": "TYPO3",
 //        "version": "8.7.1-dev",
-//        "branch": "8.7",
 //        "meta": {
+//            "branch": "8.7",
 //            "applicationContext": "Production"
 //        }
 //    }

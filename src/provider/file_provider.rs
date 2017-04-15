@@ -5,7 +5,7 @@ use std::path::PathBuf;
 use information::*;
 use serde_json;
 
-pub struct FileProvider {}
+pub struct FileProvider;
 
 impl Provider for FileProvider {
     fn get_information_for_uri<S>(self, uri: S) -> Result<Information, Error> where S: Into<String> {

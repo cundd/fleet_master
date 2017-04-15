@@ -1,6 +1,8 @@
 mod error;
 mod fleet;
 mod system;
+mod platform;
+mod application;
 mod packages;
 mod information;
 

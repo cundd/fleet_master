@@ -1,7 +1,8 @@
 {
     "fleet": {
         "protocol": "0.1.0",
-        "providerVersion": "0.1.0"
+        "providerVersion": "0.1.0",
+        "providerName": "fleet-typo3"
     },
     "system": {
         "platform": {
@@ -19,8 +20,8 @@
         "application": {
             "name": "TYPO3",
             "version": "8.7.1-dev",
-            "branch": "8.7",
             "meta": {
+                "branch": "8.7",
                 "applicationContext": "Production"
             }
         }
