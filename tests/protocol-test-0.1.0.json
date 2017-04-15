@@ -1,0 +1,708 @@
+{
+    "fleet": {
+        "protocol": "0.1.0",
+        "providerVersion": "0.1.0"
+    },
+    "system": {
+        "platform": {
+            "language": "php",
+            "version": "7.0.15",
+            "sapi": "cli",
+            "host": "dan.local",
+            "os": {
+                "vendor": "Darwin",
+                "version": "16.5.0",
+                "machine": "x86_64",
+                "info": "Darwin Kernel Version 16.5.0: Fri Mar  3 16:52:33 PST 2017; root:xnu-3789.51.2~3\/RELEASE_X86_64"
+            }
+        },
+        "application": {
+            "name": "TYPO3",
+            "version": "8.7.1-dev",
+            "branch": "8.7",
+            "meta": {
+                "applicationContext": "Production"
+            }
+        }
+    },
+    "packages": {
+        "active": {
+            "core": {
+                "key": "core",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "extbase": {
+                "key": "extbase",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "fluid": {
+                "key": "fluid",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "frontend": {
+                "key": "frontend",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "fluid_styled_content": {
+                "key": "fluid_styled_content",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "info": {
+                "key": "info",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "info_pagetsconfig": {
+                "key": "info_pagetsconfig",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "extensionmanager": {
+                "key": "extensionmanager",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "lang": {
+                "key": "lang",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "setup": {
+                "key": "setup",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "rte_ckeditor": {
+                "key": "rte_ckeditor",
+                "version": "8.7.0",
+                "description": "CKEditor for the TYPO3 ecosystem",
+                "state": "active"
+            },
+            "rsaauth": {
+                "key": "rsaauth",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "saltedpasswords": {
+                "key": "saltedpasswords",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "func": {
+                "key": "func",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "wizard_crpages": {
+                "key": "wizard_crpages",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "wizard_sortpages": {
+                "key": "wizard_sortpages",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "about": {
+                "key": "about",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "backend": {
+                "key": "backend",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "belog": {
+                "key": "belog",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "beuser": {
+                "key": "beuser",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "context_help": {
+                "key": "context_help",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "cshmanual": {
+                "key": "cshmanual",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "documentation": {
+                "key": "documentation",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "felogin": {
+                "key": "felogin",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "filelist": {
+                "key": "filelist",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "form": {
+                "key": "form",
+                "version": "8.7.0",
+                "description": "Extensible and flexible API and editor for building web forms",
+                "state": "active"
+            },
+            "impexp": {
+                "key": "impexp",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "install": {
+                "key": "install",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "lowlevel": {
+                "key": "lowlevel",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "recordlist": {
+                "key": "recordlist",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "reports": {
+                "key": "reports",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "sv": {
+                "key": "sv",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "sys_note": {
+                "key": "sys_note",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "t3editor": {
+                "key": "t3editor",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "tstemplate": {
+                "key": "tstemplate",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "viewpage": {
+                "key": "viewpage",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "custom_rest": {
+                "key": "custom_rest",
+                "version": "",
+                "description": "Extension to show how to use the REST extension as Boilerplate",
+                "state": "active"
+            },
+            "extension_builder": {
+                "key": "extension_builder",
+                "version": "7.6.18",
+                "description": "Tool to kickstart and maintain TYPO3 extensions",
+                "state": "active"
+            },
+            "fleet": {
+                "key": "fleet",
+                "version": "0.1.0",
+                "description": "Command line utility to provide system information for fleet",
+                "state": "active"
+            },
+            "news": {
+                "key": "news",
+                "version": "5.3.2",
+                "description": "Versatile news extension, based on extbase & fluid for TYPO3 CMS",
+                "state": "active"
+            },
+            "rest": {
+                "key": "rest",
+                "version": "3.0.0-rc1",
+                "description": "REST API for TYPO3 CMS",
+                "state": "active"
+            }
+        },
+        "inactive": {
+            "custom_rest2": {
+                "key": "custom_rest2",
+                "version": "1.0.0",
+                "description": "Cz",
+                "state": "inactive"
+            },
+            "styleguide": {
+                "key": "styleguide",
+                "version": "8.0.7",
+                "description": "TYPO3 CMS Extension to test everything in the TYPO3 Backend",
+                "state": "inactive"
+            },
+            "test": {
+                "key": "test",
+                "version": "1.0.0",
+                "description": "Test",
+                "state": "inactive"
+            },
+            "css_styled_content": {
+                "key": "css_styled_content",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "inactive"
+            },
+            "feedit": {
+                "key": "feedit",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "inactive"
+            },
+            "filemetadata": {
+                "key": "filemetadata",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "inactive"
+            },
+            "indexed_search": {
+                "key": "indexed_search",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "inactive"
+            },
+            "linkvalidator": {
+                "key": "linkvalidator",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "inactive"
+            },
+            "opendocs": {
+                "key": "opendocs",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "inactive"
+            },
+            "recycler": {
+                "key": "recycler",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "inactive"
+            },
+            "scheduler": {
+                "key": "scheduler",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "inactive"
+            },
+            "sys_action": {
+                "key": "sys_action",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "inactive"
+            },
+            "taskcenter": {
+                "key": "taskcenter",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "inactive"
+            },
+            "version": {
+                "key": "version",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "inactive"
+            },
+            "workspaces": {
+                "key": "workspaces",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "inactive"
+            }
+        },
+        "all": {
+            "core": {
+                "key": "core",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "extbase": {
+                "key": "extbase",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "fluid": {
+                "key": "fluid",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "frontend": {
+                "key": "frontend",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "fluid_styled_content": {
+                "key": "fluid_styled_content",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "info": {
+                "key": "info",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "info_pagetsconfig": {
+                "key": "info_pagetsconfig",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "extensionmanager": {
+                "key": "extensionmanager",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "lang": {
+                "key": "lang",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "setup": {
+                "key": "setup",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "rte_ckeditor": {
+                "key": "rte_ckeditor",
+                "version": "8.7.0",
+                "description": "CKEditor for the TYPO3 ecosystem",
+                "state": "active"
+            },
+            "rsaauth": {
+                "key": "rsaauth",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "saltedpasswords": {
+                "key": "saltedpasswords",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "func": {
+                "key": "func",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "wizard_crpages": {
+                "key": "wizard_crpages",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "wizard_sortpages": {
+                "key": "wizard_sortpages",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "about": {
+                "key": "about",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "backend": {
+                "key": "backend",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "belog": {
+                "key": "belog",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "beuser": {
+                "key": "beuser",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "context_help": {
+                "key": "context_help",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "cshmanual": {
+                "key": "cshmanual",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "documentation": {
+                "key": "documentation",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "felogin": {
+                "key": "felogin",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "filelist": {
+                "key": "filelist",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "form": {
+                "key": "form",
+                "version": "8.7.0",
+                "description": "Extensible and flexible API and editor for building web forms",
+                "state": "active"
+            },
+            "impexp": {
+                "key": "impexp",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "install": {
+                "key": "install",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "lowlevel": {
+                "key": "lowlevel",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "recordlist": {
+                "key": "recordlist",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "reports": {
+                "key": "reports",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "sv": {
+                "key": "sv",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "sys_note": {
+                "key": "sys_note",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "t3editor": {
+                "key": "t3editor",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "tstemplate": {
+                "key": "tstemplate",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "viewpage": {
+                "key": "viewpage",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "active"
+            },
+            "custom_rest": {
+                "key": "custom_rest",
+                "version": "",
+                "description": "Extension to show how to use the REST extension as Boilerplate",
+                "state": "active"
+            },
+            "extension_builder": {
+                "key": "extension_builder",
+                "version": "7.6.18",
+                "description": "Tool to kickstart and maintain TYPO3 extensions",
+                "state": "active"
+            },
+            "fleet": {
+                "key": "fleet",
+                "version": "0.1.0",
+                "description": "Command line utility to provide system information for fleet",
+                "state": "active"
+            },
+            "news": {
+                "key": "news",
+                "version": "5.3.2",
+                "description": "Versatile news extension, based on extbase & fluid for TYPO3 CMS",
+                "state": "active"
+            },
+            "rest": {
+                "key": "rest",
+                "version": "3.0.0-rc1",
+                "description": "REST API for TYPO3 CMS",
+                "state": "active"
+            },
+            "custom_rest2": {
+                "key": "custom_rest2",
+                "version": "1.0.0",
+                "description": "Cz",
+                "state": "inactive"
+            },
+            "styleguide": {
+                "key": "styleguide",
+                "version": "8.0.7",
+                "description": "TYPO3 CMS Extension to test everything in the TYPO3 Backend",
+                "state": "inactive"
+            },
+            "test": {
+                "key": "test",
+                "version": "1.0.0",
+                "description": "Test",
+                "state": "inactive"
+            },
+            "css_styled_content": {
+                "key": "css_styled_content",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "inactive"
+            },
+            "feedit": {
+                "key": "feedit",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "inactive"
+            },
+            "filemetadata": {
+                "key": "filemetadata",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "inactive"
+            },
+            "indexed_search": {
+                "key": "indexed_search",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "inactive"
+            },
+            "linkvalidator": {
+                "key": "linkvalidator",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "inactive"
+            },
+            "opendocs": {
+                "key": "opendocs",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "inactive"
+            },
+            "recycler": {
+                "key": "recycler",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "inactive"
+            },
+            "scheduler": {
+                "key": "scheduler",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "inactive"
+            },
+            "sys_action": {
+                "key": "sys_action",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "inactive"
+            },
+            "taskcenter": {
+                "key": "taskcenter",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "inactive"
+            },
+            "version": {
+                "key": "version",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "inactive"
+            },
+            "workspaces": {
+                "key": "workspaces",
+                "version": "8.7.0",
+                "description": "TYPO3 Core",
+                "state": "inactive"
+            }
+        }
+    }
+}
