@@ -7,25 +7,23 @@ use serde_json;
 
 pub struct FileProvider {}
 
-impl FileProvider {
-    fn get_information_for_uri<S>(self, uri: S) -> Result<::information::Information, ::information::Error> where S: Into<String> {
+impl Provider for FileProvider {
+    fn get_information_for_uri<S>(self, uri: S) -> Result<Information, Error> where S: Into<String> {
         let absolute_file_path: PathBuf = fs::canonicalize(&uri.into()).unwrap();
 
         let file = match File::open(absolute_file_path) {
             Ok(file) => file,
-            Err(e) => return Err(::information::Error::new_from_error(e)),
+            Err(e) => return Err(Error::new_from_error(e)),
         };
 
         let information: Information = match serde_json::from_reader(file) {
             Ok(information) => information,
-            Err(e) => return Err(::information::Error::new_from_error(e)),
+            Err(e) => return Err(Error::new_from_error(e)),
         };
 
         Ok(information)
     }
 }
-
-impl Provider for FileProvider {}
 
 
 #[cfg(test)]
