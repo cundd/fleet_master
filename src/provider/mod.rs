@@ -1,6 +1,7 @@
 mod file_provider;
 mod ssh_provider;
 
+use super::error::Error;
 use information::*;
 
 pub trait Provider {

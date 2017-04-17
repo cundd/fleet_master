@@ -3,6 +3,7 @@ use std::fs;
 use std::fs::File;
 use std::path::PathBuf;
 use information::*;
+use error::Error;
 use serde_json;
 
 pub struct FileProvider;
@@ -29,22 +30,16 @@ impl Provider for FileProvider {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use std::path::PathBuf;
     use information::Package;
+    use test_helpers;
 
     #[test]
     fn get_information_for_uri_test() {
         let file_provider = FileProvider {};
 
-        let file_path = PathBuf::from(file!());
-        let mut file_path_abs: PathBuf = fs::canonicalize(&file_path).unwrap();
-        file_path_abs.pop();
-        file_path_abs.pop();
-        file_path_abs.pop();
+        let json_file_path = test_helpers::get_test_resource_path("protocol-test-0.1.0.json");
 
-        let mut json_file_path = file_path_abs.clone();
-        json_file_path.push("tests/protocol-test-0.1.0.json");
-
+        assert!(json_file_path.as_path().exists(), "{:?}", json_file_path);
         let information = file_provider.get_information_for_uri(json_file_path.to_str().unwrap()).unwrap();
         assert_eq!("0.1.0", information.fleet.protocol);
         assert_eq!(56, information.packages.all.len());
