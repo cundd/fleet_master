@@ -1,11 +1,11 @@
 pub use super::Configuration;
-use std::collections::HashMap;
 use std::fs;
 use std::fs::File;
 use std::path::*;
 use configuration::*;
 use error::Error;
 use serde_json;
+use serde_yaml;
 
 
 pub struct ConfigurationProvider;
@@ -17,12 +17,46 @@ impl ConfigurationProvider {
             Err(e) => return Err(Error::new_from_error(e)),
         };
 
-        let file = match File::open(absolute_file_path) {
+        let file = match File::open(absolute_file_path.as_path()) {
             Ok(file) => file,
             Err(e) => return Err(Error::new_from_error(e)),
         };
 
+        if let Some(extension) = absolute_file_path.as_path().extension() {
+            if extension == "yaml" {
+                return ConfigurationProvider::load_yaml(file);
+            }
+            if extension == "json" {
+                return ConfigurationProvider::load_json(file);
+            }
+
+            return Err(Error::new(
+                format!(
+                    "Could not load configuration from file with extension '{}'",
+                    extension.to_string_lossy()
+                )
+            ));
+        }
+
+        Err(Error::new(
+            format!(
+                "Could not load configuration from '{}'",
+                absolute_file_path.to_string_lossy()
+            )
+        ))
+    }
+
+    fn load_json(file: File) -> Result<ConfigurationCollection, Error> {
         let configuration: ConfigurationCollection = match serde_json::from_reader(file) {
+            Ok(configuration) => configuration,
+            Err(e) => return Err(Error::new_from_error(e)),
+        };
+
+        Ok(configuration)
+    }
+
+    fn load_yaml(file: File) -> Result<ConfigurationCollection, Error> {
+        let configuration: ConfigurationCollection = match serde_yaml::from_reader(file) {
             Ok(configuration) => configuration,
             Err(e) => return Err(Error::new_from_error(e)),
         };
@@ -36,17 +70,9 @@ impl ConfigurationProvider {
 mod tests {
     use super::*;
     use std::path::PathBuf;
-    use std::path::Path;
-    //    use configuration::;
     use test_helpers;
 
-    #[test]
-    fn load_test() {
-        let json_file_path = test_helpers::get_test_resource_path("configuration-test-0.1.0.json");
-
-        assert!(json_file_path.as_path().exists(), "{:?}", json_file_path);
-        let configurations = ConfigurationProvider::load(json_file_path.as_path()).unwrap();
-
+    fn assert_configuration(configurations: ConfigurationCollection) {
         assert_eq!(
         Configuration {
             host: "host".to_owned(),
@@ -88,21 +114,19 @@ mod tests {
         },
         configurations["my.host-with-private_key.local"]
         );
+    }
 
-        println!("{:?}", configurations["my.host.local"]);
-        println!("{:?}", configurations["my.host-with-password.local"]);
-        println!("{:?}", configurations["my.host-with-private_key.local"]);
-        //        assert_eq!("0.1.0", configuration.);
-        //        assert_eq!(56, configuration.packages.all.len());
-        //
-        //        let core: &Package = &configuration.packages.all["core"];
-        //        assert_eq!(core.key, "core");
-        //        assert_eq!(core.state, "active");
-        //        assert_eq!(core.is_active(), true);
-        //
-        //        let recycler: &Package = &configuration.packages.all["recycler"];
-        //        assert_eq!(recycler.key, "recycler");
-        //        assert_eq!(recycler.state, "inactive");
-        //        assert_eq!(recycler.is_active(), false);
+    #[test]
+    fn load_json_test() {
+        let json_file_path = test_helpers::get_test_resource_path("configuration-test-0.1.0.json");
+        let configurations = ConfigurationProvider::load(json_file_path.as_path()).unwrap();
+        assert_configuration(configurations);
+    }
+
+    #[test]
+    fn load_yaml_test() {
+        let yaml_file_path = test_helpers::get_test_resource_path("configuration-test-0.1.0.yaml");
+        let configurations = ConfigurationProvider::load(yaml_file_path.as_path()).unwrap();
+        assert_configuration(configurations);
     }
 }

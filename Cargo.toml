@@ -7,4 +7,5 @@ authors = ["Daniel Corn <info@cundd.net>"]
 serde = "0.9"
 serde_derive = "0.9"
 serde_json = "0.9"
+serde_yaml = "0.6"
 ssh2 = "0.3"

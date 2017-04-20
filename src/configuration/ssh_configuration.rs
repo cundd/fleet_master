@@ -49,9 +49,6 @@ impl SshConfiguration {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
-
-
     // username:password@host:port command
     // username@host:port command
     // username:password@host command
