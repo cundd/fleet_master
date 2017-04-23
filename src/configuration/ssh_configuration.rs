@@ -1,4 +1,4 @@
-use std::path::PathBuf;
+use std::path::*;
 
 #[derive(Serialize, Deserialize, Debug, PartialEq)]
 pub struct SshConfiguration {
@@ -19,7 +19,7 @@ impl SshConfiguration {
         command: S,
         username: S,
         password: S,
-    ) -> SshConfiguration where S: Into<String> {
+    ) -> Self where S: Into<String> {
         SshConfiguration {
             host: host.into(),
             port: port.into(),
@@ -32,7 +32,63 @@ impl SshConfiguration {
         }
     }
 
-    pub fn new_empty() -> SshConfiguration {
+    pub fn new_with_public_key<S>(
+        host: S,
+        port: S,
+        command: S,
+        username: S,
+        private_key: PathBuf,
+        public_key: Option<PathBuf>,
+        passphrase: Option<S>,
+    ) -> Self where S: Into<String> {
+        let passphrase_string = match passphrase {
+            Some(p) => Some(p.into()),
+            None => None,
+        };
+        SshConfiguration {
+            host: host.into(),
+            port: port.into(),
+            command: command.into(),
+            username: username.into(),
+            password: None,
+            passphrase: passphrase_string,
+            //            private_key: Some(PathBuf::from(private_key.into())),
+            private_key: Some(private_key),
+            public_key: public_key,
+        }
+    }
+
+
+    //    pub fn new_with_public_key<S>(
+    //        host: S,
+    //        port: S,
+    //        command: S,
+    //        username: S,
+    //        private_key: S,
+    //        public_key: Option<S>,
+    //        passphrase: Option<S>,
+    //    ) -> Self where S: Into<String> {
+    //        let passphrase_string = match passphrase {
+    //            Some(p) => Some(p.into()),
+    //            None => None,
+    //        };
+    //        let public_key_string = match public_key {
+    //            Some(p) => Some(PathBuf::from(p.into())),
+    //            None => None,
+    //        };
+    //        SshConfiguration {
+    //            host: host.into(),
+    //            port: port.into(),
+    //            command: command.into(),
+    //            username: username.into(),
+    //            password: None,
+    //            passphrase: passphrase_string,
+    //            private_key: Some(PathBuf::from(private_key.into())),
+    //            public_key: public_key_string,
+    //        }
+    //    }
+
+    pub fn new_empty() -> Self {
         SshConfiguration {
             host: "".to_owned(),
             port: "".to_owned(),
@@ -49,6 +105,9 @@ impl SshConfiguration {
 
 #[cfg(test)]
 mod tests {
+    use super::*;
+    use configuration::Helper;
+
     // username:password@host:port command
     // username@host:port command
     // username:password@host command
@@ -57,39 +116,84 @@ mod tests {
 
 
     #[test]
-    fn scan_uri_test() {
-        //        SshConfiguration
-//        let uri = SshUriScanner::scan_uri("username:password@host:port command").unwrap();
-//        assert_eq! (uri, SshUri::new_with_password("host", "port", "command", "username", "password"));
+    fn new_with_public_key_test() {
+        let private_key = Helper::get_ssh_file_path("id_rsa");
+        let public_key = Helper::get_ssh_file_path("id_rsa.pub");
 
+        assert_eq!(
+        SshConfiguration {
+            host: "localhost".to_owned(),
+            port: "22".to_owned(),
+            command: "cmd".to_owned(),
+            username: "daniel".to_owned(),
+            password: None,
+            passphrase: None,
+            private_key: Some(private_key.clone()),
+            public_key: None,
+        },
+        SshConfiguration::new_with_public_key("localhost", "22", "cmd", "daniel", private_key.clone(), None, None)
+        );
 
-//        assert_eq! (uri.host, "host");
-//        assert_eq! (uri.port, "port");
-//        assert_eq! (uri.command, "command");
+        assert_eq!(
+        SshConfiguration {
+            host: "localhost".to_owned(),
+            port: "22".to_owned(),
+            command: "cmd".to_owned(),
+            username: "daniel".to_owned(),
+            password: None,
+            passphrase: None,
+            private_key: Some(private_key.clone()),
+            public_key: Some(public_key.clone()),
+        },
+        SshConfiguration::new_with_public_key("localhost", "22", "cmd", "daniel", private_key.clone(), Some(public_key.clone()), None)
+        );
 
+        assert_eq!(
+        SshConfiguration {
+            host: "localhost".to_owned(),
+            port: "22".to_owned(),
+            command: "cmd".to_owned(),
+            username: "daniel".to_owned(),
+            password: None,
+            passphrase: Some("passphrase".to_owned()),
+            private_key: Some(private_key.clone()),
+            public_key: Some(public_key.clone()),
+        },
+        SshConfiguration::new_with_public_key("localhost", "22", "cmd", "daniel", private_key.clone(), Some(public_key.clone()), Some("passphrase"))
+        );
+    }
 
-        //
-        //        let file_path = PathBuf::from(file!());
-        //        let mut file_path_abs: PathBuf = fs::canonicalize(&file_path).unwrap();
-        //        file_path_abs.pop();
-        //        file_path_abs.pop();
-        //        file_path_abs.pop();
-        //
-        //        let mut json_file_path = file_path_abs.clone();
-        //        json_file_path.push("tests/protocol-test-0.1.0.json");
-        //
-        //        let information = scanner.get_information_for_uri(json_file_path.to_str().unwrap()).unwrap();
-        //        assert_eq!("0.1.0", information.fleet.protocol);
-        //        assert_eq!(56, information.packages.all.len());
-        //
-        //        let core: &Package = &information.packages.all["core"];
-        //        assert_eq!(core.key, "core");
-        //        assert_eq!(core.state, "active");
-        //        assert_eq!(core.is_active(), true);
-        //
-        //        let recycler: &Package = &information.packages.all["recycler"];
-        //        assert_eq!(recycler.key, "recycler");
-        //        assert_eq!(recycler.state, "inactive");
-        //        assert_eq!(recycler.is_active(), false);
+    #[test]
+    fn new_with_password_test() {
+        assert_eq!(
+        SshConfiguration {
+            host: "localhost".to_owned(),
+            port: "22".to_owned(),
+            command: "cmd".to_owned(),
+            username: "daniel".to_owned(),
+            password: Some("password".to_owned()),
+            passphrase: None,
+            private_key: None,
+            public_key: None,
+        },
+        SshConfiguration::new_with_password("localhost", "22", "cmd", "daniel", "password")
+        );
+    }
+
+    #[test]
+    fn new_empty_test() {
+        assert_eq!(
+        SshConfiguration {
+            host: "".to_owned(),
+            port: "".to_owned(),
+            command: "".to_owned(),
+            username: "".to_owned(),
+            password: None,
+            passphrase: None,
+            private_key: None,
+            public_key: None,
+        },
+        SshConfiguration::new_empty()
+        );
     }
 }

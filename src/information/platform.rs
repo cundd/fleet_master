@@ -11,7 +11,7 @@ fn uname(key: &str) -> String {
     String::from(stdout.trim())
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
 pub struct Os {
     pub vendor: String,
     pub version: String,
@@ -20,7 +20,7 @@ pub struct Os {
 }
 
 impl Os {
-    fn new_for_current_env() -> Os {
+    fn new_for_current_env() -> Self {
         Os {
             vendor: uname("s").to_owned(),
             version: uname("r").to_owned(),
@@ -30,7 +30,7 @@ impl Os {
     }
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
 pub struct Platform {
     pub language: String,
     pub version: String,
@@ -40,7 +40,7 @@ pub struct Platform {
 }
 
 impl Platform {
-    pub fn new_for_current_env() -> Platform {
+    pub fn new_for_current_env() -> Self {
         Platform {
             language: "rust".to_owned(),
             version: "x.y.z".to_owned(),

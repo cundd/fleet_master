@@ -2,7 +2,7 @@ use super::*;
 use constants;
 //use super::fleet::Fleet;
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
 pub struct Information {
     pub fleet: Fleet,
     pub system: System,
@@ -10,7 +10,7 @@ pub struct Information {
 }
 
 impl Information {
-    pub fn new_for_current_env() -> Information {
+    pub fn new_for_current_env() -> Self {
         Information {
             fleet: Fleet::new(constants::PROTOCOL, constants::PROVIDER_VERSION, constants::PROVIDER_NAME),
             packages: Packages::new(),

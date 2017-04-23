@@ -1,9 +1,11 @@
+mod local_provider;
 mod file_provider;
 mod ssh_provider;
 
-use super::error::Error;
-use information::*;
+pub use self::local_provider::LocalProvider;
+pub use self::file_provider::FileProvider;
+pub use self::ssh_provider::SshProvider;
 
 pub trait Provider {
-    fn get_information_for_uri<S>(self, uri: S) -> Result<Information, Error> where S: Into<String>;
+    fn new() -> Self;
 }

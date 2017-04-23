@@ -9,14 +9,14 @@ pub struct Error {
 }
 
 impl Error {
-    pub fn new<S: Into<String>>(message: S) -> Error {
+    pub fn new<S: Into<String>>(message: S) -> Self {
         Error {
             msg: message.into(),
             cause: None
         }
     }
 
-    pub fn new_from_error<E>(error: E) -> Error where E: 'static + std::error::Error + std::marker::Sized {
+    pub fn new_from_error<E>(error: E) -> Self where E: 'static + std::error::Error + std::marker::Sized {
         Error {
             msg: error.description().to_owned(),
             cause: None //cause: Some(&error)

@@ -9,3 +9,5 @@ pub use self::fleet::*;
 pub use self::system::*;
 pub use self::packages::*;
 pub use self::information::Information;
+
+pub type InformationCollection = Vec<Information>;

@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
 pub struct Package {
     pub key: String,
     pub version: String,
@@ -14,13 +14,13 @@ impl Package {
     }
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
 pub struct Packages {
     pub all: HashMap<String, Package>,
 }
 
 impl Packages {
-    pub fn new () -> Packages {
+    pub fn new() -> Self {
         Packages { all: HashMap::new() }
     }
 }

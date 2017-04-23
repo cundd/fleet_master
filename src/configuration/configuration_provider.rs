@@ -5,6 +5,8 @@ use std::path::*;
 use configuration::*;
 use error::Error;
 use serde_json;
+
+#[cfg(feature = "yaml")]
 use serde_yaml;
 
 
@@ -24,7 +26,16 @@ impl ConfigurationProvider {
 
         if let Some(extension) = absolute_file_path.as_path().extension() {
             if extension == "yaml" {
+                #[cfg(feature = "yaml")]
                 return ConfigurationProvider::load_yaml(file);
+
+
+                return Err(Error::new(
+                    format!(
+                        "Could not load configuration from file with extension '{}'",
+                        extension.to_string_lossy()
+                    )
+                ));
             }
             if extension == "json" {
                 return ConfigurationProvider::load_json(file);
@@ -55,6 +66,7 @@ impl ConfigurationProvider {
         Ok(configuration)
     }
 
+    #[cfg(feature = "yaml")]
     fn load_yaml(file: File) -> Result<ConfigurationCollection, Error> {
         let configuration: ConfigurationCollection = match serde_yaml::from_reader(file) {
             Ok(configuration) => configuration,
@@ -124,6 +136,7 @@ mod tests {
     }
 
     #[test]
+    #[cfg(yaml)]
     fn load_yaml_test() {
         let yaml_file_path = test_helpers::get_test_resource_path("configuration-test-0.1.0.yaml");
         let configurations = ConfigurationProvider::load(yaml_file_path.as_path()).unwrap();

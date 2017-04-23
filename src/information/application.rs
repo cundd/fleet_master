@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 use constants;
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
 pub struct Application {
     pub name: String,
     pub version: String,
@@ -9,7 +9,7 @@ pub struct Application {
 }
 
 impl Application {
-    pub fn new<S>(name: S, version: S, meta: HashMap<String, String>) -> Application where S: Into<String> {
+    pub fn new<S>(name: S, version: S, meta: HashMap<String, String>) -> Self where S: Into<String> {
         Application {
             name: name.into(),
             version: version.into(),
@@ -17,7 +17,7 @@ impl Application {
         }
     }
 
-    pub fn new_for_current_env() -> Application {
+    pub fn new_for_current_env() -> Self {
         Application::new(
             "fleet",
             constants::PROVIDER_VERSION,

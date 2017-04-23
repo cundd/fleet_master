@@ -1,4 +1,3 @@
-use provider::Provider;
 use std::fs;
 use std::fs::File;
 use std::path::PathBuf;
@@ -8,9 +7,12 @@ use serde_json;
 
 pub struct FileProvider;
 
-impl Provider for FileProvider {
+impl FileProvider {
     fn get_information_for_uri<S>(self, uri: S) -> Result<Information, Error> where S: Into<String> {
-        let absolute_file_path: PathBuf = fs::canonicalize(&uri.into()).unwrap();
+        let absolute_file_path: PathBuf = match fs::canonicalize(&uri.into()) {
+            Ok(p) => p,
+            Err(e) => return Err(Error::new_from_error(e)),
+        };
 
         let file = match File::open(absolute_file_path) {
             Ok(file) => file,
@@ -23,6 +25,12 @@ impl Provider for FileProvider {
         };
 
         Ok(information)
+    }
+}
+
+impl super::Provider for FileProvider {
+    fn new() -> Self {
+        FileProvider {}
     }
 }
 
