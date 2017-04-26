@@ -26,7 +26,7 @@ impl SubCommand for ListCommand {
         for (configuration_entry, configuration) in configuration_collection {
             match self.fetch_information(&configuration) {
                 Ok(i) => information_collection.push(i),
-                Err(e) => Printer::print_formatted_error(&format!("Error for host entry {}", &configuration_entry), e),
+                Err(e) => Printer::print_message_and_error(&format!("Error for host entry {}", &configuration_entry), e),
             }
         }
 

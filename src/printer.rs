@@ -23,7 +23,7 @@ impl Printer {
         }
     }
 
-    pub fn print_formatted_error(format: &str, e: Error) {
-        let _ = writeln!(&mut stderr(), "ERR: {}: {}", format, e.message());
+    pub fn print_message_and_error(message: &str, e: Error) {
+        let _ = writeln!(&mut stderr(), "{}", Colour::Red.paint(format!("ERR: {}: {}", message, e.message())));
     }
 }
