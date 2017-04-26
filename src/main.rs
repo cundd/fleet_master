@@ -3,6 +3,7 @@ extern crate serde_json;
 extern crate serde_yaml;
 extern crate ssh2;
 extern crate clap;
+extern crate ansi_term;
 
 #[macro_use]
 extern crate serde_derive;
