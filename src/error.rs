@@ -23,6 +23,13 @@ impl Error {
         }
     }
 
+    pub fn with_error_and_details<E, S: Into<String>>(error: E, message:S) -> Self where E: 'static + std::error::Error + std::marker::Sized {
+        Error {
+            msg: error.description().to_owned() + " (Details: '" + &message.into() + "')",
+            cause: None //cause: Some(&error)
+        }
+    }
+
     pub fn message(&self) -> &str {
         &self.msg
     }

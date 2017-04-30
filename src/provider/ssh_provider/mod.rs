@@ -28,7 +28,7 @@ impl SshProvider {
         let content = self.call_ssh_command(command, &session)?;
         let information: Information = match serde_json::from_str(&content) {
             Ok(information) => information,
-            Err(e) => return Err(Error::new_from_error(e)),
+            Err(e) => return Err(Error::with_error_and_details(e, content)),
         };
 
         Ok(information)
@@ -73,26 +73,19 @@ mod tests {
     use configuration::Helper;
 
     #[test]
+    #[should_panic]
     fn get_information_for_uri_test() {
         let provider = SshProvider {};
         let configuration = Configuration::new_with_public_key(
-            "localhost",
+            "not-a-host",
             "22",
             "",
-            "daniel",
-            Helper::get_ssh_file_path("id_rsa"),
+            "not-a-user",
+            Helper::get_ssh_file_path("not-a-file"),
             None,
             None
         );
-        //        let configuration = Configuration::new_with_password(
-        //            "localhost",
-        //            "22",
-        //            "",
-        //            "daniel",
-        //            "password"
-        //        );
 
-        let information = provider.get_information(&configuration);
-        println!("{:?}", information.unwrap());
+        provider.get_information(&configuration).unwrap();
     }
 }

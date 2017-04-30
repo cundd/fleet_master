@@ -5,8 +5,8 @@ use serde_json;
 pub struct JsonFormatter;
 
 
-impl super::Formatter for JsonFormatter {
-    fn format_information(&self, information: Result<Information, Error>) -> Result<String, Error> {
+impl super::FormatterTrait for JsonFormatter {
+    fn format_information(&self, _: &str, information: Result<Information, Error>) -> Result<String, Error> {
         let information_no_error = information?;
 
         match serde_json::to_string(&information_no_error) {

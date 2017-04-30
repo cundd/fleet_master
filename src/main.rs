@@ -1,3 +1,5 @@
+//#![feature(slice_concat_ext)]
+
 extern crate serde;
 extern crate serde_json;
 extern crate serde_yaml;
@@ -19,7 +21,6 @@ mod sub_command;
 
 use clap::{Arg, App, SubCommand};
 
-use provider::*;
 use formatter::*;
 use printer::*;
 use sub_command::*;
@@ -29,6 +30,13 @@ use sub_command::SubCommand as FleetSubCommand;
 mod test_helpers;
 
 fn main() {
+    let format_arg = Arg::with_name("format")
+        .short("f")
+        .long("format")
+        .value_name("FORMAT")
+        .takes_value(true)
+        .help("Defines the output format");
+
     let matches = App::new("fleet")
         .version(constants::PROVIDER_VERSION)
         .author("Daniel Corn <info@cundd.net>")
@@ -47,12 +55,7 @@ fn main() {
             .short("v")
             .multiple(true)
             .help("Sets the level of verbosity"))
-        .arg(Arg::with_name("format")
-            .short("f")
-            .long("format")
-            .value_name("FORMAT")
-            .takes_value(true)
-            .help("Defines the output format"))
+        //        .arg(format_arg)
         .subcommand(SubCommand::with_name("list")
             .about("Fetch information from all hosts")
             .version(constants::PROVIDER_VERSION)
@@ -62,7 +65,9 @@ fn main() {
                 .value_name("FILE")
                 .required(true)
                 .help("Sets the configuration file to read")
-                .takes_value(true)))
+                .takes_value(true))
+            .arg(format_arg.clone())
+        )
         .subcommand(SubCommand::with_name("show")
             .about("Fetch information for the given host")
             .version(constants::PROVIDER_VERSION)
@@ -81,57 +86,28 @@ fn main() {
                 .required(true)
                 .help("Sets the configuration file to read")
                 .takes_value(true))
+            .arg(format_arg.clone())
         )
         .subcommand(SubCommand::with_name("provide")
             .about("Use the program as information provider")
             .version(constants::PROVIDER_VERSION)
+            .arg(format_arg)
             .arg(Arg::with_name("debug")
                 .short("d")
                 .help("print debug information verbosely")))
         .get_matches();
 
-    let format = matches.value_of("format").unwrap_or("json");
-    let formatter_box = Factory::get_formatter(format).unwrap();
-    let formatter = &*formatter_box as &Formatter;
+    let (subcommand, subcommand_matches_option) = get_subcommand(&matches);
 
-    //    // Vary the output based on how many times the user used the "verbose" flag
-    //    // (i.e. 'myprog -v -v -v' or 'myprog -vvv' vs 'myprog -v'
-    //    match matches.occurrences_of("v") {
-    //        0 => println!("No verbose info"),
-    //        1 => println!("Some verbose info"),
-    //        2 => println!("Tons of verbose info"),
-    //        3 | _ => println!("Don't be crazy"),
-    //    }
+    let default_format = match &subcommand {
+        &FleetSubCommand::ProvideCommand(_) => "json",
+        _ => "console"
+    };
+    let format = matches.value_of("format").unwrap_or(default_format);
+    let formatter = get_formatter(format).unwrap();
 
-    // You can handle information about subcommands by requesting their matches by name
-    // (as below), requesting just the name used, or both at the same time
-    if let Some(_) = matches.subcommand_matches("provide") {
-        Printer::print_result(
-            formatter.format_information(LocalProvider::new().get_information())
-        );
-
-        return;
-    }
-
-    if let Some(matches) = matches.subcommand_matches("list") {
-        let formatter = &*formatter_box as &Formatter;
-        let sub_command = ListCommand {};
-        Printer::print_error_if_not_ok(sub_command.exec(formatter, &matches));
-
-
-        return;
-    }
-    if let Some(matches) = matches.subcommand_matches("show") {
-        let formatter = &*formatter_box as &Formatter;
-        let sub_command = ShowCommand {};
-        Printer::print_error_if_not_ok(sub_command.exec(formatter, &matches));
-
-        return;
-    }
-
-    println!("TODO: Print the help");
-    //    matches.help();
-    // more program logic goes here... println!("Hello, world!");
+    Printer::print_error_if_not_ok(subcommand.exec(&formatter, subcommand_matches_option));
 }
+
 
 

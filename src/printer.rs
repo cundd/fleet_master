@@ -14,7 +14,7 @@ impl Printer {
     }
 
     pub fn print_error(e: Error) {
-        let _ = writeln!(&mut stderr(), "{}", Colour::Red.paint(format!("ERR: {}", e.message())));
+        let _ = writeln!(&mut stderr(), "{}", Colour::Red.paint(format!("error: {}", e.message())));
     }
 
     pub fn print_error_if_not_ok<A>(e: Result<A, Error>) {
@@ -24,6 +24,6 @@ impl Printer {
     }
 
     pub fn print_message_and_error(message: &str, e: Error) {
-        let _ = writeln!(&mut stderr(), "{}", Colour::Red.paint(format!("ERR: {}: {}", message, e.message())));
+        let _ = writeln!(&mut stderr(), "{}", Colour::Red.paint(format!("error: {}: {}", message, e.message())));
     }
 }

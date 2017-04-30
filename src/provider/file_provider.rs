@@ -8,6 +8,7 @@ use serde_json;
 pub struct FileProvider;
 
 impl FileProvider {
+    #[allow(dead_code)]
     fn get_information_for_uri<S>(self, uri: S) -> Result<Information, Error> where S: Into<String> {
         let absolute_file_path: PathBuf = match fs::canonicalize(&uri.into()) {
             Ok(p) => p,

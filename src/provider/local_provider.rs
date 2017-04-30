@@ -19,6 +19,7 @@ impl super::Provider for LocalProvider {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use constants;
 
     #[test]
     fn get_information_test() {
