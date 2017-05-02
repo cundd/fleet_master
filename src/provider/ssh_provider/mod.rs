@@ -73,7 +73,6 @@ mod tests {
     use configuration::Helper;
 
     #[test]
-    #[should_panic]
     fn get_information_for_uri_test() {
         let provider = SshProvider {};
         let configuration = Configuration::new_with_public_key(
@@ -86,6 +85,6 @@ mod tests {
             None
         );
 
-        provider.get_information(&configuration).unwrap();
+        assert!(provider.get_information(&configuration).is_err());
     }
 }
