@@ -1,4 +1,5 @@
 use std::io::stderr;
+use std::io::stdout;
 use std::io::Write;
 use ansi_term::Colour;
 use error::Error;
@@ -8,7 +9,7 @@ pub struct Printer;
 impl Printer {
     pub fn print_result(o: Result<String, Error>) {
         match o {
-            Ok(text) => println!("{}", text),
+            Ok(text) => { let _ = writeln!(&mut stdout(), "{}", text); },
             Err(e) => Self::print_error(e),
         }
     }

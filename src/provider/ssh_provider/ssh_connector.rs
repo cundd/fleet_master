@@ -37,7 +37,7 @@ impl SshConnector {
     fn authenticate_password(&self, configuration: &Configuration, session: Session) -> Result<Session, Error> {
         let password = configuration.password.as_ref().unwrap();
         if let Err(e) = session.userauth_password(&configuration.username, password) {
-            return Err(Error::new_from_error(e));
+            return Err(Error::from_error(e));
         }
 
         Ok(session)
@@ -69,7 +69,7 @@ impl SshConnector {
             &configuration.private_key.as_ref().unwrap(),
             passphrase
         ) {
-            return Err(Error::new_from_error(e));
+            return Err(Error::from_error(e));
         }
 
         Ok(session)

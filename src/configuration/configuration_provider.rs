@@ -16,12 +16,12 @@ impl ConfigurationProvider {
     pub fn load(path: &Path) -> Result<ConfigurationCollection, Error> {
         let absolute_file_path: PathBuf = match fs::canonicalize(path) {
             Ok(p) => p,
-            Err(e) => return Err(Error::new_from_error(e)),
+            Err(e) => return Err(Error::from_error(e)),
         };
 
         let file = match File::open(absolute_file_path.as_path()) {
             Ok(file) => file,
-            Err(e) => return Err(Error::new_from_error(e)),
+            Err(e) => return Err(Error::from_error(e)),
         };
 
         if let Some(extension) = absolute_file_path.as_path().extension() {
@@ -60,7 +60,7 @@ impl ConfigurationProvider {
     fn load_json(file: File) -> Result<ConfigurationCollection, Error> {
         let configuration: ConfigurationCollection = match serde_json::from_reader(file) {
             Ok(configuration) => configuration,
-            Err(e) => return Err(Error::new_from_error(e)),
+            Err(e) => return Err(Error::from_error(e)),
         };
 
         Ok(configuration)
@@ -70,7 +70,7 @@ impl ConfigurationProvider {
     fn load_yaml(file: File) -> Result<ConfigurationCollection, Error> {
         let configuration: ConfigurationCollection = match serde_yaml::from_reader(file) {
             Ok(configuration) => configuration,
-            Err(e) => return Err(Error::new_from_error(e)),
+            Err(e) => return Err(Error::from_error(e)),
         };
 
         Ok(configuration)

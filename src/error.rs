@@ -16,7 +16,7 @@ impl Error {
         }
     }
 
-    pub fn new_from_error<E>(error: E) -> Self where E: 'static + std::error::Error + std::marker::Sized {
+    pub fn from_error<E>(error: E) -> Self where E: 'static + std::error::Error + std::marker::Sized {
         Error {
             msg: error.description().to_owned(),
             cause: None //cause: Some(&error)

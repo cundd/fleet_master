@@ -17,7 +17,7 @@ impl SshProvider {
         let address = format!("{}:{}", configuration.host, configuration.port);
         let tcp = match TcpStream::connect(&address) {
             Ok(t) => t,
-            Err(e) => return Err(Error::new_from_error(e)),
+            Err(e) => return Err(Error::from_error(e)),
         };
 
         let session: Session = SshConnector::new().connect(&configuration, &tcp)?;
@@ -41,7 +41,7 @@ impl SshProvider {
         // Open channel
         let mut channel: Channel = match session.channel_session() {
             Ok(c) => c,
-            Err(e) => return Err(Error::new_from_error(e))
+            Err(e) => return Err(Error::from_error(e))
         };
 
         // Execute the command
@@ -50,7 +50,7 @@ impl SshProvider {
         // Read the output
         let mut output = String::new();
         if let Err(e) = Read::read_to_string(&mut channel, &mut output) {
-            return Err(Error::new_from_error(e));
+            return Err(Error::from_error(e));
         }
 
         // println!("'{}'", output);

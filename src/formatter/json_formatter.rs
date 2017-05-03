@@ -11,13 +11,13 @@ impl super::FormatterTrait for JsonFormatter {
 
         match serde_json::to_string(&information_no_error) {
             Ok(s) => Ok(s),
-            Err(e) => Err(Error::new_from_error(e)),
+            Err(e) => Err(Error::from_error(e)),
         }
     }
     fn format_information_collection(&self, information: InformationCollection) -> Result<String, Error> {
         match serde_json::to_string(&information) {
             Ok(s) => Ok(s),
-            Err(e) => Err(Error::new_from_error(e)),
+            Err(e) => Err(Error::from_error(e)),
         }
     }
 }
