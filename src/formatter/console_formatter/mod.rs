@@ -1,7 +1,12 @@
+mod matrix;
+mod table;
+
 use std::slice::Iter;
 use std::slice::IterMut;
 use error::Error;
 use information::*;
+use self::table::Table;
+use self::matrix::Matrix;
 
 pub struct ConsoleFormatter;
 
@@ -24,6 +29,26 @@ const HEADERS: &'static [&'static str] = &[
 
 impl super::FormatterTrait for ConsoleFormatter {
     fn format_information(&self, host: &str, information: Result<Information, Error>) -> Result<String, Error> {
+//        let data = vec!(
+//                       host,
+//                       info.fleet.protocol,
+//                       info.fleet.provider_version,
+//                       info.fleet.provider_name,
+//                       info.system.platform.language,
+//                       info.system.platform.version,
+//                       info.system.platform.sapi,
+//                       info.system.platform.host,
+//                       info.system.platform.os.vendor,
+//                       info.system.platform.os.version,
+//                       info.system.platform.os.machine,
+//                       info.system.platform.os.info,
+//                       info.system.application.name,
+//                       info.system.application.version,
+//                       );
+//        Ok(Table::left_header(HEADERS, data))
+//
+//
+//
         let mut information_collection: InformationCollection = InformationCollection::new();
         information_collection.insert(host.to_owned(), information?);
         let column_widths = calc_column_widths(&information_collection);

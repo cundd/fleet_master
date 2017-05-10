@@ -1,4 +1,7 @@
 //#![feature(slice_concat_ext)]
+//#![feature(test)]
+//extern crate test;
+
 
 extern crate serde;
 extern crate serde_json;
