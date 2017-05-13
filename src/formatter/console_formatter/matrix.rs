@@ -52,10 +52,6 @@ impl<T> Matrix<T> where T: Clone + Debug {
         self.columns
     }
 
-    //    pub fn iter(&self) -> Iter<T> {
-    //        self.data.into_iter()
-    //    }
-
     pub fn is_empty(&self) -> bool {
         self.rows == 0 && self.columns == 0
     }
@@ -139,11 +135,11 @@ mod tests {
         let orange = vec!("Orange", "Orange");
 
         let data = vec!(
-            apple.as_slice(),
-            pear.as_slice(),
-            banana.as_slice(),
-            orange.as_slice(),
-            );
+                       apple.as_slice(),
+                       pear.as_slice(),
+                       banana.as_slice(),
+                       orange.as_slice(),
+                       );
         let m = Matrix::from_slice(&data);
 
         assert_eq!(4, m.rows);

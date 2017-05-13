@@ -73,27 +73,27 @@ mod tests {
         assert_eq!(expected, actual);
     }
 
-    //    #[test]
-    //    fn map_static_string_array_test() {
-    //        const FRUITS: &'static [&'static str] = &[
-    //            "Apple",
-    //            "Pear",
-    //            "Banana",
-    //            "Orange",
-    //        ];
-    //
-    //        let actual: Vec<String> = map(
-    //            FRUITS,
-    //            |fruit| fruit.to_owned()
-    //        );
-    //
-    //        let expected = vec!(
-    //                           "Apple",
-    //                           "Pear",
-    //                           "Banana",
-    //                           "Orange",
-    //                           );
-    //
-    //        assert_eq!(expected, actual);
-    //    }
+        #[test]
+        fn map_static_string_array_test() {
+            const FRUITS: &'static [&'static str] = &[
+                "Apple",
+                "Pear",
+                "Banana",
+                "Orange",
+            ];
+
+            let actual: Vec<String> = map(
+                FRUITS,
+                |fruit| String::from(fruit.to_owned())
+            );
+
+            let expected = vec!(
+                               "Apple",
+                               "Pear",
+                               "Banana",
+                               "Orange",
+                               );
+
+            assert_eq!(expected, actual);
+        }
 }

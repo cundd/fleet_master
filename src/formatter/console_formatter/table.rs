@@ -1,12 +1,9 @@
 use std::clone::Clone;
 use std::fmt::Display;
 use std::fmt::Debug;
-
 use super::matrix::*;
 
 pub struct Table;
-
-//type StringMatrix = Matrix<Into<String>>;
 
 impl Table {
     pub fn top_header<S>(input: &Matrix<S>) -> String
@@ -74,13 +71,7 @@ fn calc_column_widths<S>(input: &Matrix<S>) -> Vec<usize>
 
     for row in input.data().into_iter() {
         for (cell, previous_value) in row.iter().zip(column_widths.iter_mut()) {
-
-
-
-
-//            let concrete_cell:String = Into::into(cell);
-//            let concrete_cell:String = String::from(cell);
-            let new =format!("{}", cell).len();
+            let new = format!("{}", cell).len();
             if new > *previous_value { *previous_value = new }
         }
     }
