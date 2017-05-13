@@ -128,7 +128,7 @@ mod tests {
 
         assert_eq!(4, m.rows);
         assert_eq!(2, m.columns);
-        assert_eq!(build_data(), m.data);
+        assert_eq!(&build_data(), m.data());
     }
 
     #[test]
@@ -148,7 +148,7 @@ mod tests {
 
         assert_eq!(4, m.rows);
         assert_eq!(2, m.columns);
-        assert_eq!(build_data(), m.data);
+        assert_eq!(&build_data(), m.data());
     }
 
     //    #[test]
@@ -157,7 +157,7 @@ mod tests {
     //
     //        assert_eq!(4, m.rows);
     //        assert_eq!(2, m.columns);
-    //        assert_eq!(build_data(), m.data);
+    //        assert_eq!(build_data(), m.data());
     //    }
 
     #[test]
@@ -171,7 +171,7 @@ mod tests {
             vec!("Banana", "Yellow"),
             vec!("Orange", "Orange"),
             ),
-        m.data
+        *m.data()
         );
     }
 
@@ -179,14 +179,16 @@ mod tests {
     fn rows_test() {
         let m = Matrix::from_vec(build_data());
 
-        assert_eq!(4, m.rows);
+        assert_eq!(4, m.rows());
+        assert_eq!(m.rows, m.rows());
     }
 
     #[test]
     fn columns_test() {
         let m = Matrix::from_vec(build_data());
 
-        assert_eq!(2, m.columns);
+        assert_eq!(2, m.columns());
+        assert_eq!(m.columns, m.columns());
     }
 
     #[test]
@@ -290,7 +292,7 @@ mod tests {
             vec!("Orange", "Orange"),
             vec!("Grape", "Blue"),
             ),
-        m.data
+        *m.data()
         );
         assert_eq!(5, m.rows);
     }
@@ -309,7 +311,7 @@ mod tests {
             vec!("Banana", "Yellow"),
             vec!("Orange", "Orange"),
             ),
-        m.data
+        *m.data()
         );
         assert_eq!(5, m.rows);
     }
