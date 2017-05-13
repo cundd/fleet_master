@@ -22,7 +22,7 @@ const HEADERS: &'static [&'static str] = &[
     "System Platform OS vendor", // system.platform.os.vendor
     "System Platform OS version", // system.platform.os.version
     "System Platform OS machine", // system.platform.os.machine
-    "System Platform OS info", // system.platform.os.info
+    // "System Platform OS info", // system.platform.os.info
     "System Application Name", // system.application.name
     "System Application Version", // system.application.version
 ];
@@ -62,7 +62,7 @@ impl Matrix<String> {
             cells.push(info.system.platform.os.vendor);
             cells.push(info.system.platform.os.version);
             cells.push(info.system.platform.os.machine);
-            cells.push(info.system.platform.os.info);
+            // cells.push(info.system.platform.os.info);
             cells.push(info.system.application.name);
             cells.push(info.system.application.version);
 
