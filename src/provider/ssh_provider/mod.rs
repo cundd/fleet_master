@@ -53,10 +53,20 @@ impl SshProvider {
             return Err(Error::from_error(e));
         }
 
-        // println!("'{}'", output);
-        // println!("{}", channel.exit_status().unwrap());
+        let exit_status = match channel.exit_status() {
+            Ok(exit_status) => exit_status,
+            Err(e) => return Err(Error::from_error(e))
+        };
 
-        Ok(output)
+        if exit_status == 0 {
+            return Ok(output)
+        }
+
+        let mut error_output = String::new();
+        match Read::read_to_string(&mut channel.stderr(), &mut error_output) {
+            Ok(_) => return Err(Error::new(error_output)),
+            Err(error) => Err(Error::from_error(error)),
+        }
     }
 }
 
