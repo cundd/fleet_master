@@ -1,5 +1,4 @@
 use clap::ArgMatches;
-use std::path::PathBuf;
 use std::collections::HashMap;
 use configuration::*;
 use error::Error;
@@ -19,9 +18,8 @@ impl ListCommand {
 
 impl SubCommandTrait for ListCommand {
     fn exec<F: FormatterTrait>(&self, formatter: &F, subcommand_matches_option: Option<&ArgMatches>) -> Result<(), Error> {
-        let config = subcommand_matches_option.unwrap().value_of("config").unwrap();
-
-        let configuration_collection = ConfigurationProvider::load(PathBuf::from(config).as_path())?;
+        let config = self.get_configuration_file(subcommand_matches_option)?;
+        let configuration_collection = ConfigurationProvider::load(config.as_path())?;
 
         let mut information_collection = HashMap::new();
         for (host, configuration) in configuration_collection {

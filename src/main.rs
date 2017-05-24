@@ -13,6 +13,11 @@ extern crate ansi_term;
 #[macro_use]
 extern crate serde_derive;
 
+
+#[macro_use]
+#[cfg(test)]
+mod test_helpers;
+
 pub mod constants;
 pub mod configuration;
 pub mod information;
@@ -29,8 +34,6 @@ use printer::*;
 use sub_command::*;
 use sub_command::SubCommand as FleetSubCommand;
 
-#[cfg(test)]
-mod test_helpers;
 
 fn main() {
     let format_arg = Arg::with_name("format")
@@ -39,6 +42,12 @@ fn main() {
         .value_name("FORMAT")
         .takes_value(true)
         .help("Defines the output format");
+    let configuration_arg = Arg::with_name("config")
+        .short("c")
+        .long("config")
+        .value_name("FILE")
+        .help("Sets the configuration file to read")
+        .takes_value(true);
 
     let matches = App::new("fleet")
         .version(constants::PROVIDER_VERSION)
@@ -62,13 +71,7 @@ fn main() {
         .subcommand(SubCommand::with_name("list")
             .about("Fetch information from all hosts")
             .version(constants::PROVIDER_VERSION)
-            .arg(Arg::with_name("config")
-                .short("c")
-                .long("config")
-                .value_name("FILE")
-                .required(true)
-                .help("Sets the configuration file to read")
-                .takes_value(true))
+            .arg(configuration_arg.clone())
             .arg(format_arg.clone())
         )
         .subcommand(SubCommand::with_name("show")
@@ -82,13 +85,7 @@ fn main() {
                 .help("Key of the host's configuration")
                 .index(1)
                 .takes_value(true))
-            .arg(Arg::with_name("config")
-                .short("c")
-                .long("config")
-                .value_name("FILE")
-                .required(true)
-                .help("Sets the configuration file to read")
-                .takes_value(true))
+            .arg(configuration_arg.clone())
             .arg(format_arg.clone())
         )
         .subcommand(SubCommand::with_name("provide")

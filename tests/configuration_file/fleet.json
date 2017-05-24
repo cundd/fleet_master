@@ -1,0 +1,28 @@
+{
+    "my.host.local": {
+        "host": "host",
+        "port": "port",
+        "command": "command",
+        "username": "username",
+        "password": "password",
+        "passphrase": "passphrase",
+        "private_key": "private_key",
+        "public_key": "public_key"
+    },
+    "my.host-with-password.local": {
+        "host": "host",
+        "port": "port",
+        "command": "command",
+        "username": "username",
+        "password": "password"
+    },
+    "my.host-with-private_key.local": {
+        "host": "host",
+        "port": "port",
+        "command": "command",
+        "username": "username",
+        "passphrase": "passphrase",
+        "private_key": "private_key",
+        "public_key": "public_key"
+    }
+}
