@@ -18,6 +18,10 @@ impl ListCommand {
 
 impl SubCommandTrait for ListCommand {
     fn exec<F: FormatterTrait>(&self, formatter: &F, subcommand_matches_option: Option<&ArgMatches>) -> Result<(), Error> {
+        let show_packages = match subcommand_matches_option {
+            Some(matches) => matches.is_present("packages"),
+            None => false
+        };
         let config = self.get_configuration_file(subcommand_matches_option)?;
         let configuration_collection = ConfigurationProvider::load(config.as_path())?;
 
@@ -31,7 +35,7 @@ impl SubCommandTrait for ListCommand {
 
 
         Printer::print_result(
-            formatter.format_information_collection(information_collection)
+            formatter.format_information_collection(information_collection, show_packages)
         );
 
         Ok(())

@@ -22,11 +22,14 @@ impl SubCommandTrait for ShowCommand {
 
         let host = matches.value_of("host").unwrap();
         let configuration_collection = ConfigurationProvider::load(configuration_file.as_path())?;
+        let show_packages = matches.is_present("packages");
 
         match configuration_collection.get(host) {
-            Some(configuration) => Printer::print_result(
-                formatter.format_information(&host, self.fetch_information(&configuration))
-            ),
+            Some(configuration) => {
+                let information = self.fetch_information(&configuration);
+
+                Printer::print_result(formatter.format_information(&host, information, show_packages))
+            }
             None => Printer::print_error(
                 Error::new(format!("Host {} not found in configuration file {}", host, configuration_file.to_str().unwrap()))
             ),

@@ -1,7 +1,7 @@
 use super::platform::*;
 use super::application::*;
 
-#[derive(Serialize, Deserialize, Debug, PartialEq)]
+#[derive(Clone, Serialize, Deserialize, Debug, PartialEq)]
 pub struct System {
     pub platform: Platform,
     pub application: Application,

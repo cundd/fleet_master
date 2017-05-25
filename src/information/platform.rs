@@ -11,7 +11,7 @@ fn uname(key: &str) -> String {
     String::from(stdout.trim())
 }
 
-#[derive(Serialize, Deserialize, Debug, PartialEq)]
+#[derive(Clone, Serialize, Deserialize, Debug, PartialEq)]
 pub struct Os {
     pub vendor: String,
     pub version: String,
@@ -30,7 +30,7 @@ impl Os {
     }
 }
 
-#[derive(Serialize, Deserialize, Debug, PartialEq)]
+#[derive(Clone, Serialize, Deserialize, Debug, PartialEq)]
 pub struct Platform {
     pub language: String,
     pub version: String,

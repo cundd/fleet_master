@@ -9,10 +9,15 @@ use sub_command::SubCommandTrait;
 pub struct ProvideCommand;
 
 impl SubCommandTrait for ProvideCommand {
-    fn exec<F: FormatterTrait>(&self, formatter: &F, _: Option<&ArgMatches>) -> Result<(), Error> {
+    fn exec<F: FormatterTrait>(&self, formatter: &F, subcommand_matches_option: Option<&ArgMatches>) -> Result<(), Error> {
+        let no_packages = match subcommand_matches_option {
+            Some(matches) => matches.is_present("no-packages"),
+            None => false
+        };
+
         let platform = Platform::new_for_current_env();
         Printer::print_result(
-            formatter.format_information(&platform.host, LocalProvider::new().get_information())
+            formatter.format_information(&platform.host, LocalProvider::new().get_information(), !no_packages)
         );
 
         Ok(())

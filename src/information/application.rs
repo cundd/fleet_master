@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 use constants;
 
-#[derive(Serialize, Deserialize, Debug, PartialEq)]
+#[derive(Clone, Serialize, Deserialize, Debug, PartialEq)]
 pub struct Application {
     pub name: String,
     pub version: String,

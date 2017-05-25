@@ -28,22 +28,22 @@ const HEADERS: &'static [&'static str] = &[
 ];
 
 impl super::FormatterTrait for ConsoleFormatter {
-    fn format_information(&self, host: &str, information: Result<Information, Error>) -> Result<String, Error> {
+    fn format_information(&self, host: &str, information: Result<Information, Error>, show_packages: bool) -> Result<String, Error> {
         let mut information_collection: InformationCollection = InformationCollection::new();
         information_collection.insert(host.to_owned(), information?);
 
-        let matrix = Matrix::from_information_collection(information_collection);
+        let matrix = Matrix::from_information_collection(information_collection, show_packages);
         Ok(Table::left_header(&matrix))
     }
 
-    fn format_information_collection(&self, information: InformationCollection) -> Result<String, Error> {
-        let matrix = Matrix::from_information_collection(information);
+    fn format_information_collection(&self, information: InformationCollection, show_packages: bool) -> Result<String, Error> {
+        let matrix = Matrix::from_information_collection(information, show_packages);
         Ok(Table::left_header(&matrix))
     }
 }
 
 impl Matrix<String> {
-    fn from_information_collection(information_collection: InformationCollection) -> Matrix<String> {
+    fn from_information_collection(information_collection: InformationCollection, show_packages: bool) -> Matrix<String> {
         let mut rows: Vec<Vec<String>> = Vec::with_capacity(information_collection.len() + 1);
 
         rows.push(map(HEADERS, |x| String::from(x.to_owned())));
@@ -65,6 +65,10 @@ impl Matrix<String> {
             // cells.push(info.system.platform.os.info);
             cells.push(info.system.application.name);
             cells.push(info.system.application.version);
+
+//            if show_packages {
+//
+//            }
 
             rows.push(cells);
         }

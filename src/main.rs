@@ -48,6 +48,10 @@ fn main() {
         .value_name("FILE")
         .help("Sets the configuration file to read")
         .takes_value(true);
+    let packages_arg = Arg::with_name("packages")
+        .short("p")
+        .long("packages")
+        .help("Sets if packages are listed");
 
     let matches = App::new("fleet")
         .version(constants::PROVIDER_VERSION)
@@ -73,6 +77,7 @@ fn main() {
             .version(constants::PROVIDER_VERSION)
             .arg(configuration_arg.clone())
             .arg(format_arg.clone())
+            .arg(packages_arg.clone())
         )
         .subcommand(SubCommand::with_name("show")
             .about("Fetch information for the given host")
@@ -87,6 +92,7 @@ fn main() {
                 .takes_value(true))
             .arg(configuration_arg.clone())
             .arg(format_arg.clone())
+            .arg(packages_arg.clone())
         )
         .subcommand(SubCommand::with_name("provide")
             .about("Use the program as information provider")
@@ -103,11 +109,9 @@ fn main() {
         &FleetSubCommand::ProvideCommand(_) => "json",
         _ => "console"
     };
-    let format = matches.value_of("format").unwrap_or(default_format);
-    let formatter = get_formatter(format).unwrap();
 
-    Printer::print_error_if_not_ok(subcommand.exec(&formatter, subcommand_matches_option));
+    let formatter = get_formatter(default_format, subcommand_matches_option).unwrap();
+
+    Printer::print_if_error(subcommand.exec(&formatter, subcommand_matches_option));
 }
-
-
 

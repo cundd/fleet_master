@@ -23,6 +23,25 @@ impl Packages {
     pub fn new() -> Self {
         Packages { all: HashMap::new() }
     }
+
+    pub fn new_for_current_env() -> Self {
+        let mut packages = HashMap::new();
+        packages.insert("test".to_owned(), Package {
+            key: "test".to_owned(),
+            version: "1.0".to_owned(),
+            description: "desfa".to_owned(),
+            state: "active".to_owned(),
+        });
+
+
+        Packages {
+            all: packages
+        }
+    }
+
+    pub fn len(&self) -> usize {
+        self.all.len()
+    }
 }
 
 
