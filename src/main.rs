@@ -56,22 +56,11 @@ fn main() {
     let matches = App::new("fleet")
         .version(constants::PROVIDER_VERSION)
         .author("Daniel Corn <info@cundd.net>")
-        .about("Does awesome things")
-        //                .arg(Arg::with_name("config")
-        //                    .short("c")
-        //                    .long("config")
-        //                    .value_name("FILE")
-        //                    .help("Sets a custom config file")
-        //                    .takes_value(true))
-        //        .arg(Arg::with_name("INPUT")
-        //            .help("Sets the input file to use")
-        //            .required(true)
-        //            .index(1))
+        .about("Gathers information from Fleet providers")
         .arg(Arg::with_name("v")
             .short("v")
             .multiple(true)
             .help("Sets the level of verbosity"))
-        //        .arg(format_arg)
         .subcommand(SubCommand::with_name("list")
             .about("Fetch information from all hosts")
             .version(constants::PROVIDER_VERSION)
@@ -128,4 +117,3 @@ fn main() {
 
     Printer::print_if_error(subcommand.exec(&formatter, subcommand_matches_option));
 }
-
