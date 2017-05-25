@@ -1,5 +1,6 @@
 mod list_command;
 mod show_command;
+mod show_packages_command;
 mod provide_command;
 
 use std::path::PathBuf;
@@ -8,6 +9,7 @@ use error::Error;
 use formatter::*;
 use self::list_command::ListCommand;
 use self::show_command::ShowCommand;
+use self::show_packages_command::ShowPackagesCommand;
 use self::provide_command::ProvideCommand;
 use configuration::*;
 
@@ -26,6 +28,7 @@ pub trait SubCommandTrait {
 pub enum SubCommand {
     ListCommand(ListCommand),
     ShowCommand(ShowCommand),
+    ShowPackagesCommand(ShowPackagesCommand),
     ProvideCommand(ProvideCommand),
 }
 
@@ -34,6 +37,7 @@ impl SubCommandTrait for SubCommand {
         match self {
             &SubCommand::ListCommand(ref c) => c.exec(formatter, subcommand_matches_option),
             &SubCommand::ShowCommand(ref c) => c.exec(formatter, subcommand_matches_option),
+            &SubCommand::ShowPackagesCommand(ref c) => c.exec(formatter, subcommand_matches_option),
             &SubCommand::ProvideCommand(ref c) => c.exec(formatter, subcommand_matches_option),
         }
     }
@@ -45,6 +49,9 @@ pub fn get_subcommand<'x>(matches: &'x ArgMatches) -> (SubCommand, Option<&'x Ar
     }
     if let Some(subcommand_matches) = matches.subcommand_matches("show") {
         return (SubCommand::ShowCommand(ShowCommand {}), Some(subcommand_matches));
+    }
+    if let Some(subcommand_matches) = matches.subcommand_matches("show-packages") {
+        return (SubCommand::ShowPackagesCommand(ShowPackagesCommand {}), Some(subcommand_matches));
     }
 
     // Default to provide
