@@ -1,4 +1,4 @@
-pub use super::Configuration;
+//use super::Configuration;
 use std::fs;
 use std::fs::File;
 use std::path::*;
@@ -13,6 +13,12 @@ use serde_yaml;
 pub struct ConfigurationProvider;
 
 impl ConfigurationProvider {
+    pub fn get_configuration_for_host(path: &Path, host: &str) -> Result<Configuration, Error> {
+        let collection = Self::load(path)?;
+
+        get_configuration_for_host(collection, host, path)
+    }
+
     pub fn load(path: &Path) -> Result<ConfigurationCollection, Error> {
         let absolute_file_path: PathBuf = match fs::canonicalize(path) {
             Ok(p) => p,

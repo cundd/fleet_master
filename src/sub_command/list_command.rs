@@ -3,18 +3,13 @@ use std::collections::HashMap;
 use configuration::*;
 use error::Error;
 use formatter::*;
-use information::*;
 use printer::Printer;
-use provider::*;
 use sub_command::SubCommandTrait;
+use sub_command::SshCommandTrait;
 
 pub struct ListCommand;
 
-impl ListCommand {
-    fn fetch_information(&self, configuration: &Configuration) -> Result<Information, Error> {
-        SshProvider::new().get_information(configuration)
-    }
-}
+impl SshCommandTrait for ListCommand {}
 
 impl SubCommandTrait for ListCommand {
     fn exec<F: FormatterTrait>(&self, formatter: &F, subcommand_matches_option: Option<&ArgMatches>) -> Result<(), Error> {

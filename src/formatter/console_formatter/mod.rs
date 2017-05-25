@@ -1,3 +1,4 @@
+#[allow(dead_code)]
 mod matrix;
 mod table;
 mod array;
@@ -27,6 +28,13 @@ const HEADERS: &'static [&'static str] = &[
     "System Application Version", // system.application.version
 ];
 
+const PACKAGE_HEADERS: &'static [&'static str] = &[
+    "Key",
+    "Version",
+    "Description",
+    "State",
+];
+
 impl super::FormatterTrait for ConsoleFormatter {
     fn format_information(&self, host: &str, information: Result<Information, Error>, show_packages: bool) -> Result<String, Error> {
         let mut information_collection: InformationCollection = InformationCollection::new();
@@ -40,9 +48,21 @@ impl super::FormatterTrait for ConsoleFormatter {
         let matrix = Matrix::from_information_collection(information, show_packages);
         Ok(Table::left_header(&matrix))
     }
+    fn format_packages(&self, information: Information) -> Result<String, Error> {
+        let matrix = Matrix::from_packages(information.packages);
+        Ok(Table::top_header(&matrix))
+    }
+}
+
+fn crop_cell_content(content: &str) -> String {
+    if content.len() > 100 {
+        return String::from(&content[0..99]) + "…"
+    }
+    String::from(content)
 }
 
 impl Matrix<String> {
+    #[allow(unused)]
     fn from_information_collection(information_collection: InformationCollection, show_packages: bool) -> Matrix<String> {
         let mut rows: Vec<Vec<String>> = Vec::with_capacity(information_collection.len() + 1);
 
@@ -66,9 +86,24 @@ impl Matrix<String> {
             cells.push(info.system.application.name);
             cells.push(info.system.application.version);
 
-//            if show_packages {
-//
-//            }
+            rows.push(cells);
+        }
+
+        Matrix::from_vec(rows)
+    }
+
+    fn from_packages(packages: Packages) -> Matrix<String> {
+        let mut rows: Vec<Vec<String>> = Vec::with_capacity(packages.len() + 1);
+
+        rows.push(map(PACKAGE_HEADERS, |x| String::from(x.to_owned())));
+
+        for package in packages.all.values() {
+            let mut cells: Vec<String> = Vec::with_capacity(PACKAGE_HEADERS.len());
+
+            cells.push(package.key.to_owned());
+            cells.push(package.version.to_owned());
+            cells.push(package.state.to_owned());
+            cells.push(crop_cell_content(&package.description));
 
             rows.push(cells);
         }

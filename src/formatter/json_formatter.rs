@@ -32,4 +32,11 @@ impl super::FormatterTrait for JsonFormatter {
             Err(e) => Err(Error::from_error(e)),
         }
     }
+
+    fn format_packages(&self, information: Information) -> Result<String, Error> {
+        match serde_json::to_string_pretty(&information.packages) {
+            Ok(s) => Ok(s),
+            Err(e) => Err(Error::from_error(e)),
+        }
+    }
 }

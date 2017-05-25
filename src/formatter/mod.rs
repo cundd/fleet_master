@@ -14,6 +14,7 @@ use information::*;
 pub trait FormatterTrait {
     fn format_information(&self, host: &str, information: Result<Information, Error>, show_packages: bool) -> Result<String, Error>;
     fn format_information_collection(&self, information: InformationCollection, show_packages: bool) -> Result<String, Error>;
+    fn format_packages(&self, information: Information) -> Result<String, Error>;
 }
 
 
@@ -36,6 +37,13 @@ impl FormatterTrait for Formatter {
             &Formatter::Json(ref f) => f.format_information_collection(information, show_packages),
             &Formatter::Console(ref f) => f.format_information_collection(information, show_packages),
         }
+    }
+    fn format_packages(&self, information: Information) -> Result<String, Error> {
+        match self {
+            &Formatter::Json(ref f) => f.format_packages(information),
+            &Formatter::Console(ref f) => f.format_packages(information),
+        }
+
     }
 }
 
