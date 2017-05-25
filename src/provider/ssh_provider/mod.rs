@@ -64,7 +64,7 @@ impl SshProvider {
 
         let mut error_output = String::new();
         match Read::read_to_string(&mut channel.stderr(), &mut error_output) {
-            Ok(_) => return Err(Error::new(error_output)),
+            Ok(_) => return Err(Error::new(error_output.trim())),
             Err(error) => Err(Error::from_error(error)),
         }
     }
