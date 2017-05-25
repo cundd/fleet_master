@@ -31,8 +31,8 @@ const HEADERS: &'static [&'static str] = &[
 const PACKAGE_HEADERS: &'static [&'static str] = &[
     "Key",
     "Version",
-    "Description",
     "State",
+    "Description",
 ];
 
 impl super::FormatterTrait for ConsoleFormatter {
