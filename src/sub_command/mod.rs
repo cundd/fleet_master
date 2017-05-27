@@ -40,7 +40,10 @@ pub trait SshCommandTrait: SubCommandTrait {
     fn fetch_information_for_requested_host(&self, subcommand_matches_option: Option<&ArgMatches>) -> Result<(String, Information), Error> {
         let configuration_file = self.get_configuration_file(subcommand_matches_option)?;
 
-        let host = subcommand_matches_option.unwrap().value_of("host").unwrap();
+        let host = match subcommand_matches_option.unwrap().value_of("host") {
+            Some(host) => host,
+            None => return Err(Error::new("Argument 'host' not specified")),
+        };
         let configuration = ConfigurationProvider::get_configuration_for_host(configuration_file.as_path(), host)?;
 
         match self.fetch_information(&configuration) {
