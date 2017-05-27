@@ -55,8 +55,8 @@ impl super::FormatterTrait for ConsoleFormatter {
 }
 
 fn crop_cell_content(content: &str) -> String {
-    if content.len() > 100 {
-        return String::from(&content[0..99]) + "…"
+    if content.len() > 50 {
+        return String::from(&content[0..49]) + "…"
     }
     String::from(content)
 }
