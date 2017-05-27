@@ -9,8 +9,6 @@ pub fn detect_configuration_file() -> Result<PathBuf, Error> {
         Err(e) => return Err(Error::from_error(e)),
     };
 
-    //    println!("{:?}", env::current_dir());
-
     let mut dot_file = pwd.clone();
     dot_file.push(".fleet.json");
 
@@ -26,16 +24,6 @@ pub fn detect_configuration_file() -> Result<PathBuf, Error> {
     }
 
     Err(Error::new(format!("Could not detect the configuration file: No configuration file found in {:?}", pwd)))
-
-    //        if let Ok(pwd) = env::current_dir() {
-    //            let mut dot_file = pwd.clone();
-    //            dot_file.push(".fleet.json");
-    //
-    //            if dot_file.exists() {
-    //                return Ok(dot_file);
-    //            }
-    //        }
-    //        Err(Error::new("Could not detect current working directory"))
 }
 
 

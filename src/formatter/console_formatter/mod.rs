@@ -6,7 +6,6 @@ use error::Error;
 use information::*;
 use self::table::Table;
 use self::matrix::Matrix;
-use array::map;
 
 pub struct ConsoleFormatter;
 
@@ -80,7 +79,7 @@ impl Matrix<String> {
     fn from_information_collection(information_collection: InformationCollection, show_packages: bool) -> Matrix<String> {
         let mut rows: Vec<Vec<String>> = Vec::with_capacity(information_collection.len() + 1);
 
-        rows.push(map(HEADERS, |x| String::from(x.to_owned())));
+        rows.push(HEADERS.iter().map(|x| String::from(x.to_owned())).collect());
 
         for (host, info) in information_collection {
             let mut cells: Vec<String> = Vec::with_capacity(HEADERS.len());
@@ -109,7 +108,7 @@ impl Matrix<String> {
     fn from_packages(packages: Packages) -> Matrix<String> {
         let mut rows: Vec<Vec<String>> = Vec::with_capacity(packages.len() + 1);
 
-        rows.push(map(PACKAGE_HEADERS, |x| String::from(x.to_owned())));
+        rows.push(PACKAGE_HEADERS.iter().map(|x| String::from(x.to_owned())).collect());
 
         for package in packages.all.values() {
             let mut cells: Vec<String> = Vec::with_capacity(PACKAGE_HEADERS.len());

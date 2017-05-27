@@ -26,7 +26,6 @@ mod printer;
 mod provider;
 mod formatter;
 mod sub_command;
-mod array;
 
 use clap::{Arg, App, SubCommand};
 
