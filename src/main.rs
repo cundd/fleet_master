@@ -26,6 +26,7 @@ mod printer;
 mod provider;
 mod formatter;
 mod sub_command;
+mod array;
 
 use clap::{Arg, App, SubCommand};
 
@@ -53,7 +54,7 @@ fn main() {
         .long("packages")
         .help("Sets if packages are listed");
 
-    let matches = App::new("fleet")
+    let matches = App::new("Fleet Master")
         .version(constants::PROVIDER_VERSION)
         .author("Daniel Corn <info@cundd.net>")
         .about("Gathers information from Fleet providers")
@@ -84,12 +85,11 @@ fn main() {
             .arg(packages_arg.clone())
         )
         .subcommand(SubCommand::with_name("show-packages")
-            .about("Show packages for the given host")
+            .about("Show packages of hosts")
             .version(constants::PROVIDER_VERSION)
             .arg(Arg::with_name("host")
                 .short("h")
                 .long("host")
-                .required(true)
                 .value_name("HOST")
                 .help("Key of the host's configuration")
                 .index(1)

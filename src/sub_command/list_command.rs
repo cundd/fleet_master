@@ -1,6 +1,6 @@
 use clap::ArgMatches;
-use std::collections::HashMap;
 use configuration::*;
+use information::*;
 use error::Error;
 use formatter::*;
 use printer::Printer;
@@ -20,7 +20,7 @@ impl SubCommandTrait for ListCommand {
         let config = self.get_configuration_file(subcommand_matches_option)?;
         let configuration_collection = ConfigurationProvider::load(config.as_path())?;
 
-        let mut information_collection = HashMap::new();
+        let mut information_collection = InformationCollection::new();
         for (host, configuration) in configuration_collection {
             match self.fetch_information(&configuration) {
                 Ok(i) => { let _ = information_collection.insert(host, i); }

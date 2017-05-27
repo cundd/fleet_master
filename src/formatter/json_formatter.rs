@@ -1,8 +1,19 @@
-use error::Error;
-use information::*;
+use serde;
 use serde_json;
 
+use error::Error;
+use information::*;
+
 pub struct JsonFormatter;
+
+impl JsonFormatter {
+    fn format_data<A: serde::Serialize>(&self, data: &A) -> Result<String, Error> {
+        match serde_json::to_string_pretty(&data) {
+            Ok(s) => Ok(s),
+            Err(e) => Err(Error::from_error(e)),
+        }
+    }
+}
 
 
 impl super::FormatterTrait for JsonFormatter {
@@ -15,10 +26,7 @@ impl super::FormatterTrait for JsonFormatter {
             information_no_error
         };
 
-        match serde_json::to_string_pretty(&info) {
-            Ok(s) => Ok(s),
-            Err(e) => Err(Error::from_error(e)),
-        }
+        self.format_data(&info)
     }
     fn format_information_collection(&self, information: InformationCollection, show_packages: bool) -> Result<String, Error> {
         let information_collection = if !show_packages {
@@ -27,16 +35,16 @@ impl super::FormatterTrait for JsonFormatter {
             information
         };
 
-        match serde_json::to_string_pretty(&information_collection) {
-            Ok(s) => Ok(s),
-            Err(e) => Err(Error::from_error(e)),
-        }
+        self.format_data(&information_collection)
     }
 
     fn format_packages(&self, information: Information) -> Result<String, Error> {
-        match serde_json::to_string_pretty(&information.packages) {
-            Ok(s) => Ok(s),
-            Err(e) => Err(Error::from_error(e)),
-        }
+        self.format_data(&information.packages)
+    }
+
+    fn format_packages_from_information_collection(&self, information_collection: InformationCollection) -> Result<String, Error> {
+        let packages_collection: Vec<Packages> = information_collection.into_iter().map(|(_, i)| i.packages).collect();
+
+        self.format_data(&packages_collection)
     }
 }

@@ -1,13 +1,12 @@
 #[allow(dead_code)]
 mod matrix;
 mod table;
-mod array;
 
 use error::Error;
 use information::*;
 use self::table::Table;
 use self::matrix::Matrix;
-use self::array::map;
+use array::map;
 
 pub struct ConsoleFormatter;
 
@@ -36,7 +35,7 @@ const PACKAGE_HEADERS: &'static [&'static str] = &[
 ];
 
 impl super::FormatterTrait for ConsoleFormatter {
-    fn format_information(&self, host: &str, information: Result<Information, Error>, show_packages: bool) -> Result<String, Error> {
+    fn format_information(&self, host: &str, information: Result<Information, Error>, show_packages: bool) -> super::FormatterResult {
         let mut information_collection: InformationCollection = InformationCollection::new();
         information_collection.insert(host.to_owned(), information?);
 
@@ -44,13 +43,28 @@ impl super::FormatterTrait for ConsoleFormatter {
         Ok(Table::left_header(&matrix))
     }
 
-    fn format_information_collection(&self, information: InformationCollection, show_packages: bool) -> Result<String, Error> {
+    fn format_information_collection(&self, information: InformationCollection, show_packages: bool) -> super::FormatterResult {
         let matrix = Matrix::from_information_collection(information, show_packages);
         Ok(Table::left_header(&matrix))
     }
-    fn format_packages(&self, information: Information) -> Result<String, Error> {
+
+    fn format_packages(&self, information: Information) -> super::FormatterResult {
         let matrix = Matrix::from_packages(information.packages);
         Ok(Table::top_header(&matrix))
+    }
+
+    fn format_packages_from_information_collection(&self, information_collection: InformationCollection) -> super::FormatterResult {
+        let mut output = "".to_owned();
+
+        for (host, information) in information_collection {
+            output += &(format!("Packages of host '{}'", host) + "\n\n");
+
+            let matrix = Matrix::from_packages(information.packages);
+            output += &Table::top_header(&matrix);
+            output += "\n\n";
+        }
+
+        Ok(output)
     }
 }
 
