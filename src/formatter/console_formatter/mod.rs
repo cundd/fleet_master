@@ -2,6 +2,8 @@
 mod matrix;
 mod table;
 
+use std::collections::BTreeMap;
+
 use error::Error;
 use information::*;
 use self::table::Table;
@@ -54,13 +56,17 @@ impl super::FormatterTrait for ConsoleFormatter {
 
     fn format_packages_from_information_collection(&self, information_collection: InformationCollection) -> super::FormatterResult {
         let mut output = "".to_owned();
+        let sorted: BTreeMap<_, _> = information_collection.into_iter().collect();
 
-        for (host, information) in information_collection {
-            output += &(format!("Packages of host '{}'", host) + "\n\n");
-
-            let matrix = Matrix::from_packages(information.packages);
-            output += &Table::top_header(&matrix);
-            output += "\n\n";
+        for (host, information) in sorted {
+            if information.packages.len() > 0 {
+                output += &(format!("Packages of host '{}':\n", host));
+                let matrix = Matrix::from_packages(information.packages);
+                output += &Table::top_header(&matrix);
+                output += "\n\n";
+            } else {
+                output += &(format!("No packages found for host '{}'\n\n", host));
+            }
         }
 
         Ok(output)
@@ -110,12 +116,12 @@ impl Matrix<String> {
 
         rows.push(PACKAGE_HEADERS.iter().map(|x| String::from(x.to_owned())).collect());
 
-        for package in packages.all.values() {
+        let all_packages: BTreeMap<_, _> = packages.all.into_iter().collect();
+        for (_, package) in all_packages {
             let mut cells: Vec<String> = Vec::with_capacity(PACKAGE_HEADERS.len());
-
-            cells.push(package.key.to_owned());
-            cells.push(package.version.to_owned());
-            cells.push(package.state.to_owned());
+            cells.push(package.key);
+            cells.push(package.version);
+            cells.push(package.state);
             cells.push(crop_cell_content(&package.description));
 
             rows.push(cells);
