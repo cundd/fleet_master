@@ -1,29 +1,39 @@
-use std::collections::HashMap;
+use std::collections::BTreeMap;
 
 use super::information::*;
 
-pub type InformationCollection = HashMap<String, Information>;
+pub type InformationCollection = BTreeMap<String, Information>;
 
+
+trait InformationCollectionTrait {
+    fn new_with_capacity(capacity: usize) -> Self;
+}
+
+impl InformationCollectionTrait for InformationCollection {
+    #[allow(unused_variables)]
+    fn new_with_capacity(capacity: usize) -> Self {
+        InformationCollection::new()
+        //        InformationCollection::with_capacity(collection.len())
+    }
+}
 
 /// Returns a new Information Collection without Packages
 pub fn collection_without_packages(collection: InformationCollection) -> InformationCollection {
-    let mut new_collection = InformationCollection::with_capacity(collection.len());
+    let mut new_collection = InformationCollection::new_with_capacity(collection.len());
     for (host, information) in collection {
         new_collection.insert(host, information.without_packages());
     }
 
-    new_collection.shrink_to_fit();
     new_collection
 }
 
 /// Returns a new Information Collection without Packages
 pub fn collection_without_packages_ref(collection: &InformationCollection) -> InformationCollection {
-    let mut new_collection = InformationCollection::with_capacity(collection.len());
+    let mut new_collection = InformationCollection::new_with_capacity(collection.len());
     for (host, information) in collection {
         new_collection.insert(host.clone(), information.without_packages());
     }
 
-    new_collection.shrink_to_fit();
     new_collection
 }
 

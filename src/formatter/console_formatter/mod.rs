@@ -56,9 +56,7 @@ impl super::FormatterTrait for ConsoleFormatter {
 
     fn format_packages_from_information_collection(&self, information_collection: InformationCollection) -> super::FormatterResult {
         let mut output = "".to_owned();
-        let sorted: BTreeMap<_, _> = information_collection.into_iter().collect();
-
-        for (host, information) in sorted {
+        for (host, information) in information_collection {
             if information.packages.len() > 0 {
                 output += &(format!("Packages of host '{}':\n", host));
                 let matrix = Matrix::from_packages(information.packages);
