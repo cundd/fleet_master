@@ -3,6 +3,7 @@ use std::io::stdout;
 use std::io::Write;
 use ansi_term::Colour;
 use error::Error;
+use error::ErrorCollection;
 
 pub struct Printer;
 
@@ -24,6 +25,13 @@ impl Printer {
     pub fn print_if_error<A>(e: Result<A, Error>) {
         if let Err(e) = e {
             Self::print_error(e);
+        }
+    }
+
+    /// Prints all errors in the given collection
+    pub fn print_error_collection(collection: ErrorCollection) {
+        for (host, e) in collection {
+            let _ = writeln!(&mut stderr(), "{}", Colour::Red.paint(format!("error for host \"{}\": {}", host, e.message())));
         }
     }
 

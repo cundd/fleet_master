@@ -4,7 +4,7 @@ mod table;
 
 use std::collections::BTreeMap;
 
-use error::Error;
+use error::*;
 use information::*;
 use self::table::Table;
 use self::matrix::Matrix;

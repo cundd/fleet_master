@@ -3,11 +3,11 @@ mod show_command;
 mod packages_command;
 mod provide_command;
 
-use std::collections::HashMap;
 use std::path::PathBuf;
 use clap::ArgMatches;
 
 use error::Error;
+use error::ErrorCollection;
 use formatter::*;
 use information::*;
 use self::list_command::ListCommand;
@@ -16,9 +16,6 @@ use self::packages_command::PackagesCommand;
 use self::provide_command::ProvideCommand;
 use configuration::*;
 use provider::*;
-
-type ErrorCollection = HashMap<String, Error>;
-type CollectionResult = Result<(InformationCollection, ErrorCollection), Error>;
 
 /// Trait for subcommands
 pub trait SubCommandTrait {
@@ -48,10 +45,17 @@ pub trait SubCommandTrait {
 
     /// Returns the hosts specified by the `hosts` argument
     fn get_hosts<'a>(&self, subcommand_matches_option: &'a ArgMatches) -> Option<Vec<&'a str>> {
-        match subcommand_matches_option.value_of("hosts") {
-            Some(hosts) => Some(hosts.split(",").collect::<Vec<&str>>()),
-            None => None
+        if let Some(hosts_input) = subcommand_matches_option.value_of("hosts") {
+            let hosts = hosts_input
+                .split(",")
+                .map(|host| host.trim())
+                .filter(|host| host.len() > 0)
+                .collect::<Vec<&str>>();
+
+            return Some(hosts);
         }
+
+        None
     }
 }
 
@@ -114,13 +118,15 @@ pub trait SshCommandTrait: SubCommandTrait {
     fn fetch_information_for_hosts(&self, hosts: Vec<&str>, matches_option: Option<&ArgMatches>) -> CollectionResult {
         let configuration_file = self.get_configuration_file(matches_option)?;
         let configuration_collection = ConfigurationProvider::load(configuration_file.as_path())?;
-        let filtered: ConfigurationCollection = configuration_collection.into_iter().filter(|&(ref host, _)| (hosts.contains(&host.as_str()))).collect();
+        let filtered: ConfigurationCollection = configuration_collection.into_iter().filter(
+            |&(ref host, _)| host.len() > 0 && hosts.contains(&host.as_str())
+        ).collect();
 
         if filtered.len() == 0 {
             if hosts.len() > 1 {
-                return Err(Error::new(format!("No configuration found for host: {}", hosts.join(", "))));
+                return Err(Error::new(format!("No configuration found for hosts: {}", hosts.join(", "))));
             }
-            return Err(Error::new(format!("No configurations found for hosts: {}", hosts.join(", "))));
+            return Err(Error::new(format!("No configurations found for host: {}", hosts.join(", "))));
         }
 
         Ok(self.fetch_information_for_configuration_collection(filtered))

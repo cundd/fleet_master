@@ -6,7 +6,7 @@ pub use self::json_formatter::JsonFormatter;
 
 use clap::ArgMatches;
 
-use error::Error;
+use error::*;
 use information::*;
 
 type FormatterResult = Result<String, Error>;

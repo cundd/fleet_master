@@ -1,6 +1,9 @@
 use std;
 use std::fmt;
+use std::collections::HashMap;
 //use std::error::Error as ;
+
+pub type ErrorCollection = HashMap<String, Error>;
 
 #[derive(Debug)]
 pub struct Error {
