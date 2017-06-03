@@ -3,8 +3,8 @@ mod show_command;
 mod show_packages_command;
 mod provide_command;
 
-use std::path::PathBuf;
 use std::collections::HashMap;
+use std::path::PathBuf;
 use clap::ArgMatches;
 
 use error::Error;
@@ -18,6 +18,7 @@ use configuration::*;
 use provider::*;
 
 type ErrorCollection = HashMap<String, Error>;
+type CollectionResult = Result<(InformationCollection, ErrorCollection), Error>;
 
 /// Trait for subcommands
 pub trait SubCommandTrait {
@@ -40,9 +41,17 @@ pub trait SubCommandTrait {
         }
     }
 
-    /// Returns the host specified by the `--host` argument
+    /// Returns the host specified by the `host` argument
     fn get_host<'a>(&self, subcommand_matches_option: &'a ArgMatches) -> Option<&'a str> {
         subcommand_matches_option.value_of("host")
+    }
+
+    /// Returns the hosts specified by the `hosts` argument
+    fn get_hosts<'a>(&self, subcommand_matches_option: &'a ArgMatches) -> Option<Vec<&'a str>> {
+        match subcommand_matches_option.value_of("hosts") {
+            Some(hosts) => Some(hosts.split(",").collect::<Vec<&str>>()),
+            None => None
+        }
     }
 }
 
@@ -67,6 +76,22 @@ pub trait SshCommandTrait: SubCommandTrait {
         }
     }
 
+    /// Fetch information for the hosts specified in the `--hosts` argument
+    ///
+    /// This will perform the following steps:
+    ///     1. Look for the configuration file
+    ///     2. Get the host from the arguments
+    ///     3. Fetch the configuration for the host
+    ///     4. Fetch the information using the configuration
+    fn fetch_information_for_requested_hosts(&self, subcommand_matches_option: Option<&ArgMatches>) -> CollectionResult {
+        let hosts = match self.get_hosts(subcommand_matches_option.unwrap()) {
+            Some(hosts) => hosts,
+            None => return Err(Error::new("Argument 'hosts' not specified")),
+        };
+
+        self.fetch_information_for_hosts(hosts, subcommand_matches_option)
+    }
+
     /// Fetch information for the given host
     ///
     /// This will perform the following steps:
@@ -80,16 +105,37 @@ pub trait SshCommandTrait: SubCommandTrait {
         self.fetch_information(&configuration)
     }
 
+    /// Fetch information for the given hosts
+    ///
+    /// This will perform the following steps:
+    ///     1. Look for the configuration file
+    ///     2. Filter the list of configurations
+    ///     3. Fetch the information using the configurations
+    fn fetch_information_for_hosts(&self, hosts: Vec<&str>, matches_option: Option<&ArgMatches>) -> CollectionResult {
+        let configuration_file = self.get_configuration_file(matches_option)?;
+        let configuration_collection = ConfigurationProvider::load(configuration_file.as_path())?;
+        let filtered: ConfigurationCollection = configuration_collection.into_iter().filter(|&(ref host, _)| (hosts.contains(&host.as_str()))).collect();
+
+        if filtered.len() == 0 {
+            if hosts.len() > 1 {
+                return Err(Error::new(format!("No configuration found for host: {}", hosts.join(", "))));
+            }
+            return Err(Error::new(format!("No configurations found for hosts: {}", hosts.join(", "))));
+        }
+
+        Ok(self.fetch_information_for_configuration_collection(filtered))
+    }
+
     /// Fetch the information for all hosts in the configuration collection
-    fn fetch_information_collection(&self, subcommand_matches_option: Option<&ArgMatches>) -> Result<(InformationCollection, ErrorCollection), Error> {
+    fn fetch_information_collection(&self, subcommand_matches_option: Option<&ArgMatches>) -> CollectionResult {
         let configuration_file = self.get_configuration_file(subcommand_matches_option)?;
         let configuration_collection = ConfigurationProvider::load(configuration_file.as_path())?;
 
-        self.fetch_information_for_configuration_collection(configuration_collection)
+        Ok(self.fetch_information_for_configuration_collection(configuration_collection))
     }
 
     /// Fetch the information for all hosts in the given configuration collection
-    fn fetch_information_for_configuration_collection(&self, configuration_collection: ConfigurationCollection) -> Result<(InformationCollection, ErrorCollection), Error> {
+    fn fetch_information_for_configuration_collection(&self, configuration_collection: ConfigurationCollection) -> (InformationCollection, ErrorCollection) {
         let mut error_collection = ErrorCollection::new();
         let mut information_collection = InformationCollection::new();
 
@@ -100,7 +146,7 @@ pub trait SshCommandTrait: SubCommandTrait {
             };
         }
 
-        Ok((information_collection, error_collection))
+        (information_collection, error_collection)
     }
 
     /// Fetch information from the host in the given configuration
