@@ -20,15 +20,15 @@ use provider::*;
 /// Trait for subcommands
 pub trait SubCommandTrait {
     /// Performs the subcommand's task(s)
-    fn exec<F: FormatterTrait>(&self, formatter: &F, subcommand_matches_option: Option<&ArgMatches>) -> Result<(), Error>;
+    fn exec<F: FormatterTrait>(&self, formatter: &F, matches_option: Option<&ArgMatches>) -> Result<(), Error>;
 
     /// Returns the path to the configuration file
     ///
     /// If the `--config` argument is given it's value will be returned, otherwise
     /// [`detect_configuration_file`] is used to search for a configuration file in the current
     /// working directory
-    fn get_configuration_file(&self, subcommand_matches_option: Option<&ArgMatches>) -> Result<PathBuf, Error> {
-        if let Some(matches) = subcommand_matches_option {
+    fn get_configuration_file(&self, matches_option: Option<&ArgMatches>) -> Result<PathBuf, Error> {
+        if let Some(matches) = matches_option {
             match matches.value_of("config") {
                 Some(c) => Ok(PathBuf::from(c)),
                 None => detect_configuration_file()
@@ -39,13 +39,13 @@ pub trait SubCommandTrait {
     }
 
     /// Returns the host specified by the `host` argument
-    fn get_host<'a>(&self, subcommand_matches_option: &'a ArgMatches) -> Option<&'a str> {
-        subcommand_matches_option.value_of("host")
+    fn get_host<'a>(&self, matches_option: &'a ArgMatches) -> Option<&'a str> {
+        matches_option.value_of("host")
     }
 
     /// Returns the hosts specified by the `hosts` argument
-    fn get_hosts<'a>(&self, subcommand_matches_option: &'a ArgMatches) -> Option<Vec<&'a str>> {
-        if let Some(hosts_input) = subcommand_matches_option.value_of("hosts") {
+    fn get_hosts<'a>(&self, matches_option: &'a ArgMatches) -> Option<Vec<&'a str>> {
+        if let Some(hosts_input) = matches_option.value_of("hosts") {
             let hosts = hosts_input
                 .split(",")
                 .map(|host| host.trim())
@@ -68,13 +68,13 @@ pub trait SshCommandTrait: SubCommandTrait {
     ///     2. Get the host from the arguments
     ///     3. Fetch the configuration for the host
     ///     4. Fetch the information using the configuration
-    fn fetch_information_for_requested_host(&self, subcommand_matches_option: Option<&ArgMatches>) -> Result<(String, Information), Error> {
-        let host = match subcommand_matches_option.unwrap().value_of("host") {
+    fn fetch_information_for_requested_host(&self, matches_option: Option<&ArgMatches>) -> Result<(String, Information), Error> {
+        let host = match matches_option.unwrap().value_of("host") {
             Some(host) => host,
             None => return Err(Error::new("Argument 'host' not specified")),
         };
 
-        match self.fetch_information_for_host(host, subcommand_matches_option) {
+        match self.fetch_information_for_host(host, matches_option) {
             Ok(i) => Ok((host.to_owned(), i)),
             Err(e) => Err(e),
         }
@@ -87,13 +87,13 @@ pub trait SshCommandTrait: SubCommandTrait {
     ///     2. Get the host from the arguments
     ///     3. Fetch the configuration for the host
     ///     4. Fetch the information using the configuration
-    fn fetch_information_for_requested_hosts(&self, subcommand_matches_option: Option<&ArgMatches>) -> CollectionResult {
-        let hosts = match self.get_hosts(subcommand_matches_option.unwrap()) {
+    fn fetch_information_for_requested_hosts(&self, matches_option: Option<&ArgMatches>) -> CollectionResult {
+        let hosts = match self.get_hosts(matches_option.unwrap()) {
             Some(hosts) => hosts,
             None => return Err(Error::new("Argument 'hosts' not specified")),
         };
 
-        self.fetch_information_for_hosts(hosts, subcommand_matches_option)
+        self.fetch_information_for_hosts(hosts, matches_option)
     }
 
     /// Fetch information for the given host
@@ -133,8 +133,8 @@ pub trait SshCommandTrait: SubCommandTrait {
     }
 
     /// Fetch the information for all hosts in the configuration collection
-    fn fetch_information_collection(&self, subcommand_matches_option: Option<&ArgMatches>) -> CollectionResult {
-        let configuration_file = self.get_configuration_file(subcommand_matches_option)?;
+    fn fetch_information_collection(&self, matches_option: Option<&ArgMatches>) -> CollectionResult {
+        let configuration_file = self.get_configuration_file(matches_option)?;
         let configuration_collection = ConfigurationProvider::load(configuration_file.as_path())?;
 
         Ok(self.fetch_information_for_configuration_collection(configuration_collection))
@@ -170,12 +170,12 @@ pub enum SubCommand {
 }
 
 impl SubCommandTrait for SubCommand {
-    fn exec<F: FormatterTrait>(&self, formatter: &F, subcommand_matches_option: Option<&ArgMatches>) -> Result<(), Error> {
+    fn exec<F: FormatterTrait>(&self, formatter: &F, matches_option: Option<&ArgMatches>) -> Result<(), Error> {
         match self {
-            &SubCommand::ListCommand(ref c) => c.exec(formatter, subcommand_matches_option),
-            &SubCommand::ShowCommand(ref c) => c.exec(formatter, subcommand_matches_option),
-            &SubCommand::PackagesCommand(ref c) => c.exec(formatter, subcommand_matches_option),
-            &SubCommand::ProvideCommand(ref c) => c.exec(formatter, subcommand_matches_option),
+            &SubCommand::ListCommand(ref c) => c.exec(formatter, matches_option),
+            &SubCommand::ShowCommand(ref c) => c.exec(formatter, matches_option),
+            &SubCommand::PackagesCommand(ref c) => c.exec(formatter, matches_option),
+            &SubCommand::ProvideCommand(ref c) => c.exec(formatter, matches_option),
         }
     }
 }
