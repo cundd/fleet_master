@@ -83,7 +83,7 @@ fn main() {
             .arg(format_arg.clone())
             .arg(packages_arg.clone())
         )
-        .subcommand(SubCommand::with_name("show-packages")
+        .subcommand(SubCommand::with_name("packages")
             .about("Show packages of hosts")
             .version(constants::PROVIDER_VERSION)
             .arg(Arg::with_name("hosts")

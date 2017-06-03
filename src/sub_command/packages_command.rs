@@ -5,11 +5,11 @@ use printer::Printer;
 use sub_command::SshCommandTrait;
 use sub_command::SubCommandTrait;
 
-pub struct ShowPackagesCommand;
+pub struct PackagesCommand;
 
-impl SshCommandTrait for ShowPackagesCommand {}
+impl SshCommandTrait for PackagesCommand {}
 
-impl SubCommandTrait for ShowPackagesCommand {
+impl SubCommandTrait for PackagesCommand {
     fn exec<F: FormatterTrait>(&self, formatter: &F, subcommand_matches_option: Option<&ArgMatches>) -> Result<(), Error> {
         let (information_collection, _) = match self.get_hosts(subcommand_matches_option.unwrap()) {
             Some(_) => self.fetch_information_for_requested_hosts(subcommand_matches_option)?,

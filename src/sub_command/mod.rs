@@ -1,6 +1,6 @@
 mod list_command;
 mod show_command;
-mod show_packages_command;
+mod packages_command;
 mod provide_command;
 
 use std::collections::HashMap;
@@ -12,7 +12,7 @@ use formatter::*;
 use information::*;
 use self::list_command::ListCommand;
 use self::show_command::ShowCommand;
-use self::show_packages_command::ShowPackagesCommand;
+use self::packages_command::PackagesCommand;
 use self::provide_command::ProvideCommand;
 use configuration::*;
 use provider::*;
@@ -159,7 +159,7 @@ pub trait SshCommandTrait: SubCommandTrait {
 pub enum SubCommand {
     ListCommand(ListCommand),
     ShowCommand(ShowCommand),
-    ShowPackagesCommand(ShowPackagesCommand),
+    PackagesCommand(PackagesCommand),
     ProvideCommand(ProvideCommand),
 }
 
@@ -168,7 +168,7 @@ impl SubCommandTrait for SubCommand {
         match self {
             &SubCommand::ListCommand(ref c) => c.exec(formatter, subcommand_matches_option),
             &SubCommand::ShowCommand(ref c) => c.exec(formatter, subcommand_matches_option),
-            &SubCommand::ShowPackagesCommand(ref c) => c.exec(formatter, subcommand_matches_option),
+            &SubCommand::PackagesCommand(ref c) => c.exec(formatter, subcommand_matches_option),
             &SubCommand::ProvideCommand(ref c) => c.exec(formatter, subcommand_matches_option),
         }
     }
@@ -181,8 +181,8 @@ pub fn get_subcommand<'x>(matches: &'x ArgMatches) -> (SubCommand, Option<&'x Ar
     if let Some(subcommand_matches) = matches.subcommand_matches("show") {
         return (SubCommand::ShowCommand(ShowCommand {}), Some(subcommand_matches));
     }
-    if let Some(subcommand_matches) = matches.subcommand_matches("show-packages") {
-        return (SubCommand::ShowPackagesCommand(ShowPackagesCommand {}), Some(subcommand_matches));
+    if let Some(subcommand_matches) = matches.subcommand_matches("packages") {
+        return (SubCommand::PackagesCommand(PackagesCommand {}), Some(subcommand_matches));
     }
 
     // Default to provide
