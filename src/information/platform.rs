@@ -43,7 +43,7 @@ impl Platform {
     pub fn new_for_current_env() -> Self {
         Platform {
             language: "rust".to_owned(),
-            version: "x.y.z".to_owned(),
+            version: "".to_owned(),
             sapi: "".to_owned(),
             host: uname("h").to_owned(),
             os: Os::new_for_current_env(),
