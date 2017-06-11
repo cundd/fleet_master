@@ -17,18 +17,13 @@ impl SubCommandTrait for ListCommand {
             Some(matches) => matches.is_present("packages"),
             None => false
         };
-        let config = self.get_configuration_file(subcommand_matches_option)?;
-        let configuration_collection = ConfigurationProvider::load(config.as_path())?;
 
-        let mut information_collection = InformationCollection::new();
-        for (host, configuration) in configuration_collection {
-            match self.fetch_information(&configuration) {
-                Ok(i) => { let _ = information_collection.insert(host, i); }
-                Err(e) => Printer::print_message_and_error(&format!("Error for host entry {}", &host), e),
-            };
-        }
+        let (information_collection, error_collection) = match self.fetch_information_collection(subcommand_matches_option) {
+            Ok(r) => r,
+            Err(e) => return Err(e),
+        };
 
-
+        Printer::print_error_collection(error_collection);
         Printer::print_result(
             formatter.format_information_collection(information_collection, show_packages)
         );
