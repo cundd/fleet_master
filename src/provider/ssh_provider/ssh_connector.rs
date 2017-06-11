@@ -5,7 +5,7 @@ use std::path::Path;
 use ssh2::Session;
 
 use configuration::Configuration;
-use error::Error;
+use error::*;
 
 pub struct SshConnector {}
 

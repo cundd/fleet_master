@@ -36,6 +36,7 @@ impl Printer {
     }
 
     /// Prints a custom message and the error's message to STDERR painted in red
+    #[allow(unused)]
     pub fn print_message_and_error(message: &str, e: Error) {
         let _ = writeln!(&mut stderr(), "{}", Colour::Red.paint(format!("error: {}: {}", message, e.message())));
     }

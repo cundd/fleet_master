@@ -1,6 +1,4 @@
 use clap::ArgMatches;
-use configuration::*;
-use information::*;
 use error::Error;
 use formatter::*;
 use printer::Printer;
