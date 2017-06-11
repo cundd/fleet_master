@@ -142,17 +142,7 @@ pub trait SshCommandTrait: SubCommandTrait {
 
     /// Fetch the information for all hosts in the given configuration collection
     fn fetch_information_for_configuration_collection(&self, configuration_collection: ConfigurationCollection) -> (InformationCollection, ErrorCollection) {
-        let mut error_collection = ErrorCollection::new();
-        let mut information_collection = InformationCollection::new();
-
-        for (host, configuration) in configuration_collection {
-            match self.fetch_information(&configuration) {
-                Ok(i) => { let _ = information_collection.insert(host, i); }
-                Err(e) => { let _ = error_collection.insert(host, e); }
-            };
-        }
-
-        (information_collection, error_collection)
+        SshProvider::new().get_information_for_collection(configuration_collection)
     }
 
     /// Fetch information from the host in the given configuration

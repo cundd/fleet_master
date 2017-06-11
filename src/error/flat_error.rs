@@ -2,8 +2,6 @@ use std::error;
 use std::fmt;
 use std::marker::Sized;
 
-use super::FleetError;
-
 #[derive(Debug)]
 pub struct FlatError {
     msg: String,

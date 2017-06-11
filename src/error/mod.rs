@@ -1,7 +1,7 @@
+#[allow(unused)]
 mod error;
 mod flat_error;
 
-use std::fmt;
 use std::error::Error as StdError;
 use std::marker::Sized;
 use std::fmt::Display;

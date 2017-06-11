@@ -1,6 +1,6 @@
 use std::path::*;
 
-#[derive(Serialize, Deserialize, Debug, PartialEq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Clone)]
 pub struct SshConfiguration {
     pub host: String,
     pub port: String,
