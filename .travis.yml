@@ -9,4 +9,9 @@ matrix:
   allow_failures:
     - rust: nightly
 
+addons:
+  apt:
+    packages:
+    - libssh2-1-dev
+
 sudo: false
