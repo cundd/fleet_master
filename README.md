@@ -63,3 +63,4 @@ Todo
 
 - Make the port configuration optional
 - Resolve the tilde `~` in the path to the SSH key files
+- Support for ssh-agent
