@@ -20,7 +20,7 @@ fn fetch_information_through_ssh(configuration: &Configuration) -> Result<Inform
     let address = format!("{}:{}", configuration.host, configuration.port);
     let tcp = match TcpStream::connect(&address) {
         Ok(t) => t,
-        Err(e) => return Err(Error::from_error(e)),
+        Err(e) => return Err(Error::from_error(&e)),
     };
 
     let session: Session = SshConnector::new().connect(&configuration, &tcp)?;
@@ -31,7 +31,7 @@ fn fetch_information_through_ssh(configuration: &Configuration) -> Result<Inform
     let content = call_ssh_command(command, &session)?;
     let information: Information = match serde_json::from_str(&content) {
         Ok(information) => information,
-        Err(e) => return Err(Error::with_error_and_details(e, content)),
+        Err(e) => return Err(Error::with_error_and_details(&e, content)),
     };
 
     Ok(information)
@@ -43,7 +43,7 @@ fn call_ssh_command<S: Into<String>>(command: S, session: &Session) -> Result<St
     // Open channel
     let mut channel: Channel = match session.channel_session() {
         Ok(c) => c,
-        Err(e) => return Err(Error::from_error(e))
+        Err(e) => return Err(Error::from_error(&e))
     };
 
     // Execute the command
@@ -52,12 +52,12 @@ fn call_ssh_command<S: Into<String>>(command: S, session: &Session) -> Result<St
     // Read the output
     let mut output = String::new();
     if let Err(e) = Read::read_to_string(&mut channel, &mut output) {
-        return Err(Error::from_error(e));
+        return Err(Error::from_error(&e));
     }
 
     let exit_status = match channel.exit_status() {
         Ok(exit_status) => exit_status,
-        Err(e) => return Err(Error::from_error(e))
+        Err(e) => return Err(Error::from_error(&e))
     };
 
     if exit_status == 0 {
@@ -67,7 +67,7 @@ fn call_ssh_command<S: Into<String>>(command: S, session: &Session) -> Result<St
     let mut error_output = String::new();
     match Read::read_to_string(&mut channel.stderr(), &mut error_output) {
         Ok(_) => return Err(Error::new(error_output.trim())),
-        Err(error) => Err(Error::from_error(error)),
+        Err(error) => Err(Error::from_error(&error)),
     }
 }
 

@@ -7,28 +7,28 @@ use super::FleetError;
 #[derive(Debug)]
 pub struct Error {
     msg: String,
-    cause: Option<&'static error::Error>
+    cause: Option<&'static error::Error>,
 }
 
 impl super::FleetError for Error {
     fn new<S: Into<String>>(message: S) -> Self {
         Self {
             msg: message.into(),
-            cause: None
+            cause: None,
         }
     }
 
-    fn from_error<E>(error: E) -> Self where E: 'static + error::Error + Sized {
+    fn from_error(error: &error::Error) -> Self {
         Self {
             msg: error.description().to_owned(),
-            cause: None //cause: Some(&error)
+            cause: None, //cause: Some(&error)
         }
     }
 
-    fn with_error_and_details<E, S: Into<String>>(error: E, message:S) -> Self where E: 'static + error::Error + Sized {
+    fn with_error_and_details<S: Into<String>>(error: &error::Error, message: S) -> Self {
         Self {
-            msg: error.description().to_owned() + " (Details: '" + &message.into() + "')",
-            cause: None //cause: Some(&error)
+            msg: format!("{} (Details: '{}')", error.description(), message.into()),
+            cause: None, //cause: Some(&error)
         }
     }
 

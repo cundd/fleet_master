@@ -24,5 +24,14 @@
         "passphrase": "passphrase",
         "private_key": "private_key",
         "public_key": "public_key"
+    },
+    "my.host-without-port.local": {
+        "host": "host",
+        "port": "port",
+        "command": "command",
+        "username": "username",
+        "passphrase": "passphrase",
+        "private_key": "private_key",
+        "public_key": "public_key"
     }
 }

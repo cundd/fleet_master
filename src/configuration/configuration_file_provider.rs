@@ -6,7 +6,7 @@ use std::env;
 pub fn detect_configuration_file() -> Result<PathBuf, Error> {
     let pwd = match env::current_dir() {
         Ok(pwd) => pwd,
-        Err(e) => return Err(Error::from_error(e)),
+        Err(e) => return Err(Error::from_error(&e)),
     };
 
     let mut dot_file = pwd.clone();

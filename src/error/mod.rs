@@ -3,7 +3,6 @@ mod error;
 mod flat_error;
 
 use std::error::Error as StdError;
-use std::marker::Sized;
 use std::fmt::Display;
 use std::collections::HashMap;
 
@@ -14,9 +13,9 @@ pub type ErrorCollection = HashMap<String, Error>;
 trait FleetError: StdError + Display {
     fn new<S: Into<String>>(message: S) -> Self;
 
-    fn from_error<E>(error: E) -> Self where E: 'static + StdError + Sized;
+    fn from_error(error: &StdError) -> Self;
 
-    fn with_error_and_details<E, S: Into<String>>(error: E, message: S) -> Self where E: 'static + StdError + Sized;
+    fn with_error_and_details<S: Into<String>>(error: &StdError, message: S) -> Self;
 
     fn message(&self) -> &str;
 }

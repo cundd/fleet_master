@@ -1,6 +1,5 @@
 use std::error;
 use std::fmt;
-use std::marker::Sized;
 
 #[derive(Debug)]
 pub struct FlatError {
@@ -13,15 +12,15 @@ impl FlatError {
             msg: message.into(),
         }
     }
-    pub fn from_error<E>(error: E) -> Self where E: 'static + error::Error + Sized {
+    pub fn from_error(error: &error::Error) -> Self {
         Self {
             msg: error.description().to_owned(),
         }
     }
 
-    pub fn with_error_and_details<E, S: Into<String>>(error: E, message: S) -> Self where E: 'static + error::Error + Sized {
+    pub fn with_error_and_details<S: Into<String>>(error: &error::Error, message: S) -> Self {
         Self {
-            msg: error.description().to_owned() + " (Details: '" + &message.into() + "')",
+            msg: format!("{} (Details: '{}')", error.description(), message.into()),
         }
     }
 
@@ -35,11 +34,11 @@ impl super::FleetError for FlatError {
         Self::new(message)
     }
 
-    fn from_error<E>(error: E) -> Self where E: 'static + error::Error + Sized {
+    fn from_error(error: &error::Error) -> Self {
         Self::from_error(error)
     }
 
-    fn with_error_and_details<E, S: Into<String>>(error: E, message: S) -> Self where E: 'static + error::Error + Sized {
+    fn with_error_and_details<S: Into<String>>(error: &error::Error, message: S) -> Self {
         Self::with_error_and_details(error, message)
     }
 

@@ -54,7 +54,7 @@ impl SshConfiguration {
             passphrase: passphrase_string,
             //            private_key: Some(PathBuf::from(private_key.into())),
             private_key: Some(private_key),
-            public_key: public_key,
+            public_key,
         }
     }
 

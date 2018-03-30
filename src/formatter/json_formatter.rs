@@ -11,7 +11,7 @@ impl JsonFormatter {
     fn format_data<A: serde::Serialize>(&self, data: &A) -> FormatterResult {
         match serde_json::to_string_pretty(&data) {
             Ok(s) => Ok(s),
-            Err(e) => Err(Error::from_error(e)),
+            Err(e) => Err(Error::from_error(&e)),
         }
     }
 }

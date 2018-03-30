@@ -12,17 +12,17 @@ impl FileProvider {
     fn get_information_for_uri<S>(self, uri: S) -> Result<Information, Error> where S: Into<String> {
         let absolute_file_path: PathBuf = match fs::canonicalize(&uri.into()) {
             Ok(p) => p,
-            Err(e) => return Err(Error::from_error(e)),
+            Err(e) => return Err(Error::from_error(&e)),
         };
 
         let file = match File::open(absolute_file_path) {
             Ok(file) => file,
-            Err(e) => return Err(Error::from_error(e)),
+            Err(e) => return Err(Error::from_error(&e)),
         };
 
         let information: Information = match serde_json::from_reader(file) {
             Ok(information) => information,
-            Err(e) => return Err(Error::from_error(e)),
+            Err(e) => return Err(Error::from_error(&e)),
         };
 
         Ok(information)
