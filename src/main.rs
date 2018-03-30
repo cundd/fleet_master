@@ -1,17 +1,12 @@
-//#![feature(slice_concat_ext)]
-//#![feature(test)]
-//extern crate test;
-
-
 extern crate serde;
+#[macro_use]
+extern crate serde_derive;
 extern crate serde_json;
+#[cfg(feature = "yaml")]
 extern crate serde_yaml;
 extern crate ssh2;
 extern crate clap;
 extern crate ansi_term;
-
-#[macro_use]
-extern crate serde_derive;
 
 
 #[macro_use]
@@ -33,7 +28,6 @@ use formatter::*;
 use printer::*;
 use sub_command::*;
 use sub_command::SubCommand as FleetSubCommand;
-
 
 fn main() {
     let format_arg = Arg::with_name("format")

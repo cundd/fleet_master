@@ -21,3 +21,11 @@ my.host-with-private_key.local:
     passphrase: "passphrase"
     private_key: "private_key"
     public_key: "public_key"
+my.host-without-port.local:
+    host: "host"
+    port: 22
+    command: "command"
+    username: "username"
+    passphrase: "passphrase"
+    private_key: "private_key"
+    public_key: "public_key"

@@ -3,6 +3,8 @@ use std::path::*;
 #[derive(Serialize, Deserialize, Debug, PartialEq, Clone)]
 pub struct SshConfiguration {
     host: String,
+
+    #[serde(default = "default_port")]
     port: u16,
     command: String,
     username: String,
@@ -10,6 +12,10 @@ pub struct SshConfiguration {
     passphrase: Option<String>,
     private_key: Option<PathBuf>,
     public_key: Option<PathBuf>,
+}
+
+fn default_port() -> u16 {
+    22
 }
 
 impl SshConfiguration {

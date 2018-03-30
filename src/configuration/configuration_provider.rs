@@ -1,5 +1,3 @@
-//use super::Configuration;
-use std::fs;
 use std::fs::File;
 use std::path::*;
 use std::ffi::OsStr;
@@ -21,11 +19,6 @@ impl ConfigurationProvider {
     }
 
     pub fn load(path: &Path) -> Result<ConfigurationCollection, Error> {
-//        let absolute_file_path: PathBuf = match fs::canonicalize(path) {
-//            Ok(p) => p,
-//            Err(e) => return Err(Error::from_error(&e)),
-//        };
-
         let file = match File::open(path) {
             Ok(file) => file,
             Err(e) => return Err(Error::with_error_and_details(&e, e.to_string()))

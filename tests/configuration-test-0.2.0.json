@@ -27,7 +27,6 @@
     },
     "my.host-without-port.local": {
         "host": "host",
-        "port": 22,
         "command": "command",
         "username": "username",
         "passphrase": "passphrase",

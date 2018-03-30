@@ -1,12 +1,10 @@
 use std::net::TcpStream;
 use std::env;
-use std::path::Path;
 
 use ssh2::Session;
 
 use configuration::Configuration;
 use error::*;
-use std::path::PathBuf;
 
 pub struct SshConnector {}
 

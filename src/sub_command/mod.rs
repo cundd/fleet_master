@@ -123,19 +123,29 @@ pub trait SshCommandTrait: SubCommandTrait {
         ).collect();
 
         if filtered.len() == 0 {
-            if hosts.len() > 1 {
-                return Err(Error::new(format!("No configuration found for hosts: {}", hosts.join(", "))));
-            }
-            return Err(Error::new(format!("No configurations found for host: {}", hosts.join(", "))));
+            Err(Error::new(format!(
+                "{}: {}",
+                if hosts.len() > 1 { "No configurations found for hosts" } else { "No configuration found for host" },
+                hosts.join(", ")
+            )))
+        } else {
+            Ok(self.fetch_information_for_configuration_collection(filtered))
         }
-
-        Ok(self.fetch_information_for_configuration_collection(filtered))
     }
 
     /// Fetch the information for all hosts in the configuration collection
     fn fetch_information_collection(&self, matches_option: Option<&ArgMatches>) -> CollectionResult {
         let configuration_file = self.get_configuration_file(matches_option)?;
-        let configuration_collection = ConfigurationProvider::load(configuration_file.as_path())?;
+        let configuration_collection = match ConfigurationProvider::load(configuration_file.as_path()) {
+            Ok(c) => c,
+            Err(e) => return Err(Error::new(
+                format!(
+                    "Error when loading configuration file '{}': {}",
+                    configuration_file.to_string_lossy(),
+                    e.to_string()
+                ),
+            ))
+        };
 
         Ok(self.fetch_information_for_configuration_collection(configuration_collection))
     }
@@ -181,7 +191,7 @@ pub fn get_subcommand<'x>(matches: &'x ArgMatches) -> (SubCommand, Option<&'x Ar
         return (SubCommand::PackagesCommand(PackagesCommand {}), Some(subcommand_matches));
     }
 
-    // Default to provide
+    // Default to `provide`
     (SubCommand::ProvideCommand(ProvideCommand {}), None)
 }
 
