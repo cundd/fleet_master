@@ -15,7 +15,7 @@ use self::ssh_connector::SshConnector;
 
 pub struct SshProvider;
 
-/// Fetch information from the server given in the configuration
+/// Fetch information from the server defined in `configuration`
 fn fetch_information_through_ssh(configuration: &Configuration) -> Result<Information, Error> {
     let address = format!("{}:{}", configuration.host(), configuration.port());
     let tcp = match TcpStream::connect(&address) {
@@ -60,7 +60,7 @@ fn call_ssh_command<S: Into<String>>(command: S, session: &Session) -> Result<St
         Err(e) => return Err(Error::from_error(&e))
     };
 
-    if exit_status == 0 {
+    if exit_status == 0 && output.len() > 0 {
         return Ok(output)
     }
 
@@ -73,7 +73,7 @@ fn call_ssh_command<S: Into<String>>(command: S, session: &Session) -> Result<St
 
 
 impl SshProvider {
-    /// Fetch information from the server given in the configuration
+    /// Fetch information from the server defined in `configuration`
     pub fn get_information(&self, configuration: &Configuration) -> Result<Information, Error> {
         fetch_information_through_ssh(configuration)
     }
