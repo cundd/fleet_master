@@ -1,6 +1,6 @@
 my.host.local:
     host: "host"
-    port: "port"
+    port: 22
     command: "command"
     username: "username"
     password: "password"
@@ -9,13 +9,13 @@ my.host.local:
     public_key: "public_key"
 my.host-with-password.local:
     host: "host"
-    port: "port"
+    port: 22
     command: "command"
     username: "username"
     password: "password"
 my.host-with-private_key.local:
     host: "host"
-    port: "port"
+    port: 22
     command: "command"
     username: "username"
     passphrase: "passphrase"

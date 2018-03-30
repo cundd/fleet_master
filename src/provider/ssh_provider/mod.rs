@@ -17,7 +17,7 @@ pub struct SshProvider;
 
 /// Fetch information from the server given in the configuration
 fn fetch_information_through_ssh(configuration: &Configuration) -> Result<Information, Error> {
-    let address = format!("{}:{}", configuration.host, configuration.port);
+    let address = format!("{}:{}", configuration.host(), configuration.port());
     let tcp = match TcpStream::connect(&address) {
         Ok(t) => t,
         Err(e) => return Err(Error::from_error(&e)),
@@ -26,7 +26,7 @@ fn fetch_information_through_ssh(configuration: &Configuration) -> Result<Inform
     let session: Session = SshConnector::new().connect(&configuration, &tcp)?;
 
     let mut command = String::new();
-    command.push_str(&configuration.command);
+    command.push_str(&configuration.command());
 
     let content = call_ssh_command(command, &session)?;
     let information: Information = match serde_json::from_str(&content) {
@@ -168,7 +168,7 @@ mod tests {
         let provider = SshProvider {};
         let configuration = Configuration::new_with_public_key(
             "not-a-host",
-            "22",
+            22,
             "",
             "not-a-user",
             Helper::get_ssh_file_path("not-a-file"),
