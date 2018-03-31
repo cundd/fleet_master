@@ -28,24 +28,27 @@ A simple configuration file may look like this:
 {
     "host-without-login-credentials": {
         "host": "host1.tld",
-        "port": "22",
         "command": "path/to/the/provider/script",
         "username": "your-username"
     },
     "host-with-password": {
         "host": "host2.tld",
-        "port": "22",
         "command": "path/to/the/provider/script",
         "username": "your-username",
         "password": "your-password"
     },
     "host-with-ssh-key": {
         "host": "host3.tld",
-        "port": "22",
         "command": "path/to/the/provider/script",
         "username": "your-username",
         "private_key": "/your/home-dir/.ssh/id_rsa",
         "public_key": "/your/home-dir/.ssh/id_rsa.pub"
+    },
+    "host-with-custom-port": {
+        "host": "host4.tld",
+        "port": 2222,
+        "command": "path/to/the/provider/script",
+        "username": "your-username"
     }
 }
 ```
@@ -61,6 +64,6 @@ PASSPHRASE=yourPassphrase fleet list
 Todo
 ----
 
-- Make the port configuration optional
+- ~~Make the port configuration optional~~
 - Resolve the tilde `~` in the path to the SSH key files
 - Support for ssh-agent
