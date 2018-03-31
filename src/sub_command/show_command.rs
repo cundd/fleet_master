@@ -15,6 +15,9 @@ impl SubCommandTrait for ShowCommand {
         let show_packages = subcommand_matches_option.unwrap().is_present("packages");
 
         Printer::print_result(formatter.format_information(&host, &information, false));
+        if show_packages {
+            Printer::print_result(formatter.format_packages(&information));
+        }
 
         Ok(())
     }
