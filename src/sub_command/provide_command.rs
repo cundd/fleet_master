@@ -16,8 +16,13 @@ impl SubCommandTrait for ProvideCommand {
         };
 
         let platform = Platform::new_for_current_env();
+        let result = LocalProvider::new().get_information();
+
         Printer::print_result(
-            formatter.format_information(&platform.host, LocalProvider::new().get_information(), !no_packages)
+            match result {
+                Ok(information) => formatter.format_information(&platform.host, &information, !no_packages),
+                Err(e) => Err(e),
+            }
         );
 
         Ok(())

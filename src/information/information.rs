@@ -2,7 +2,7 @@ use super::*;
 use constants;
 //use super::fleet::Fleet;
 
-#[derive(Serialize, Deserialize, Debug, PartialEq)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Clone)]
 pub struct Information {
     pub fleet: Fleet,
     pub system: System,

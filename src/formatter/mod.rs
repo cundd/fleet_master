@@ -14,13 +14,17 @@ type FormatterResult = Result<String, Error>;
 /// Trait for formatter implementations
 pub trait FormatterTrait {
     /// Format the given Information
-    fn format_information(&self, host: &str, information: Result<Information, Error>, show_packages: bool) -> FormatterResult;
+    ///
+    /// Some implementations may ignore `show_packages`
+    fn format_information(&self, host: &str, information: &Information, show_packages: bool) -> FormatterResult;
 
     /// Format all Information objects in the collection
+    ///
+    /// Some implementations may ignore `show_packages`
     fn format_information_collection(&self, information: InformationCollection, show_packages: bool) -> FormatterResult;
 
     /// Format the Packages from the given Information
-    fn format_packages(&self, information: Information) -> FormatterResult;
+    fn format_packages(&self, information: &Information) -> FormatterResult;
 
     /// Format the Packages of all Information objects in the collection
     fn format_packages_from_information_collection(&self, information_collection: InformationCollection) -> FormatterResult;
@@ -34,7 +38,7 @@ pub enum Formatter {
 }
 
 impl FormatterTrait for Formatter {
-    fn format_information(&self, host: &str, information: Result<Information, Error>, show_packages: bool) -> FormatterResult {
+    fn format_information(&self, host: &str, information: &Information, show_packages: bool) -> FormatterResult {
         match self {
             &Formatter::Json(ref f) => f.format_information(host, information, show_packages),
             &Formatter::Console(ref f) => f.format_information(host, information, show_packages),
@@ -48,7 +52,7 @@ impl FormatterTrait for Formatter {
         }
     }
 
-    fn format_packages(&self, information: Information) -> FormatterResult {
+    fn format_packages(&self, information: &Information) -> FormatterResult {
         match self {
             &Formatter::Json(ref f) => f.format_packages(information),
             &Formatter::Console(ref f) => f.format_packages(information),

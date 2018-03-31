@@ -4,7 +4,6 @@ mod table;
 
 use std::collections::BTreeMap;
 
-use error::*;
 use information::*;
 use self::table::Table;
 use self::matrix::Matrix;
@@ -36,9 +35,9 @@ const PACKAGE_HEADERS: &'static [&'static str] = &[
 ];
 
 impl super::FormatterTrait for ConsoleFormatter {
-    fn format_information(&self, host: &str, information: Result<Information, Error>, show_packages: bool) -> super::FormatterResult {
+    fn format_information(&self, host: &str, information: &Information, show_packages: bool) -> super::FormatterResult {
         let mut information_collection: InformationCollection = InformationCollection::new();
-        information_collection.insert(host.to_owned(), information?);
+        information_collection.insert(host.to_owned(), information.clone());
 
         let matrix = Matrix::from_information_collection(information_collection, show_packages);
         Ok(Table::left_header(&matrix))
@@ -49,8 +48,8 @@ impl super::FormatterTrait for ConsoleFormatter {
         Ok(Table::left_header(&matrix))
     }
 
-    fn format_packages(&self, information: Information) -> super::FormatterResult {
-        let matrix = Matrix::from_packages(information.packages);
+    fn format_packages(&self, information: &Information) -> super::FormatterResult {
+        let matrix = Matrix::from_packages(information.clone().packages);
         Ok(Table::top_header(&matrix))
     }
 
@@ -73,7 +72,7 @@ impl super::FormatterTrait for ConsoleFormatter {
 
 fn crop_cell_content(content: &str) -> String {
     if content.len() > 50 {
-        return String::from(&content[0..49]) + "…"
+        return String::from(&content[0..49]) + "…";
     }
     String::from(content)
 }
