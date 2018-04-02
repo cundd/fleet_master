@@ -30,13 +30,12 @@ impl SshConnector {
             Ok(session)
         } else {
             self.authenticate_agent(configuration, session)
-//            return Err(Error::new("Could not authenticate"));
         }
     }
 
     fn authenticate_password(&self, configuration: &Configuration, session: Session) -> Result<Session, Error> {
         let password = configuration.password().unwrap();
-        session.userauth_password(&configuration.username(), &password)?
+        session.userauth_password(&configuration.username(), &password)?;
 
         Ok(session)
     }
