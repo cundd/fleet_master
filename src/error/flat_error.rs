@@ -1,5 +1,6 @@
-use std::error;
+use std::error::Error as StdError;
 use std::fmt;
+use ssh2::Error as Ssh2Error;
 
 #[derive(Debug)]
 pub struct FlatError {
@@ -12,13 +13,13 @@ impl FlatError {
             msg: message.into(),
         }
     }
-    pub fn from_error(error: &error::Error) -> Self {
+    pub fn from_error(error: &StdError) -> Self {
         Self {
             msg: error.description().to_owned(),
         }
     }
 
-    pub fn with_error_and_details<S: Into<String>>(error: &error::Error, message: S) -> Self {
+    pub fn with_error_and_details<S: Into<String>>(error: &StdError, message: S) -> Self {
         Self {
             msg: format!("{} (Details: '{}')", error.description(), message.into()),
         }
@@ -34,11 +35,11 @@ impl super::FleetError for FlatError {
         Self::new(message)
     }
 
-    fn from_error(error: &error::Error) -> Self {
+    fn from_error(error: &StdError) -> Self {
         Self::from_error(error)
     }
 
-    fn with_error_and_details<S: Into<String>>(error: &error::Error, message: S) -> Self {
+    fn with_error_and_details<S: Into<String>>(error: &StdError, message: S) -> Self {
         Self::with_error_and_details(error, message)
     }
 
@@ -47,7 +48,7 @@ impl super::FleetError for FlatError {
     }
 }
 
-impl error::Error for FlatError {
+impl StdError for FlatError {
     fn description(&self) -> &str {
         self.message()
     }
@@ -56,5 +57,23 @@ impl error::Error for FlatError {
 impl fmt::Display for FlatError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "{}", self.message())
+    }
+}
+
+impl<'a> From<&'a StdError> for FlatError {
+    fn from(error: &StdError) -> Self {
+        FlatError::from_error(error)
+    }
+}
+
+impl From<Ssh2Error> for FlatError {
+    fn from(error: Ssh2Error) -> Self {
+        FlatError::from_error(&error)
+    }
+}
+
+impl<'a> From<&'a Ssh2Error> for FlatError {
+    fn from(error: &Ssh2Error) -> Self {
+        FlatError::from_error(error)
     }
 }

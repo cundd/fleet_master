@@ -26,18 +26,24 @@ impl SshConnector {
             return self.authenticate_public_key(configuration, session);
         }
 
-        if !session.authenticated() {
-            return Err(Error::new("Could not authenticate"));
+        if session.authenticated() {
+            Ok(session)
+        } else {
+            self.authenticate_agent(configuration, session)
+//            return Err(Error::new("Could not authenticate"));
         }
-
-        Ok(session)
     }
 
     fn authenticate_password(&self, configuration: &Configuration, session: Session) -> Result<Session, Error> {
         let password = configuration.password().unwrap();
-        if let Err(e) = session.userauth_password(&configuration.username(), &password) {
-            return Err(Error::from_error(&e));
-        }
+        session.userauth_password(&configuration.username(), &password)?
+
+        Ok(session)
+    }
+
+
+    fn authenticate_agent(&self, configuration: &Configuration, session: Session) -> Result<Session, Error> {
+        session.userauth_agent(&configuration.username())?;
 
         Ok(session)
     }
@@ -62,17 +68,15 @@ impl SshConnector {
             None => None,
         };
 
-        if let Err(e) = session.userauth_pubkey_file(
+        session.userauth_pubkey_file(
             &configuration.username(),
             match public_key {
                 Some(ref p) => Some(p),
                 None => None,
             },
             &configuration.private_key().as_ref().unwrap(),
-            passphrase
-        ) {
-            return Err(Error::from_error(&e));
-        }
+            passphrase,
+        )?;
 
         Ok(session)
     }
