@@ -35,8 +35,8 @@ impl super::FormatterTrait for JsonFormatter {
         self.format_data(&information_collection)
     }
 
-    fn format_packages(&self, information: &Information) -> FormatterResult {
-        self.format_data(&information.packages)
+    fn format_packages(&self, packages: &Packages) -> FormatterResult {
+        self.format_data(packages)
     }
 
     fn format_packages_from_information_collection(&self, information_collection: InformationCollection) -> FormatterResult {

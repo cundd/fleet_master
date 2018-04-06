@@ -24,6 +24,10 @@ impl Packages {
         Packages { all: HashMap::new() }
     }
 
+    pub fn new_with_packages(packages: HashMap<String, Package>) -> Self {
+        Packages { all: packages }
+    }
+
     pub fn new_for_current_env() -> Self {
         Packages {
             all: HashMap::new()

@@ -13,20 +13,20 @@ type FormatterResult = Result<String, Error>;
 
 /// Trait for formatter implementations
 pub trait FormatterTrait {
-    /// Format the given Information
+    /// Format the given [`Information`]
     ///
     /// Some implementations may ignore `show_packages`
     fn format_information(&self, host: &str, information: &Information, show_packages: bool) -> FormatterResult;
 
-    /// Format all Information objects in the collection
+    /// Format all [`Information`] objects in the collection
     ///
     /// Some implementations may ignore `show_packages`
     fn format_information_collection(&self, information: InformationCollection, show_packages: bool) -> FormatterResult;
 
-    /// Format the Packages from the given Information
-    fn format_packages(&self, information: &Information) -> FormatterResult;
+    /// Format the given [`Packages`]
+    fn format_packages(&self, packages: &Packages) -> FormatterResult;
 
-    /// Format the Packages of all Information objects in the collection
+    /// Format the [`Packages`] of all [`Information`] objects in the collection
     fn format_packages_from_information_collection(&self, information_collection: InformationCollection) -> FormatterResult;
 }
 
@@ -52,10 +52,10 @@ impl FormatterTrait for Formatter {
         }
     }
 
-    fn format_packages(&self, information: &Information) -> FormatterResult {
+    fn format_packages(&self, packages: &Packages) -> FormatterResult {
         match self {
-            &Formatter::Json(ref f) => f.format_packages(information),
-            &Formatter::Console(ref f) => f.format_packages(information),
+            &Formatter::Json(ref f) => f.format_packages(packages),
+            &Formatter::Console(ref f) => f.format_packages(packages),
         }
     }
 

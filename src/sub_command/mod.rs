@@ -2,6 +2,7 @@ mod list_command;
 mod show_command;
 mod packages_command;
 mod provide_command;
+mod search_command;
 
 use std::path::PathBuf;
 use clap::ArgMatches;
@@ -14,6 +15,7 @@ use self::list_command::ListCommand;
 use self::show_command::ShowCommand;
 use self::packages_command::PackagesCommand;
 use self::provide_command::ProvideCommand;
+use self::search_command::SearchCommand;
 use configuration::*;
 use provider::*;
 
@@ -167,6 +169,7 @@ pub enum SubCommand {
     ShowCommand(ShowCommand),
     PackagesCommand(PackagesCommand),
     ProvideCommand(ProvideCommand),
+    SearchCommand(SearchCommand),
 }
 
 impl SubCommandTrait for SubCommand {
@@ -176,6 +179,7 @@ impl SubCommandTrait for SubCommand {
             &SubCommand::ShowCommand(ref c) => c.exec(formatter, matches_option),
             &SubCommand::PackagesCommand(ref c) => c.exec(formatter, matches_option),
             &SubCommand::ProvideCommand(ref c) => c.exec(formatter, matches_option),
+            &SubCommand::SearchCommand(ref c) => c.exec(formatter, matches_option),
         }
     }
 }
@@ -189,6 +193,9 @@ pub fn get_subcommand<'x>(matches: &'x ArgMatches) -> (SubCommand, Option<&'x Ar
     }
     if let Some(subcommand_matches) = matches.subcommand_matches("packages") {
         return (SubCommand::PackagesCommand(PackagesCommand {}), Some(subcommand_matches));
+    }
+    if let Some(subcommand_matches) = matches.subcommand_matches("search") {
+        return (SubCommand::SearchCommand(SearchCommand {}), Some(subcommand_matches));
     }
 
     // Default to `provide`

@@ -48,8 +48,8 @@ impl super::FormatterTrait for ConsoleFormatter {
         Ok(Table::left_header(&matrix))
     }
 
-    fn format_packages(&self, information: &Information) -> super::FormatterResult {
-        let matrix = Matrix::from_packages(information.clone().packages);
+    fn format_packages(&self, packages: &Packages) -> super::FormatterResult {
+        let matrix = Matrix::from_packages(packages);
         Ok(Table::top_header(&matrix))
     }
 
@@ -58,7 +58,7 @@ impl super::FormatterTrait for ConsoleFormatter {
         for (host, information) in information_collection {
             if information.packages.len() > 0 {
                 output += &(format!("Packages of host '{}':\n", host));
-                let matrix = Matrix::from_packages(information.packages);
+                let matrix = Matrix::from_packages(&information.packages);
                 output += &Table::top_header(&matrix);
                 output += "\n\n";
             } else {
@@ -108,17 +108,17 @@ impl Matrix<String> {
         Matrix::from_vec(rows)
     }
 
-    fn from_packages(packages: Packages) -> Matrix<String> {
+    fn from_packages(packages: &Packages) -> Matrix<String> {
         let mut rows: Vec<Vec<String>> = Vec::with_capacity(packages.len() + 1);
 
         rows.push(PACKAGE_HEADERS.iter().map(|x| String::from(x.to_owned())).collect());
 
-        let all_packages: BTreeMap<_, _> = packages.all.into_iter().collect();
+        let all_packages: BTreeMap<_, _> = packages.all.iter().collect();
         for (_, package) in all_packages {
             let mut cells: Vec<String> = Vec::with_capacity(PACKAGE_HEADERS.len());
-            cells.push(package.key);
-            cells.push(package.version);
-            cells.push(package.state);
+            cells.push(package.key.to_owned());
+            cells.push(package.version.to_owned());
+            cells.push(package.state.to_owned());
             cells.push(crop_cell_content(&package.description));
 
             rows.push(cells);

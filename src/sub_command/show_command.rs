@@ -16,7 +16,7 @@ impl SubCommandTrait for ShowCommand {
 
         Printer::print_result(formatter.format_information(&host, &information, false));
         if show_packages {
-            Printer::print_result(formatter.format_packages(&information));
+            Printer::print_result(formatter.format_packages(&information.packages));
         }
 
         Ok(())

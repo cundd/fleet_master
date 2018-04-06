@@ -20,6 +20,7 @@ pub mod error;
 mod printer;
 mod provider;
 mod formatter;
+mod filter;
 mod sub_command;
 
 use clap::{Arg, App, SubCommand};
@@ -93,10 +94,22 @@ fn main() {
         .subcommand(SubCommand::with_name("provide")
             .about("Use the program as information provider")
             .version(constants::PROVIDER_VERSION)
-            .arg(format_arg)
+            .arg(format_arg.clone())
             .arg(Arg::with_name("debug")
                 .short("d")
                 .help("print debug information verbosely")))
+        .subcommand(SubCommand::with_name("search")
+            .about("Search hosts for the given predicate")
+            .version(constants::PROVIDER_VERSION)
+            .arg(Arg::with_name("package")
+                .short("p")
+                .long("package")
+                .value_name("SEARCH PACKAGE")
+                .help("Package name to search for")
+                .takes_value(true))
+            .arg(configuration_arg.clone())
+            .arg(format_arg.clone())
+        )
         .get_matches();
 
     let (subcommand, subcommand_matches_option) = get_subcommand(&matches);
