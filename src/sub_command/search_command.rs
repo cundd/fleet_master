@@ -15,10 +15,8 @@ impl SubCommandTrait for SearchCommand {
     fn exec<F: FormatterTrait>(&self, formatter: &F, subcommand_matches_option: Option<&ArgMatches>) -> Result<(), Error> {
         let package = subcommand_matches_option.unwrap().value_of("package");
 
-        let (information_collection, error_collection) = self.fetch_information_collection(subcommand_matches_option)?;
+        let (information_collection, _) = self.fetch_information_collection(subcommand_matches_option)?;
 
-
-        Printer::print_error_collection(error_collection);
 
         if package.is_none() {
             return Err(Error::new("Please specify the 'package' argument"));

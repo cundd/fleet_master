@@ -16,12 +16,11 @@ impl SubCommandTrait for ListCommand {
             None => false
         };
 
-        let (information_collection, error_collection) = match self.fetch_information_collection(subcommand_matches_option) {
+        let (information_collection, _) = match self.fetch_information_collection(subcommand_matches_option) {
             Ok(r) => r,
             Err(e) => return Err(e),
         };
 
-        Printer::print_error_collection(error_collection);
         Printer::print_result(
             formatter.format_information_collection(information_collection, show_packages)
         );

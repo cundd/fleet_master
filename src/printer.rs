@@ -26,6 +26,7 @@ impl Printer {
     }
 
     /// Prints all errors in the given collection
+    #[allow(unused)]
     pub fn print_error_collection(collection: ErrorCollection) {
         for (host, e) in collection {
             eprintln!(
@@ -53,7 +54,7 @@ impl Printer {
     }
 }
 
-fn prepare_message(message: &str) -> String {
+pub fn prepare_message(message: &str) -> String {
     let single_line = message.replace("\n", " ");
     if single_line.chars().count() > 120 {
         format!("{}…", single_line.chars().take(120).collect::<String>())

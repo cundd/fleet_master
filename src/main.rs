@@ -110,6 +110,12 @@ fn main() {
             .arg(configuration_arg.clone())
             .arg(format_arg.clone())
         )
+        .subcommand(SubCommand::with_name("check")
+            .about("Check configurations for all hosts")
+            .version(constants::PROVIDER_VERSION)
+            .arg(configuration_arg.clone())
+            .arg(format_arg.clone())
+        )
         .get_matches();
 
     let (subcommand, subcommand_matches_option) = get_subcommand(&matches);
