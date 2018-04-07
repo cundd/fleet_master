@@ -1,4 +1,6 @@
 use std::path::*;
+use std::env;
+
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Clone)]
 pub struct SshConfiguration {
@@ -19,16 +21,18 @@ fn default_port() -> u16 {
 }
 
 impl SshConfiguration {
-    pub fn new<S: Into<String>>(
+    pub fn new<S, P>(
         host: S,
         port: u16,
         command: S,
         username: S,
         password: Option<S>,
         passphrase: Option<S>,
-        private_key: Option<PathBuf>,
-        public_key: Option<PathBuf>,
-    ) -> Self {
+        private_key: Option<P>,
+        public_key: Option<P>,
+    ) -> Self
+        where S: Into<String>, P: AsRef<Path>
+    {
         SshConfiguration {
             port,
             host: host.into(),
@@ -36,8 +40,8 @@ impl SshConfiguration {
             username: username.into(),
             password: password.map(|s| s.into()),
             passphrase: passphrase.map(|s| s.into()),
-            private_key: private_key.into(),
-            public_key: public_key.into(),
+            private_key: as_path_buf_option(private_key),
+            public_key: as_path_buf_option(public_key),
         }
     }
     pub fn new_with_password<S>(
@@ -59,15 +63,17 @@ impl SshConfiguration {
         }
     }
 
-    pub fn new_with_public_key<S>(
+    pub fn new_with_public_key<S, P>(
         host: S,
         port: u16,
         command: S,
         username: S,
-        private_key: PathBuf,
-        public_key: Option<PathBuf>,
+        private_key: P,
+        public_key: Option<P>,
         passphrase: Option<S>,
-    ) -> Self where S: Into<String> {
+    ) -> Self
+        where S: Into<String>, P: AsRef<Path>
+    {
         let passphrase_string = match passphrase {
             Some(p) => Some(p.into()),
             None => None,
@@ -79,8 +85,8 @@ impl SshConfiguration {
             username: username.into(),
             password: None,
             passphrase: passphrase_string,
-            private_key: Some(private_key),
-            public_key,
+            private_key: Some(private_key.as_ref().to_path_buf()),
+            public_key: as_path_buf_option(public_key),
         }
     }
 
@@ -146,13 +152,42 @@ impl SshConfiguration {
         self.passphrase.clone()
     }
     pub fn private_key(&self) -> Option<PathBuf> {
-        self.private_key.clone()
+        match self.private_key {
+            Some(ref p) => patch_key_path(p),
+            None => None
+        }
     }
     pub fn public_key(&self) -> Option<PathBuf> {
-        self.public_key.clone()
+        match self.public_key {
+            Some(ref p) => patch_key_path(p),
+            None => None
+        }
     }
 }
 
+fn as_path_buf_option<P: AsRef<Path>>(input: Option<P>) -> Option<PathBuf> {
+    match input {
+        Some(p) => Some(p.as_ref().to_path_buf()),
+        None => None
+    }
+}
+
+fn patch_key_path(p: &PathBuf) -> Option<PathBuf> {
+    if p.starts_with("~/") {
+        let path_relative: String = p.to_string_lossy().chars().skip(2).collect();
+
+        match env::home_dir() {
+            Some(mut home) => {
+                home.push(path_relative);
+
+                Some(home)
+            }
+            None => None
+        }
+    } else {
+        Some(p.clone())
+    }
+}
 
 #[cfg(test)]
 mod tests {
@@ -245,6 +280,28 @@ mod tests {
                 public_key: None,
             },
             SshConfiguration::new_empty()
+        );
+    }
+
+    #[test]
+    fn private_key_test() {
+        let c = SshConfiguration::new_with_public_key(
+            "localhost",
+            22,
+            "cmd",
+            "daniel",
+            "~/.ssh/my_key",
+            Some("~/.ssh/my_key.pub"),
+            None,
+        );
+
+        assert_eq!(
+            format!("{}/{}", Helper::get_ssh_dir().to_string_lossy(), "my_key"),
+            c.private_key().unwrap().to_string_lossy()
+        );
+        assert_eq!(
+            format!("{}/{}", Helper::get_ssh_dir().to_string_lossy(), "my_key.pub"),
+            c.public_key().unwrap().to_string_lossy()
         );
     }
 }

@@ -95,8 +95,8 @@ mod tests {
                 "username",
                 Some("password"),
                 None,
-                None,
-                None,
+                None::<&str>,
+                None::<&str>,
             ),
             configurations["my.host-with-password.local"]
         );
