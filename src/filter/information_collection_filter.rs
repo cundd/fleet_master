@@ -1,17 +1,20 @@
 use information::InformationCollection;
+use filter::package_filter::PackageFilter;
 
 pub struct InformationCollectionFilter {}
 
 impl InformationCollectionFilter {
-    pub fn filter_by_package(collection: InformationCollection, search: &str) -> InformationCollection {
+    /// Search the collection of [`Information`] instances for [`Packages`] with given search string
+    ///
+    /// If `exact` is `TRUE` only the package's key is tested and has to be the same as the search
+    /// If `exact` is `FALSE` packages are returned that contain the search string in either the key or description
+    pub fn filter_by_package(collection: InformationCollection, search: &str, exact: bool) -> InformationCollection {
         collection.into_iter().filter_map(|(host, information)| {
-            let found_package = information.packages.all.iter().find(|&(_, package)| {
-                package.description.contains(search) || package.key.contains(search)
-            });
-            if found_package.is_none() {
-                None
+            let packages = information.packages.clone();
+            if 0 < PackageFilter::filter(packages, search, exact).len() {
+                Some((host, information))
             } else {
-                Some((host, information.clone()))
+                None
             }
         }).collect()
     }
@@ -34,8 +37,7 @@ mod tests {
     #[test]
     fn filter_by_package_test() {
         let collection = build_test_collection();
-
-        let result = InformationCollectionFilter::filter_by_package(collection, "not-a-package");
+        let result = InformationCollectionFilter::filter_by_package(collection, "not-a-package", false);
 
         assert_eq!(0, result.len());
     }

@@ -1,3 +1,4 @@
+use std;
 use std::error::Error as StdError;
 use std::fmt;
 use ssh2::Error as Ssh2Error;
@@ -75,5 +76,11 @@ impl From<Ssh2Error> for FlatError {
 impl<'a> From<&'a Ssh2Error> for FlatError {
     fn from(error: &Ssh2Error) -> Self {
         FlatError::from_error(error)
+    }
+}
+
+impl From<std::io::Error> for FlatError {
+    fn from(error: std::io::Error) -> Self {
+        FlatError::from_error(&error)
     }
 }

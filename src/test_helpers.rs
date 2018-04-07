@@ -1,10 +1,13 @@
 //struct TestHelpers;
 use std::path::PathBuf;
 use std::fs;
+use std::collections::HashMap;
+use information::*;
+use serde_json;
 
 /// Returns the path to the testing resources
 pub fn get_test_resources_path() -> PathBuf {
-    let file_path = env!("CARGO_MANIFEST_DIR").to_string() + "/tests";
+    let file_path = format!("{}/{}", env!("CARGO_MANIFEST_DIR"), "tests");
     match fs::canonicalize(&file_path) {
         Ok(f) => f,
         Err(e) => panic!("Error for file {}: {}", file!(), e),
@@ -20,6 +23,17 @@ pub fn get_test_resource_path(resource_name: &str) -> PathBuf {
     }
 
     file_path
+}
+
+/// Return [`Packages`] instance for testing
+pub fn get_test_packages() -> Packages {
+    let content = include_str!(concat!(env!("CARGO_MANIFEST_DIR"), "/tests/packages.json"));
+    let packages: HashMap<String, Package> = match serde_json::from_str(&content) {
+        Ok(collection) => collection,
+        Err(e) => panic!("Could not deserialize test packages: {}", e),
+    };
+
+    Packages { all: packages }
 }
 
 #[allow(unused)]

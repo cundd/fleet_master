@@ -31,16 +31,7 @@ impl SshUriScanner {
 #[cfg(test)]
 mod tests {
     use super::*;
-
     use super::super::ssh_uri::SshUri;
-
-
-    // username:password@host:port command
-    // username@host:port command
-    // username:password@host command
-    // username@host command
-    // private_key+username@host:port command
-
 
     #[test]
     fn scan_uri_test() {
@@ -65,14 +56,14 @@ mod tests {
         //
         //        let information = scanner.get_information_for_uri(json_file_path.to_str().unwrap()).unwrap();
         //        assert_eq!("0.1.0", information.fleet.protocol);
-        //        assert_eq!(56, information.packages.all.len());
+        //        assert_eq!(56, information.packages.len());
         //
-        //        let core: &Package = &information.packages.all["core"];
+        //        let core: &Package = &information.packages["core"];
         //        assert_eq!(core.key, "core");
         //        assert_eq!(core.state, "active");
         //        assert_eq!(core.is_active(), true);
         //
-        //        let recycler: &Package = &information.packages.all["recycler"];
+        //        let recycler: &Package = &information.packages["recycler"];
         //        assert_eq!(recycler.key, "recycler");
         //        assert_eq!(recycler.state, "inactive");
         //        assert_eq!(recycler.is_active(), false);

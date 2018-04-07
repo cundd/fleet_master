@@ -5,10 +5,17 @@ use std::collections::HashMap;
 pub struct PackageFilter {}
 
 impl PackageFilter {
-    pub fn filter_by_package(packages: Packages, search: &str) -> Packages {
-        let all: HashMap<String, Package> = packages.all;
-        let filtered: HashMap<String, Package> = all.into_iter().filter(|&(_, ref package)| {
-            package.description.contains(search) || package.key.contains(search)
+    /// Search for [`Package`s] matching the given search string
+    ///
+    /// If `exact` is `TRUE` only the package's key is tested and has to be the same as the search
+    /// If `exact` is `FALSE` packages are returned that contain the search string in either the key or description
+    pub fn filter(packages: Packages, search: &str, exact: bool) -> Packages {
+        let filtered: HashMap<String, Package> = packages.into_iter().filter(|&(_, ref package)| {
+            if exact {
+                package.key == search
+            } else {
+                package.description.contains(search) || package.key.contains(search)
+            }
         }).collect();
 
         Packages::new_with_packages(filtered)
@@ -19,12 +26,31 @@ impl PackageFilter {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use information::Information;
+    use test_helpers::*;
+
+    #[test]
+    fn filter_by_package_empty_test() {
+        assert_eq!(0, PackageFilter::filter(get_test_packages(), "not-a-package", false).len());
+        assert_eq!(0, PackageFilter::filter(get_test_packages(), "not-a-package", true).len());
+    }
 
     #[test]
     fn filter_by_package_test() {
-        let result = PackageFilter::filter_by_package(Information::new_for_current_env().packages, "not-a-package");
+        let result = PackageFilter::filter(get_test_packages(), "news", false);
+        assert_eq!(3, result.len());
 
-        assert_eq!(0, result.len());
+
+        let result = PackageFilter::filter(get_test_packages(), "newsletter", false);
+        assert_eq!(1, result.len());
+        assert!(result.all.get("news").is_none());
+        assert!(result.all.get("newsletter").is_some());
+        assert_eq!("newsletter", result["newsletter"].key);
+    }
+
+    #[test]
+    fn filter_by_package_exact_test() {
+        let result = PackageFilter::filter(get_test_packages(), "news", true);
+
+        assert_eq!(1, result.len());
     }
 }

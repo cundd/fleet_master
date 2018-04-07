@@ -50,6 +50,6 @@ mod tests {
         assert_eq!(constants::PROVIDER_VERSION, info.fleet.provider_version);
         assert_eq!(constants::PROVIDER_NAME, info.fleet.provider_name);
 
-        assert_eq!(0, info.packages.all.len());
+        assert_eq!(0, info.packages.len());
     }
 }

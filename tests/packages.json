@@ -1,0 +1,440 @@
+{
+    "backend": {
+        "key": "backend",
+        "version": "8.7.12",
+        "description": "Classes for the TYPO3 backend.",
+        "state": "active"
+    },
+    "viewpage": {
+        "key": "viewpage",
+        "version": "8.7.12",
+        "description": "Shows the frontend webpage inside the backend frameset.",
+        "state": "active"
+    },
+    "lang": {
+        "key": "lang",
+        "version": "8.7.12",
+        "description": "Contains all the core language labels in a set of files mostly of the \"locallang\" format. This extension is always required in a TYPO3 install.",
+        "state": "active"
+    },
+    "workspaces": {
+        "key": "workspaces",
+        "version": "8.7.12",
+        "description": "Adds workspaces functionality with custom stages to TYPO3.",
+        "state": "inactive"
+    },
+    "install": {
+        "key": "install",
+        "version": "8.7.12",
+        "description": "The Install Tool mounted as the module Tools>Install in TYPO3.",
+        "state": "active"
+    },
+    "tika": {
+        "key": "tika",
+        "version": "2.4.0",
+        "description": "Apache Tika for TYPO3",
+        "state": "active"
+    },
+    "solrfluid": {
+        "key": "solrfluid",
+        "version": "2.0.0",
+        "description": "Apache Solr for TYPO3",
+        "state": "inactive"
+    },
+    "taskcenter": {
+        "key": "taskcenter",
+        "version": "8.7.12",
+        "description": "The Task Center is the framework for a host of other extensions, see below.",
+        "state": "inactive"
+    },
+    "setup": {
+        "key": "setup",
+        "version": "8.7.12",
+        "description": "Allows users to edit a limited set of options for their user profile, eg. preferred language and their name and email address.",
+        "state": "active"
+    },
+    "pagebrowse": {
+        "key": "pagebrowse",
+        "version": "1.3.4",
+        "description": "Universal page browser",
+        "state": "inactive"
+    },
+    "static_info_tables": {
+        "key": "static_info_tables",
+        "version": "6.4.3",
+        "description": "Data and API for countries, languages and currencies.",
+        "state": "active"
+    },
+    "context_help": {
+        "key": "context_help",
+        "version": "8.7.12",
+        "description": "Provides context sensitive help to tables, fields and modules in the system languages.",
+        "state": "active"
+    },
+    "documentation": {
+        "key": "documentation",
+        "version": "8.7.12",
+        "description": "Backend module for TYPO3 to list and show documentation of loaded extensions as well as custom documents.",
+        "state": "active"
+    },
+    "t3editor": {
+        "key": "t3editor",
+        "version": "8.7.12",
+        "description": "JavaScript-driven editor with syntax highlighting and codecompletion. Based on CodeMirror.",
+        "state": "active"
+    },
+    "gridelements": {
+        "key": "gridelements",
+        "version": "8.0.0-dev",
+        "description": "This extension integrates the grid layout concept to regular content elements.",
+        "state": "active"
+    },
+    "info_pagetsconfig": {
+        "key": "info_pagetsconfig",
+        "version": "8.7.12",
+        "description": "Displays the compiled Page TSconfig values relative to a page.",
+        "state": "active"
+    },
+    "sys_note": {
+        "key": "sys_note",
+        "version": "8.7.12",
+        "description": "Records with messages which can be placed on any page and contain instructions or other information related to a page or section.",
+        "state": "active"
+    },
+    "sv": {
+        "key": "sv",
+        "version": "8.7.12",
+        "description": "The core/default services. This includes the default authentication services for now.",
+        "state": "active"
+    },
+    "opendocs": {
+        "key": "opendocs",
+        "version": "8.7.12",
+        "description": "Shows opened documents by the user.",
+        "state": "inactive"
+    },
+    "fleet": {
+        "key": "fleet",
+        "version": "0.2.0",
+        "description": "Command line utility to provide system information for fleet",
+        "state": "active"
+    },
+    "fluid_styled_content": {
+        "key": "fluid_styled_content",
+        "version": "8.7.12",
+        "description": "A set of common content elements based on Fluid for Frontend output.",
+        "state": "inactive"
+    },
+    "css_styled_content": {
+        "key": "css_styled_content",
+        "version": "8.7.12",
+        "description": "Contains configuration for CSS content-rendering of the table \"tt_content\". This is meant as a modern substitute for the classic \"content (default)\" template which was based more on <font>-tags, while this is pure CSS.",
+        "state": "active"
+    },
+    "wizard_sortpages": {
+        "key": "wizard_sortpages",
+        "version": "8.7.12",
+        "description": "A little utility to rearrange the sorting order of pages in the backend.",
+        "state": "active"
+    },
+    "beuser": {
+        "key": "beuser",
+        "version": "8.7.12",
+        "description": "Backend user administration and overview. Allows you to compare the settings of users and verify their permissions and see who is online.",
+        "state": "active"
+    },
+    "bootstrap_grids": {
+        "key": "bootstrap_grids",
+        "version": "1.4.0",
+        "description": "Gridelements for bootstrap. Column grids, grids for simple accordions, tabs and content slider.",
+        "state": "active"
+    },
+    "indexed_search": {
+        "key": "indexed_search",
+        "version": "8.7.12",
+        "description": "Indexed Search Engine for TYPO3 pages, PDF-files, Word-files, HTML and text files. Provides a backend module for statistics of the indexer and a frontend plugin. Documentation can be found in the extension \"doc_indexed_search\".",
+        "state": "inactive"
+    },
+    "impexp": {
+        "key": "impexp",
+        "version": "8.7.12",
+        "description": "Import and Export of records from TYPO3 in a custom serialized format (.T3D) for data exchange with other TYPO3 systems.",
+        "state": "active"
+    },
+    "tt_address": {
+        "key": "tt_address",
+        "version": "3.2.2",
+        "description": "Displays a list of addresses from an address table on the page.",
+        "state": "active"
+    },
+    "eventnews": {
+        "key": "eventnews",
+        "version": "2.0.0",
+        "description": "Extend EXT:news with event and calendar functionality",
+        "state": "active"
+    },
+    "sr_feuser_register": {
+        "key": "sr_feuser_register",
+        "version": "5.0.0",
+        "description": "A self-registration variant of Kasper Skårhøj's Front End User Admin extension.",
+        "state": "active"
+    },
+    "sys_action": {
+        "key": "sys_action",
+        "version": "8.7.12",
+        "description": "Actions are 'programmed' admin tasks which can be performed by selected regular users from the Task Center. An action could be creation of backend users, fixed SQL SELECT queries, listing of records, direct edit access to selected records etc.",
+        "state": "inactive"
+    },
+    "form": {
+        "key": "form",
+        "version": "8.7.12",
+        "description": "Form Library, Plugin and Editor",
+        "state": "inactive"
+    },
+    "rte_ckeditor": {
+        "key": "rte_ckeditor",
+        "version": "8.7.12",
+        "description": "Integration of CKEditor as Rich Text Editor.",
+        "state": "active"
+    },
+    "dce": {
+        "key": "dce",
+        "version": "1.4.7",
+        "description": "Best flexform based content elements since 2012. With TCA mapping feature, simple backend view and much more features which makes it super easy to create own content element types.",
+        "state": "active"
+    },
+    "realurl": {
+        "key": "realurl",
+        "version": "2.2.1",
+        "description": "Speaking URLs for TYPO3",
+        "state": "active"
+    },
+    "core": {
+        "key": "core",
+        "version": "8.7.12",
+        "description": "The core library of TYPO3.",
+        "state": "active"
+    },
+    "cshmanual": {
+        "key": "cshmanual",
+        "version": "8.7.12",
+        "description": "Shows TYPO3 inline user manual.",
+        "state": "active"
+    },
+    "direct_mail_markers": {
+        "key": "direct_mail_markers",
+        "version": "0.0.0",
+        "description": "individuelle Marker für Direct Mail",
+        "state": "inactive"
+    },
+    "online_rechner": {
+        "key": "online_rechner",
+        "version": "",
+        "description": "Online Rechner",
+        "state": "active"
+    },
+    "extbase": {
+        "key": "extbase",
+        "version": "8.7.12",
+        "description": "A framework to build extensions for TYPO3 CMS.",
+        "state": "active"
+    },
+    "assetic": {
+        "key": "assetic",
+        "version": "1.5.0",
+        "description": "Cundd Assetic",
+        "state": "active"
+    },
+    "recycler": {
+        "key": "recycler",
+        "version": "8.7.12",
+        "description": "The recycler offers the possibility to restore deleted records or remove them from the database permanently. These actions can be applied to a single record, multiple records, and recursively to child records (ex. restoring a page can restore all content elements on that page). Filtering by page and by table provides a quick overview of deleted records before taking action on them.",
+        "state": "active"
+    },
+    "rsaauth": {
+        "key": "rsaauth",
+        "version": "8.7.12",
+        "description": "Contains a service to authenticate TYPO3 BE and FE users using private/public key encryption of passwords",
+        "state": "active"
+    },
+    "recordlist": {
+        "key": "recordlist",
+        "version": "8.7.12",
+        "description": "List of database-records",
+        "state": "active"
+    },
+    "mediace": {
+        "key": "mediace",
+        "version": "7.6.3",
+        "description": "Friends of TYPO3",
+        "state": "active"
+    },
+    "filemetadata": {
+        "key": "filemetadata",
+        "version": "8.7.12",
+        "description": "Add advanced metadata to File.",
+        "state": "active"
+    },
+    "solr": {
+        "key": "solr",
+        "version": "7.0.2",
+        "description": "Apache Solr for TYPO3",
+        "state": "active"
+    },
+    "fluid": {
+        "key": "fluid",
+        "version": "8.7.12",
+        "description": "Fluid is a next-generation templating engine which makes the life of extension authors a lot easier!",
+        "state": "active"
+    },
+    "tstemplate": {
+        "key": "tstemplate",
+        "version": "8.7.12",
+        "description": "Framework for management of TypoScript template records for the CMS frontend.",
+        "state": "active"
+    },
+    "newsletter": {
+        "key": "newsletter",
+        "version": "3.2.0",
+        "description": "TYPO3 extension to send any pages as Newsletter and provide statistics on opened emails and clicked links.",
+        "state": "active"
+    },
+    "info": {
+        "key": "info",
+        "version": "8.7.12",
+        "description": "Shows various infos",
+        "state": "active"
+    },
+    "lowlevel": {
+        "key": "lowlevel",
+        "version": "8.7.12",
+        "description": "Enables the 'Config' and 'DB Check' modules for technical analysis of the system. This includes raw database search, checking relations, counting pages and records etc.",
+        "state": "active"
+    },
+    "news": {
+        "key": "news",
+        "version": "6.0.0",
+        "description": "Versatile news extension, based on extbase & fluid for TYPO3 CMS",
+        "state": "active"
+    },
+    "filelist": {
+        "key": "filelist",
+        "version": "8.7.12",
+        "description": "Listing of files in the directory",
+        "state": "active"
+    },
+    "feedit": {
+        "key": "feedit",
+        "version": "8.7.12",
+        "description": "Adds basic frontend editing capabilities to TYPO3.",
+        "state": "inactive"
+    },
+    "version": {
+        "key": "version",
+        "version": "8.7.12",
+        "description": "Backend Interface for management of the versioning API.",
+        "state": "active"
+    },
+    "extensionmanager": {
+        "key": "extensionmanager",
+        "version": "8.7.12",
+        "description": "TYPO3 Extension Manager",
+        "state": "active"
+    },
+    "solrfal": {
+        "key": "solrfal",
+        "version": "4.2.0",
+        "description": "Apache Solr for TYPO3 - File Indexing",
+        "state": "active"
+    },
+    "about": {
+        "key": "about",
+        "version": "8.7.12",
+        "description": "Shows info about TYPO3, installed extensions and a separate module for available modules.",
+        "state": "active"
+    },
+    "linkvalidator": {
+        "key": "linkvalidator",
+        "version": "8.7.12",
+        "description": "Link Validator checks the links in your website for validity. It can validate all kinds of links: internal, external and file links. Scheduler is supported to run Link Validator via Cron including the option to send status mails, if broken links were detected.",
+        "state": "active"
+    },
+    "google_services": {
+        "key": "google_services",
+        "version": "2.0.0",
+        "description": "A package of usefully Google Services as library for other extensions or directly use: Google Sitemaps incl. different Sitemap Provider, Google Verify, Google Analytics, Google Document Viewer",
+        "state": "active"
+    },
+    "powermail": {
+        "key": "powermail",
+        "version": "3.19.0",
+        "description": "Powermail is a well-known, editor-friendly, powerful and easy to use mailform extension with a lots of features",
+        "state": "active"
+    },
+    "felogin": {
+        "key": "felogin",
+        "version": "8.7.12",
+        "description": "A template-based plugin to log in Website Users in the Frontend",
+        "state": "active"
+    },
+    "scheduler": {
+        "key": "scheduler",
+        "version": "8.7.12",
+        "description": "The TYPO3 Scheduler let's you register tasks to happen at a specific time",
+        "state": "active"
+    },
+    "sr_email_subscribe": {
+        "key": "sr_email_subscribe",
+        "version": "5.0.0",
+        "description": "An email address subscription variant of the Front End User Registration.",
+        "state": "active"
+    },
+    "wizard_crpages": {
+        "key": "wizard_crpages",
+        "version": "8.7.12",
+        "description": "A little utility to create many empty pages in one batch. Great for making a quick page structure.",
+        "state": "active"
+    },
+    "cundd_composer": {
+        "key": "cundd_composer",
+        "version": "4.0.1",
+        "description": "Cundd Composer",
+        "state": "active"
+    },
+    "frontend": {
+        "key": "frontend",
+        "version": "8.7.12",
+        "description": "Classes for the frontend of TYPO3.",
+        "state": "active"
+    },
+    "carousel": {
+        "key": "carousel",
+        "version": "1.2.0-dev",
+        "description": "Bootstrap Carousel",
+        "state": "active"
+    },
+    "reports": {
+        "key": "reports",
+        "version": "8.7.12",
+        "description": "The reports module groups several system reports.",
+        "state": "active"
+    },
+    "saltedpasswords": {
+        "key": "saltedpasswords",
+        "version": "8.7.12",
+        "description": "Uses a password hashing framework for storing passwords. Integrates into the system extension \"felogin\". Use SSL or rsaauth to secure datatransfer! Please read the manual first!",
+        "state": "active"
+    },
+    "belog": {
+        "key": "belog",
+        "version": "8.7.12",
+        "description": "Displays backend log, both per page and system wide. Available as the module Tools>Log (system wide overview) and Web>Info/Log (page relative overview).",
+        "state": "active"
+    },
+    "func": {
+        "key": "func",
+        "version": "8.7.12",
+        "description": "Advanced functions",
+        "state": "active"
+    }
+}

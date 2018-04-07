@@ -18,11 +18,7 @@ pub struct SshProvider;
 /// Fetch information from the server defined in `configuration`
 fn fetch_information_through_ssh(configuration: &Configuration) -> Result<Information, Error> {
     let address = format!("{}:{}", configuration.host(), configuration.port());
-    let tcp = match TcpStream::connect(&address) {
-        Ok(t) => t,
-        Err(e) => return Err(Error::from_error(&e)),
-    };
-
+    let tcp = TcpStream::connect(&address)?;
     let session: Session = SshConnector::new().connect(&configuration, &tcp)?;
 
     let mut command = String::new();
@@ -41,11 +37,7 @@ fn call_ssh_command<S: Into<String>>(command: S, session: &Session) -> Result<St
     let command_string: String = command.into();
 
     // Open channel
-    let mut channel: Channel = match session.channel_session() {
-        Ok(c) => c,
-        Err(e) => return Err(Error::from_error(&e))
-    };
-
+    let mut channel: Channel = session.channel_session()?;
     // Execute the command
     channel.exec(&command_string).unwrap();
 
@@ -55,18 +47,14 @@ fn call_ssh_command<S: Into<String>>(command: S, session: &Session) -> Result<St
         return Err(Error::from_error(&e));
     }
 
-    let exit_status = match channel.exit_status() {
-        Ok(exit_status) => exit_status,
-        Err(e) => return Err(Error::from_error(&e))
-    };
-
+    let exit_status = channel.exit_status()?;
     if exit_status == 0 && output.len() > 0 {
-        return Ok(output)
+        return Ok(output);
     }
 
     let mut error_output = String::new();
     match Read::read_to_string(&mut channel.stderr(), &mut error_output) {
-        Ok(_) => return Err(Error::new(error_output.trim())),
+        Ok(_) => Err(Error::new(error_output.trim())),
         Err(error) => Err(Error::from_error(&error)),
     }
 }
@@ -136,7 +124,7 @@ impl SshProvider {
             });
         }
 
-        for _ in 0..split_count{
+        for _ in 0..split_count {
             let (information_collection_l, error_collection_l) = rx.recv().unwrap();
             error_collection.extend(error_collection_l);
             information_collection.extend(information_collection_l);
@@ -146,7 +134,7 @@ impl SshProvider {
     }
 
     fn get_number_of_threads(&self) -> usize {
-        return 4
+        return 4;
     }
 }
 
@@ -173,7 +161,7 @@ mod tests {
             "not-a-user",
             Helper::get_ssh_file_path("not-a-file"),
             None,
-            None
+            None,
         );
 
         assert!(provider.get_information(&configuration).is_err());

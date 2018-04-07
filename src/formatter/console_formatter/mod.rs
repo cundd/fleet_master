@@ -113,7 +113,7 @@ impl Matrix<String> {
 
         rows.push(PACKAGE_HEADERS.iter().map(|x| String::from(x.to_owned())).collect());
 
-        let all_packages: BTreeMap<_, _> = packages.all.iter().collect();
+        let all_packages: BTreeMap<_, _> = packages.iter().collect();
         for (_, package) in all_packages {
             let mut cells: Vec<String> = Vec::with_capacity(PACKAGE_HEADERS.len());
             cells.push(package.key.to_owned());

@@ -1,4 +1,7 @@
 use std::collections::HashMap;
+use std::collections::hash_map::Iter;
+use std::collections::hash_map::IntoIter;
+use std::ops::Index;
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Clone)]
 pub struct Package {
@@ -37,8 +40,26 @@ impl Packages {
     pub fn len(&self) -> usize {
         self.all.len()
     }
+
+    pub fn iter(&self) -> Iter<String, Package> {
+        self.all.iter()
+    }
+
+    pub fn into_iter(self) -> IntoIter<String, Package> {
+        self.all.into_iter()
+    }
+
+    pub fn get(&self, key: &str) -> Option<&Package> {
+        self.all.get(key)
+    }
 }
 
+impl<'a> Index<&'a str> for Packages {
+    type Output = Package;
+    fn index(&self, s: &'a str) -> &Self::Output { // '
+        &self.all[s]
+    }
+}
 
 //"all": {
 //    "core": {
