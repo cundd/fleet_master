@@ -54,7 +54,14 @@ fn call_ssh_command<S: Into<String>>(command: S, session: &Session) -> Result<St
 
     let mut error_output = String::new();
     match Read::read_to_string(&mut channel.stderr(), &mut error_output) {
-        Ok(_) => Err(Error::new(error_output.trim())),
+        Ok(_) => {
+            let error_output_trimmed = error_output.trim();
+            if error_output_trimmed.len() > 0 {
+                Err(Error::new(error_output_trimmed))
+            } else {
+                Err(Error::new(output.trim()))
+            }
+        }
         Err(error) => Err(Error::from_error(&error)),
     }
 }
