@@ -14,6 +14,26 @@ fleet help
 ```
 
 
+Building
+--------
+
+### macOS 10.10+
+
+The dependency [libssh2](https://github.com/alexcrichton/ssh2-rs) links against OpenSSL and to compile it, it needs to 
+find the OpenSSL headers. OpenSSL headers have been removed on macOS 10.10+, but can be installed via 
+[Homebrew](https://brew.sh/):
+
+```sh
+brew install openssl
+```
+
+A compatible version of `cmake` also has to be installed:
+
+```sh
+brew install cmake
+```
+
+
 Configuration
 -------------
 
