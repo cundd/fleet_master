@@ -25,10 +25,10 @@ mod sub_command;
 
 use clap::{Arg, App, SubCommand};
 
-use formatter::*;
-use printer::*;
-use sub_command::*;
-use sub_command::SubCommand as FleetSubCommand;
+use crate::formatter::*;
+use crate::printer::*;
+use crate::sub_command::*;
+use crate::sub_command::SubCommand as FleetSubCommand;
 
 fn main() {
     let format_arg = Arg::with_name("format")

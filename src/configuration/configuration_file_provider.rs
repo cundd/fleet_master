@@ -1,5 +1,5 @@
 use std::path::*;
-use error::Error;
+use crate::error::Error;
 use std::env;
 
 
@@ -30,7 +30,7 @@ pub fn detect_configuration_file() -> Result<PathBuf, Error> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use test_helpers;
+    use crate::test_helpers;
 
     // Warning: The tests will only pass if they are not run in parallel
     // RUST_TEST_THREADS=1

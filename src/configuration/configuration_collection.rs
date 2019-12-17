@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 use std::path::Path;
 
-use error::Error;
+use crate::error::Error;
 use super::Configuration;
 
 pub type ConfigurationCollection = HashMap<String, Configuration>;

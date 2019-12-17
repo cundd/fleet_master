@@ -1,8 +1,8 @@
 use std::fs::File;
 use std::path::*;
 use std::ffi::OsStr;
-use configuration::*;
-use error::Error;
+use crate::configuration::*;
+use crate::error::Error;
 use serde_json;
 
 #[cfg(feature = "yaml")]
@@ -70,7 +70,7 @@ fn build_file_format_error(extension: &OsStr) -> Error {
 mod tests {
     use super::*;
     use std::path::PathBuf;
-    use test_helpers;
+    use crate::test_helpers;
 
     fn assert_configuration(configurations: ConfigurationCollection) {
         assert_eq!(

@@ -7,7 +7,7 @@ use super::FleetError;
 #[derive(Debug)]
 pub struct Error {
     msg: String,
-    cause: Option<&'static error::Error>,
+    cause: Option<&'static dyn error::Error>,
 }
 
 impl super::FleetError for Error {
@@ -18,14 +18,14 @@ impl super::FleetError for Error {
         }
     }
 
-    fn from_error(error: &error::Error) -> Self {
+    fn from_error(error: &dyn error::Error) -> Self {
         Self {
             msg: error.description().to_owned(),
             cause: None, //cause: Some(&error)
         }
     }
 
-    fn with_error_and_details<S: Into<String>>(error: &error::Error, message: S) -> Self {
+    fn with_error_and_details<S: Into<String>>(error: &dyn error::Error, message: S) -> Self {
         Self {
             msg: format!("{} (Details: '{}')", error.description(), message.into()),
             cause: None, //cause: Some(&error)
@@ -42,7 +42,7 @@ impl error::Error for Error {
         self.message()
     }
 
-    fn cause(&self) -> Option<&error::Error> {
+    fn cause(&self) -> Option<&dyn error::Error> {
         self.cause
     }
 }

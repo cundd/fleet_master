@@ -8,9 +8,9 @@ use serde_json;
 use ssh2::Session;
 use ssh2::Channel;
 
-use error::*;
-use information::*;
-use configuration::*;
+use crate::error::*;
+use crate::information::*;
+use crate::configuration::*;
 use self::ssh_connector::SshConnector;
 
 pub struct SshProvider;
@@ -155,8 +155,8 @@ impl super::Provider for SshProvider {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use configuration::Configuration;
-    use configuration::Helper;
+    use crate::configuration::Configuration;
+    use crate::configuration::Helper;
 
     #[test]
     fn get_information_for_uri_test() {

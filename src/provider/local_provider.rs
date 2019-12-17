@@ -1,5 +1,5 @@
-use information::*;
-use error::Error;
+use crate::information::*;
+use crate::error::Error;
 
 pub struct LocalProvider;
 
@@ -19,7 +19,7 @@ impl super::Provider for LocalProvider {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use constants;
+    use crate::constants;
 
     #[test]
     fn get_information_test() {

@@ -1,5 +1,5 @@
 use std::collections::HashMap;
-use constants;
+use crate::constants;
 
 #[derive(Clone, Serialize, Deserialize, Debug, PartialEq)]
 pub struct Application {

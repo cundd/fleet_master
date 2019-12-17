@@ -1,10 +1,10 @@
 use clap::ArgMatches;
 
-use error::Error;
-use formatter::FormatterTrait;
-use printer::Printer;
-use sub_command::SshCommandTrait;
-use sub_command::SubCommandTrait;
+use crate::error::Error;
+use crate::formatter::FormatterTrait;
+use crate::printer::Printer;
+use crate::sub_command::SshCommandTrait;
+use crate::sub_command::SubCommandTrait;
 
 pub struct PackagesCommand;
 

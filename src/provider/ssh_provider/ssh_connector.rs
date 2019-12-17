@@ -3,8 +3,8 @@ use std::env;
 
 use ssh2::Session;
 
-use configuration::Configuration;
-use error::*;
+use crate::configuration::Configuration;
+use crate::error::*;
 
 pub struct SshConnector {}
 

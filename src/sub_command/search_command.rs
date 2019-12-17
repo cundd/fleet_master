@@ -1,11 +1,11 @@
 use clap::ArgMatches;
-use error::Error;
-use formatter::*;
-use printer::Printer;
-use sub_command::SubCommandTrait;
-use sub_command::SshCommandTrait;
-use filter::InformationCollectionFilter;
-use filter::PackageFilter;
+use crate::error::Error;
+use crate::formatter::*;
+use crate::printer::Printer;
+use crate::sub_command::SubCommandTrait;
+use crate::sub_command::SshCommandTrait;
+use crate::filter::InformationCollectionFilter;
+use crate::filter::PackageFilter;
 
 pub struct SearchCommand;
 

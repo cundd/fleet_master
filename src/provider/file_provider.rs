@@ -1,8 +1,8 @@
 use std::fs;
 use std::fs::File;
 use std::path::PathBuf;
-use information::*;
-use error::Error;
+use crate::information::*;
+use crate::error::Error;
 use serde_json;
 
 pub struct FileProvider;
@@ -39,8 +39,8 @@ impl super::Provider for FileProvider {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use information::Package;
-    use test_helpers;
+    use crate::information::Package;
+    use crate::test_helpers;
 
     #[test]
     fn get_information_for_uri_test() {

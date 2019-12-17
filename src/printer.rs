@@ -1,6 +1,6 @@
 use ansi_term::Colour;
-use error::Error;
-use error::ErrorCollection;
+use crate::error::Error;
+use crate::error::ErrorCollection;
 
 pub struct Printer;
 

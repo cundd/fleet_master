@@ -192,7 +192,7 @@ fn patch_key_path(p: &PathBuf) -> Option<PathBuf> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use configuration::Helper;
+    use crate::configuration::Helper;
 
     // username:password@host:port command
     // username@host:port command

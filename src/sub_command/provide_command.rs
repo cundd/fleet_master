@@ -1,10 +1,10 @@
 use clap::ArgMatches;
-use error::Error;
-use information::Platform;
-use formatter::*;
-use printer::Printer;
-use provider::*;
-use sub_command::SubCommandTrait;
+use crate::error::Error;
+use crate::information::Platform;
+use crate::formatter::*;
+use crate::printer::Printer;
+use crate::provider::*;
+use crate::sub_command::SubCommandTrait;
 
 pub struct ProvideCommand;
 

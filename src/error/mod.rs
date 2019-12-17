@@ -13,9 +13,9 @@ pub type ErrorCollection = HashMap<String, Error>;
 trait FleetError: StdError + Display {
     fn new<S: Into<String>>(message: S) -> Self;
 
-    fn from_error(error: &StdError) -> Self;
+    fn from_error(error: &dyn StdError) -> Self;
 
-    fn with_error_and_details<S: Into<String>>(error: &StdError, message: S) -> Self;
+    fn with_error_and_details<S: Into<String>>(error: &dyn StdError, message: S) -> Self;
 
     fn message(&self) -> &str;
 }

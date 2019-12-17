@@ -2,7 +2,7 @@
 use std::path::PathBuf;
 use std::fs;
 use std::collections::HashMap;
-use information::*;
+use crate::information::*;
 use serde_json;
 
 /// Returns the path to the testing resources

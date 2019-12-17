@@ -4,7 +4,7 @@ mod table;
 
 use std::collections::BTreeMap;
 
-use information::*;
+use crate::information::*;
 use self::table::Table;
 use self::matrix::Matrix;
 

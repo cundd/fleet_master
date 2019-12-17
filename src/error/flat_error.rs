@@ -14,13 +14,13 @@ impl FlatError {
             msg: message.into(),
         }
     }
-    pub fn from_error(error: &StdError) -> Self {
+    pub fn from_error(error: &dyn StdError) -> Self {
         Self {
             msg: error.description().to_owned(),
         }
     }
 
-    pub fn with_error_and_details<S: Into<String>>(error: &StdError, message: S) -> Self {
+    pub fn with_error_and_details<S: Into<String>>(error: &dyn StdError, message: S) -> Self {
         Self {
             msg: format!("{} (Details: '{}')", error.description(), message.into()),
         }
@@ -36,11 +36,11 @@ impl super::FleetError for FlatError {
         Self::new(message)
     }
 
-    fn from_error(error: &StdError) -> Self {
+    fn from_error(error: &dyn StdError) -> Self {
         Self::from_error(error)
     }
 
-    fn with_error_and_details<S: Into<String>>(error: &StdError, message: S) -> Self {
+    fn with_error_and_details<S: Into<String>>(error: &dyn StdError, message: S) -> Self {
         Self::with_error_and_details(error, message)
     }
 
@@ -61,8 +61,8 @@ impl fmt::Display for FlatError {
     }
 }
 
-impl<'a> From<&'a StdError> for FlatError {
-    fn from(error: &StdError) -> Self {
+impl<'a> From<&'a dyn StdError> for FlatError {
+    fn from(error: &dyn StdError) -> Self {
         FlatError::from_error(error)
     }
 }
