@@ -1,6 +1,6 @@
 use std::path::*;
-use std::env;
 
+use dirs;
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Clone)]
 pub struct SshConfiguration {
@@ -176,7 +176,7 @@ fn patch_key_path(p: &PathBuf) -> Option<PathBuf> {
     if p.starts_with("~/") {
         let path_relative: String = p.to_string_lossy().chars().skip(2).collect();
 
-        match env::home_dir() {
+        match dirs::home_dir() {
             Some(mut home) => {
                 home.push(path_relative);
 
@@ -191,10 +191,11 @@ fn patch_key_path(p: &PathBuf) -> Option<PathBuf> {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
     use crate::configuration::Helper;
 
-    // username:password@host:port command
+    use super::*;
+
+// username:password@host:port command
     // username@host:port command
     // username:password@host command
     // username@host command
