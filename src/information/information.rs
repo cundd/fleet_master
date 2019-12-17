@@ -1,5 +1,7 @@
-use super::*;
 use crate::constants;
+
+use super::*;
+
 //use super::fleet::Fleet;
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Clone)]
@@ -15,7 +17,7 @@ impl Information {
         Information {
             fleet: Fleet::new(constants::PROTOCOL, constants::PROVIDER_VERSION, constants::PROVIDER_NAME),
             packages: Packages::new_for_current_env(),
-            system: System::new_for_current_env()
+            system: System::new_for_current_env(),
         }
     }
 

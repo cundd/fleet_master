@@ -1,9 +1,10 @@
-struct SshUriScanner;
-
+use error::Error;
 use std::iter;
 use std::str::Chars;
-use error::Error;
+
 use super::ssh_uri::SshUri;
+
+struct SshUriScanner;
 
 impl SshUriScanner {
     pub fn scan_uri<S>(uri: S) -> Result<SshUri, Error> where S: Into<String> {
@@ -36,12 +37,12 @@ mod tests {
     #[test]
     fn scan_uri_test() {
         let uri = SshUriScanner::scan_uri("username:password@host:port command").unwrap();
-        assert_eq! (uri, SshUri::new_with_password("host", "port", "command", "username", "password"));
+        assert_eq!(uri, SshUri::new_with_password("host", "port", "command", "username", "password"));
 
 
-        assert_eq! (uri.host, "host");
-        assert_eq! (uri.port, "port");
-        assert_eq! (uri.command, "command");
+        assert_eq!(uri.host, "host");
+        assert_eq!(uri.port, "port");
+        assert_eq!(uri.command, "command");
 
 
         //

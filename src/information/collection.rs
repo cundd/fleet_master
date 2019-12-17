@@ -1,7 +1,8 @@
 use std::collections::BTreeMap;
 
-use super::information::*;
 use crate::error::*;
+
+use super::information::*;
 
 pub type InformationCollection = BTreeMap<String, Information>;
 pub type CollectionResult = Result<(InformationCollection, ErrorCollection), Error>;

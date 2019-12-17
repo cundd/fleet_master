@@ -1,6 +1,7 @@
+use std::collections::HashMap;
+
 use crate::information::Package;
 use crate::information::Packages;
-use std::collections::HashMap;
 
 pub struct PackageFilter {}
 
@@ -25,8 +26,9 @@ impl PackageFilter {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
     use crate::test_helpers::*;
+
+    use super::*;
 
     #[test]
     fn filter_by_package_empty_test() {

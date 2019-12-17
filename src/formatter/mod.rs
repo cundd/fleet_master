@@ -1,13 +1,13 @@
-mod json_formatter;
-mod console_formatter;
-
-pub use self::console_formatter::ConsoleFormatter;
-pub use self::json_formatter::JsonFormatter;
-
 use clap::ArgMatches;
 
 use crate::error::*;
 use crate::information::*;
+
+pub use self::console_formatter::ConsoleFormatter;
+pub use self::json_formatter::JsonFormatter;
+
+mod json_formatter;
+mod console_formatter;
 
 type FormatterResult = Result<String, Error>;
 

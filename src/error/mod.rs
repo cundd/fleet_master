@@ -1,12 +1,12 @@
+use std::collections::HashMap;
+use std::error::Error as StdError;
+use std::fmt::Display;
+
+pub use self::flat_error::FlatError as Error;
+
 #[allow(unused)]
 mod error;
 mod flat_error;
-
-use std::error::Error as StdError;
-use std::fmt::Display;
-use std::collections::HashMap;
-
-pub use self::flat_error::FlatError as Error;
 
 pub type ErrorCollection = HashMap<String, Error>;
 

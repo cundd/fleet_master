@@ -1,12 +1,13 @@
-#[allow(dead_code)]
-mod matrix;
-mod table;
-
 use std::collections::BTreeMap;
 
 use crate::information::*;
-use self::table::Table;
+
 use self::matrix::Matrix;
+use self::table::Table;
+
+#[allow(dead_code)]
+mod matrix;
+mod table;
 
 pub struct ConsoleFormatter;
 

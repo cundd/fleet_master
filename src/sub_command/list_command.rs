@@ -1,9 +1,10 @@
 use clap::ArgMatches;
+
 use crate::error::Error;
 use crate::formatter::*;
 use crate::printer::Printer;
-use crate::sub_command::SubCommandTrait;
 use crate::sub_command::SshCommandTrait;
+use crate::sub_command::SubCommandTrait;
 
 pub struct ListCommand;
 

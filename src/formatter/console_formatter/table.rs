@@ -1,6 +1,7 @@
 use std::clone::Clone;
-use std::fmt::Display;
 use std::fmt::Debug;
+use std::fmt::Display;
+
 use super::matrix::*;
 
 pub struct Table;
@@ -86,12 +87,12 @@ mod tests {
     #[test]
     fn top_header_test() {
         let content = vec!(
-                          vec!("Fruit", "Color"),
-                          vec!("Apple", "Red"),
-                          vec!("Pear", "Green"),
-                          vec!("Banana", "Yellow"),
-                          vec!("Orange", "Orange"),
-                          );
+            vec!("Fruit", "Color"),
+            vec!("Apple", "Red"),
+            vec!("Pear", "Green"),
+            vec!("Banana", "Yellow"),
+            vec!("Orange", "Orange"),
+        );
 
         let matrix = Matrix::from_vec(content);
         let output = Table::top_header(&matrix);
@@ -106,12 +107,12 @@ mod tests {
     #[test]
     fn left_header_test() {
         let content = vec!(
-                          vec!("Fruit", "Color"),
-                          vec!("Apple", "Red"),
-                          vec!("Pear", "Green"),
-                          vec!("Banana", "Yellow"),
-                          vec!("Orange", "Orange"),
-                          );
+            vec!("Fruit", "Color"),
+            vec!("Apple", "Red"),
+            vec!("Pear", "Green"),
+            vec!("Banana", "Yellow"),
+            vec!("Orange", "Orange"),
+        );
 
         let matrix = Matrix::from_vec(content);
         let output = Table::left_header(&matrix);

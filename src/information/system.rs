@@ -1,5 +1,5 @@
-use super::platform::*;
 use super::application::*;
+use super::platform::*;
 
 #[derive(Clone, Serialize, Deserialize, Debug, PartialEq)]
 pub struct System {
@@ -11,7 +11,7 @@ impl System {
     pub fn new_for_current_env() -> Self {
         System {
             platform: Platform::new_for_current_env(),
-            application: Application::new_for_current_env()
+            application: Application::new_for_current_env(),
         }
     }
 }

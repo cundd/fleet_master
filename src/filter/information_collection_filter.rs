@@ -1,5 +1,5 @@
-use crate::information::InformationCollection;
 use crate::filter::package_filter::PackageFilter;
+use crate::information::InformationCollection;
 
 pub struct InformationCollectionFilter {}
 
@@ -23,8 +23,9 @@ impl InformationCollectionFilter {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
     use crate::information::Information;
+
+    use super::*;
 
     fn build_test_collection() -> InformationCollection {
         let mut collection = InformationCollection::new();

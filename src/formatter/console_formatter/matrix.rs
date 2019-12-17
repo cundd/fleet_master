@@ -7,7 +7,7 @@ use std::vec::IntoIter as VecIntoIter;
 pub struct Matrix<T> where T: Clone {
     rows: usize,
     columns: usize,
-    data: Vec<Vec<T>>
+    data: Vec<Vec<T>>,
 }
 
 impl<T> Matrix<T> where T: Clone + Debug {
@@ -116,7 +116,7 @@ mod tests {
             vec!("Pear", "Green"),
             vec!("Banana", "Yellow"),
             vec!("Orange", "Orange"),
-            )
+        )
     }
 
     #[test]
@@ -136,11 +136,11 @@ mod tests {
         let orange = vec!("Orange", "Orange");
 
         let data = vec!(
-                       apple.as_slice(),
-                       pear.as_slice(),
-                       banana.as_slice(),
-                       orange.as_slice(),
-                       );
+            apple.as_slice(),
+            pear.as_slice(),
+            banana.as_slice(),
+            orange.as_slice(),
+        );
         let m = Matrix::from_slice(&data);
 
         assert_eq!(4, m.rows);
@@ -162,13 +162,13 @@ mod tests {
         let m = Matrix::from_vec(build_data());
 
         assert_eq!(
-        vec!(
-            vec!("Apple", "Red"),
-            vec!("Pear", "Green"),
-            vec!("Banana", "Yellow"),
-            vec!("Orange", "Orange"),
+            vec!(
+                vec!("Apple", "Red"),
+                vec!("Pear", "Green"),
+                vec!("Banana", "Yellow"),
+                vec!("Orange", "Orange"),
             ),
-        *m.data()
+            *m.data()
         );
     }
 
@@ -227,7 +227,7 @@ mod tests {
             vec!(
                 vec!(11, 12, 13, 14),
                 vec!(21, 22, 23, 24),
-                )
+            )
         );
         let expected_rotated = Matrix::from_vec(
             vec!(
@@ -235,7 +235,7 @@ mod tests {
                 vec!(12, 22),
                 vec!(13, 23),
                 vec!(14, 24),
-                )
+            )
         );
 
         assert_eq!(expected_rotated, m.transpose());
@@ -248,7 +248,7 @@ mod tests {
             vec!(
                 vec!("Apple", "Pear", "Banana", "Orange"),
                 vec!("Red", "Green", "Yellow", "Orange"),
-                )
+            )
         );
 
 
@@ -282,14 +282,14 @@ mod tests {
         m.push_row(vec!("Grape", "Blue"));
 
         assert_eq!(
-        vec!(
-            vec!("Apple", "Red"),
-            vec!("Pear", "Green"),
-            vec!("Banana", "Yellow"),
-            vec!("Orange", "Orange"),
-            vec!("Grape", "Blue"),
+            vec!(
+                vec!("Apple", "Red"),
+                vec!("Pear", "Green"),
+                vec!("Banana", "Yellow"),
+                vec!("Orange", "Orange"),
+                vec!("Grape", "Blue"),
             ),
-        *m.data()
+            *m.data()
         );
         assert_eq!(5, m.rows);
     }
@@ -301,14 +301,14 @@ mod tests {
         m.prepend_row(vec!("Grape", "Blue"));
 
         assert_eq!(
-        vec!(
-            vec!("Grape", "Blue"),
-            vec!("Apple", "Red"),
-            vec!("Pear", "Green"),
-            vec!("Banana", "Yellow"),
-            vec!("Orange", "Orange"),
+            vec!(
+                vec!("Grape", "Blue"),
+                vec!("Apple", "Red"),
+                vec!("Pear", "Green"),
+                vec!("Banana", "Yellow"),
+                vec!("Orange", "Orange"),
             ),
-        *m.data()
+            *m.data()
         );
         assert_eq!(5, m.rows);
     }

@@ -1,4 +1,5 @@
 use std::collections::HashMap;
+
 use crate::constants;
 
 #[derive(Clone, Serialize, Deserialize, Debug, PartialEq)]
@@ -13,7 +14,7 @@ impl Application {
         Application {
             name: name.into(),
             version: version.into(),
-            meta: meta
+            meta: meta,
         }
     }
 
@@ -21,7 +22,7 @@ impl Application {
         Application::new(
             "fleet",
             constants::PROVIDER_VERSION,
-            HashMap::new()
+            HashMap::new(),
         )
     }
 }

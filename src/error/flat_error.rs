@@ -1,6 +1,7 @@
 use std;
 use std::error::Error as StdError;
 use std::fmt;
+
 use ssh2::Error as Ssh2Error;
 
 #[derive(Debug)]

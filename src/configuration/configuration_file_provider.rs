@@ -1,7 +1,7 @@
-use std::path::*;
-use crate::error::Error;
 use std::env;
+use std::path::*;
 
+use crate::error::Error;
 
 pub fn detect_configuration_file() -> Result<PathBuf, Error> {
     let pwd = match env::current_dir() {
@@ -29,8 +29,9 @@ pub fn detect_configuration_file() -> Result<PathBuf, Error> {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
     use crate::test_helpers;
+
+    use super::*;
 
     // Warning: The tests will only pass if they are not run in parallel
     // RUST_TEST_THREADS=1
@@ -40,7 +41,7 @@ mod tests {
             return match test_threads_count_str.parse::<i32>() {
                 Ok(i) => i > 1,
                 Err(_) => false
-            }
+            };
         }
 
         return true;

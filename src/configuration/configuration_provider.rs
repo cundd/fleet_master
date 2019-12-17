@@ -1,13 +1,13 @@
+use std::ffi::OsStr;
 use std::fs::File;
 use std::path::*;
-use std::ffi::OsStr;
-use crate::configuration::*;
-use crate::error::Error;
-use serde_json;
 
+use serde_json;
 #[cfg(feature = "yaml")]
 use serde_yaml;
 
+use crate::configuration::*;
+use crate::error::Error;
 
 pub struct ConfigurationProvider;
 
@@ -68,9 +68,11 @@ fn build_file_format_error(extension: &OsStr) -> Error {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
     use std::path::PathBuf;
+
     use crate::test_helpers;
+
+    use super::*;
 
     fn assert_configuration(configurations: ConfigurationCollection) {
         assert_eq!(

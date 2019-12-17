@@ -1,12 +1,13 @@
 extern crate ansi_term;
 
+use ansi_term::Colour;
 use clap::ArgMatches;
+
 use crate::error::Error;
 use crate::formatter::*;
 use crate::printer::prepare_message;
-use crate::sub_command::SubCommandTrait;
 use crate::sub_command::SshCommandTrait;
-use ansi_term::Colour;
+use crate::sub_command::SubCommandTrait;
 
 pub struct CheckCommand;
 

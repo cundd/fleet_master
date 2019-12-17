@@ -3,6 +3,7 @@ use serde_json;
 
 use crate::error::*;
 use crate::information::*;
+
 use super::FormatterResult;
 
 pub struct JsonFormatter;

@@ -1,7 +1,8 @@
 use clap::ArgMatches;
+
 use crate::error::Error;
-use crate::information::Platform;
 use crate::formatter::*;
+use crate::information::Platform;
 use crate::printer::Printer;
 use crate::provider::*;
 use crate::sub_command::SubCommandTrait;

@@ -20,7 +20,7 @@ impl SubCommandTrait for PackagesCommand {
                     return Err(Error::new("No hosts given"));
                 }
                 self.fetch_information_for_hosts(hosts, subcommand_matches_option)?
-            },
+            }
             None => self.fetch_information_collection(subcommand_matches_option)?,
         };
 

@@ -1,25 +1,27 @@
+use std::path::PathBuf;
+
+use clap::ArgMatches;
+
+use crate::configuration::*;
+use crate::error::Error;
+use crate::error::ErrorCollection;
+use crate::formatter::*;
+use crate::information::*;
+use crate::provider::*;
+
+use self::check_command::CheckCommand;
+use self::list_command::ListCommand;
+use self::packages_command::PackagesCommand;
+use self::provide_command::ProvideCommand;
+use self::search_command::SearchCommand;
+use self::show_command::ShowCommand;
+
 mod list_command;
 mod show_command;
 mod packages_command;
 mod provide_command;
 mod search_command;
 mod check_command;
-
-use std::path::PathBuf;
-use clap::ArgMatches;
-
-use crate::error::Error;
-use crate::error::ErrorCollection;
-use crate::formatter::*;
-use crate::information::*;
-use self::list_command::ListCommand;
-use self::show_command::ShowCommand;
-use self::packages_command::PackagesCommand;
-use self::provide_command::ProvideCommand;
-use self::search_command::SearchCommand;
-use self::check_command::CheckCommand;
-use crate::configuration::*;
-use crate::provider::*;
 
 /// Trait for subcommands
 pub trait SubCommandTrait {

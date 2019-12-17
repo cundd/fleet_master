@@ -1,4 +1,5 @@
 use clap::ArgMatches;
+
 use crate::error::Error;
 use crate::formatter::*;
 use crate::printer::Printer;

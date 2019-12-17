@@ -1,17 +1,19 @@
-mod ssh_connector;
-
-use std::thread;
-use std::sync::mpsc;
 use std::io::prelude::*;
 use std::net::TcpStream;
-use serde_json;
-use ssh2::Session;
-use ssh2::Channel;
+use std::sync::mpsc;
+use std::thread;
 
+use serde_json;
+use ssh2::Channel;
+use ssh2::Session;
+
+use crate::configuration::*;
 use crate::error::*;
 use crate::information::*;
-use crate::configuration::*;
+
 use self::ssh_connector::SshConnector;
+
+mod ssh_connector;
 
 pub struct SshProvider;
 
@@ -154,9 +156,10 @@ impl super::Provider for SshProvider {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
     use crate::configuration::Configuration;
     use crate::configuration::Helper;
+
+    use super::*;
 
     #[test]
     fn get_information_for_uri_test() {

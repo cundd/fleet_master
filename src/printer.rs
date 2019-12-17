@@ -1,4 +1,5 @@
 use ansi_term::Colour;
+
 use crate::error::Error;
 use crate::error::ErrorCollection;
 

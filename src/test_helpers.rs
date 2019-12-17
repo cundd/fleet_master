@@ -1,9 +1,10 @@
-//struct TestHelpers;
-use std::path::PathBuf;
-use std::fs;
 use std::collections::HashMap;
-use crate::information::*;
+use std::fs;
+use std::path::PathBuf;
+
 use serde_json;
+
+use crate::information::*;
 
 /// Returns the path to the testing resources
 pub fn get_test_resources_path() -> PathBuf {
