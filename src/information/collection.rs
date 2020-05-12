@@ -30,7 +30,9 @@ pub fn collection_without_packages(collection: InformationCollection) -> Informa
 }
 
 /// Returns a new Information Collection without Packages
-pub fn collection_without_packages_ref(collection: &InformationCollection) -> InformationCollection {
+pub fn collection_without_packages_ref(
+    collection: &InformationCollection,
+) -> InformationCollection {
     let mut new_collection = InformationCollection::new_with_capacity(collection.len());
     for (host, information) in collection {
         new_collection.insert(host.clone(), information.without_packages());

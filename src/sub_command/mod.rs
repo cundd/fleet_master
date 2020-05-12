@@ -16,28 +16,35 @@ use self::provide_command::ProvideCommand;
 use self::search_command::SearchCommand;
 use self::show_command::ShowCommand;
 
+mod check_command;
 mod list_command;
-mod show_command;
 mod packages_command;
 mod provide_command;
 mod search_command;
-mod check_command;
+mod show_command;
 
 /// Trait for subcommands
 pub trait SubCommandTrait {
     /// Performs the subcommand's task(s)
-    fn exec<F: FormatterTrait>(&self, formatter: &F, matches_option: Option<&ArgMatches>) -> Result<(), Error>;
+    fn exec<F: FormatterTrait>(
+        &self,
+        formatter: &F,
+        matches_option: Option<&ArgMatches>,
+    ) -> Result<(), Error>;
 
     /// Returns the path to the configuration file
     ///
     /// If the `--config` argument is given it's value will be returned, otherwise
     /// [`detect_configuration_file`] is used to search for a configuration file in the current
     /// working directory
-    fn get_configuration_file(&self, matches_option: Option<&ArgMatches>) -> Result<PathBuf, Error> {
+    fn get_configuration_file(
+        &self,
+        matches_option: Option<&ArgMatches>,
+    ) -> Result<PathBuf, Error> {
         if let Some(matches) = matches_option {
             match matches.value_of("config") {
                 Some(c) => Ok(PathBuf::from(c)),
-                None => detect_configuration_file()
+                None => detect_configuration_file(),
             }
         } else {
             Err(Error::new("Could not detect the configuration file: No arguments are passed to the subcommand"))
@@ -74,7 +81,10 @@ pub trait SshCommandTrait: SubCommandTrait {
     ///     2. Get the host from the arguments
     ///     3. Fetch the configuration for the host
     ///     4. Fetch the information using the configuration
-    fn fetch_information_for_requested_host(&self, matches_option: Option<&ArgMatches>) -> Result<(String, Information), Error> {
+    fn fetch_information_for_requested_host(
+        &self,
+        matches_option: Option<&ArgMatches>,
+    ) -> Result<(String, Information), Error> {
         let host = match matches_option.unwrap().value_of("host") {
             Some(host) => host,
             None => return Err(Error::new("Argument 'host' not specified")),
@@ -93,7 +103,10 @@ pub trait SshCommandTrait: SubCommandTrait {
     ///     2. Get the host from the arguments
     ///     3. Fetch the configuration for the host
     ///     4. Fetch the information using the configuration
-    fn fetch_information_for_requested_hosts(&self, matches_option: Option<&ArgMatches>) -> CollectionResult {
+    fn fetch_information_for_requested_hosts(
+        &self,
+        matches_option: Option<&ArgMatches>,
+    ) -> CollectionResult {
         let hosts = match self.get_hosts(matches_option.unwrap()) {
             Some(hosts) => hosts,
             None => return Err(Error::new("Argument 'hosts' not specified")),
@@ -108,9 +121,14 @@ pub trait SshCommandTrait: SubCommandTrait {
     ///     1. Look for the configuration file
     ///     2. Fetch the configuration for the host
     ///     3. Fetch the information using the configuration
-    fn fetch_information_for_host(&self, host: &str, matches_option: Option<&ArgMatches>) -> Result<Information, Error> {
+    fn fetch_information_for_host(
+        &self,
+        host: &str,
+        matches_option: Option<&ArgMatches>,
+    ) -> Result<Information, Error> {
         let configuration_file = self.get_configuration_file(matches_option)?;
-        let configuration = ConfigurationProvider::get_configuration_for_host(configuration_file.as_path(), host)?;
+        let configuration =
+            ConfigurationProvider::get_configuration_for_host(configuration_file.as_path(), host)?;
 
         self.fetch_information(&configuration)
     }
@@ -121,17 +139,26 @@ pub trait SshCommandTrait: SubCommandTrait {
     ///     1. Look for the configuration file
     ///     2. Filter the list of configurations
     ///     3. Fetch the information using the configurations
-    fn fetch_information_for_hosts(&self, hosts: Vec<&str>, matches_option: Option<&ArgMatches>) -> CollectionResult {
+    fn fetch_information_for_hosts(
+        &self,
+        hosts: Vec<&str>,
+        matches_option: Option<&ArgMatches>,
+    ) -> CollectionResult {
         let configuration_file = self.get_configuration_file(matches_option)?;
         let configuration_collection = ConfigurationProvider::load(configuration_file.as_path())?;
-        let filtered: ConfigurationCollection = configuration_collection.into_iter().filter(
-            |&(ref host, _)| host.len() > 0 && hosts.contains(&host.as_str())
-        ).collect();
+        let filtered: ConfigurationCollection = configuration_collection
+            .into_iter()
+            .filter(|&(ref host, _)| host.len() > 0 && hosts.contains(&host.as_str()))
+            .collect();
 
         if filtered.len() == 0 {
             Err(Error::new(format!(
                 "{}: {}",
-                if hosts.len() > 1 { "No configurations found for hosts" } else { "No configuration found for host" },
+                if hosts.len() > 1 {
+                    "No configurations found for hosts"
+                } else {
+                    "No configuration found for host"
+                },
                 hosts.join(", ")
             )))
         } else {
@@ -140,24 +167,31 @@ pub trait SshCommandTrait: SubCommandTrait {
     }
 
     /// Fetch the information for all hosts in the configuration collection
-    fn fetch_information_collection(&self, matches_option: Option<&ArgMatches>) -> CollectionResult {
+    fn fetch_information_collection(
+        &self,
+        matches_option: Option<&ArgMatches>,
+    ) -> CollectionResult {
         let configuration_file = self.get_configuration_file(matches_option)?;
-        let configuration_collection = match ConfigurationProvider::load(configuration_file.as_path()) {
-            Ok(c) => c,
-            Err(e) => return Err(Error::new(
-                format!(
-                    "Error when loading configuration file '{}': {}",
-                    configuration_file.to_string_lossy(),
-                    e.to_string()
-                ),
-            ))
-        };
+        let configuration_collection =
+            match ConfigurationProvider::load(configuration_file.as_path()) {
+                Ok(c) => c,
+                Err(e) => {
+                    return Err(Error::new(format!(
+                        "Error when loading configuration file '{}': {}",
+                        configuration_file.to_string_lossy(),
+                        e.to_string()
+                    )))
+                }
+            };
 
         Ok(self.fetch_information_for_configuration_collection(configuration_collection))
     }
 
     /// Fetch the information for all hosts in the given configuration collection
-    fn fetch_information_for_configuration_collection(&self, configuration_collection: ConfigurationCollection) -> (InformationCollection, ErrorCollection) {
+    fn fetch_information_for_configuration_collection(
+        &self,
+        configuration_collection: ConfigurationCollection,
+    ) -> (InformationCollection, ErrorCollection) {
         SshProvider::new().get_information_for_collection(configuration_collection)
     }
 
@@ -178,7 +212,11 @@ pub enum SubCommand {
 }
 
 impl SubCommandTrait for SubCommand {
-    fn exec<F: FormatterTrait>(&self, formatter: &F, matches_option: Option<&ArgMatches>) -> Result<(), Error> {
+    fn exec<F: FormatterTrait>(
+        &self,
+        formatter: &F,
+        matches_option: Option<&ArgMatches>,
+    ) -> Result<(), Error> {
         match self {
             &SubCommand::ListCommand(ref c) => c.exec(formatter, matches_option),
             &SubCommand::ShowCommand(ref c) => c.exec(formatter, matches_option),
@@ -192,22 +230,36 @@ impl SubCommandTrait for SubCommand {
 
 pub fn get_subcommand<'x>(matches: &'x ArgMatches) -> (SubCommand, Option<&'x ArgMatches<'x>>) {
     if let Some(subcommand_matches) = matches.subcommand_matches("list") {
-        return (SubCommand::ListCommand(ListCommand {}), Some(subcommand_matches));
+        return (
+            SubCommand::ListCommand(ListCommand {}),
+            Some(subcommand_matches),
+        );
     }
     if let Some(subcommand_matches) = matches.subcommand_matches("show") {
-        return (SubCommand::ShowCommand(ShowCommand {}), Some(subcommand_matches));
+        return (
+            SubCommand::ShowCommand(ShowCommand {}),
+            Some(subcommand_matches),
+        );
     }
     if let Some(subcommand_matches) = matches.subcommand_matches("packages") {
-        return (SubCommand::PackagesCommand(PackagesCommand {}), Some(subcommand_matches));
+        return (
+            SubCommand::PackagesCommand(PackagesCommand {}),
+            Some(subcommand_matches),
+        );
     }
     if let Some(subcommand_matches) = matches.subcommand_matches("search") {
-        return (SubCommand::SearchCommand(SearchCommand {}), Some(subcommand_matches));
+        return (
+            SubCommand::SearchCommand(SearchCommand {}),
+            Some(subcommand_matches),
+        );
     }
     if let Some(subcommand_matches) = matches.subcommand_matches("check") {
-        return (SubCommand::CheckCommand(CheckCommand {}), Some(subcommand_matches));
+        return (
+            SubCommand::CheckCommand(CheckCommand {}),
+            Some(subcommand_matches),
+        );
     }
 
     // Default to `provide`
     (SubCommand::ProvideCommand(ProvideCommand {}), None)
 }
-

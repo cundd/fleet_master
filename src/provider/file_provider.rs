@@ -11,7 +11,10 @@ pub struct FileProvider;
 
 impl FileProvider {
     #[allow(dead_code)]
-    fn get_information_for_uri<S>(self, uri: S) -> Result<Information, Error> where S: Into<String> {
+    fn get_information_for_uri<S>(self, uri: S) -> Result<Information, Error>
+    where
+        S: Into<String>,
+    {
         let absolute_file_path: PathBuf = match fs::canonicalize(&uri.into()) {
             Ok(p) => p,
             Err(e) => return Err(Error::from_error(&e)),
@@ -37,7 +40,6 @@ impl super::Provider for FileProvider {
     }
 }
 
-
 #[cfg(test)]
 mod tests {
     use crate::information::Package;
@@ -52,7 +54,9 @@ mod tests {
         let json_file_path = test_helpers::get_test_resource_path("protocol-test-0.1.0.json");
 
         assert!(json_file_path.as_path().exists(), "{:?}", json_file_path);
-        let information = file_provider.get_information_for_uri(json_file_path.to_str().unwrap()).unwrap();
+        let information = file_provider
+            .get_information_for_uri(json_file_path.to_str().unwrap())
+            .unwrap();
         assert_eq!("0.1.0", information.fleet.protocol);
         assert_eq!(56, information.packages.len());
 

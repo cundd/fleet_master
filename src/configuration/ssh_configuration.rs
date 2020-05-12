@@ -31,7 +31,9 @@ impl SshConfiguration {
         private_key: Option<P>,
         public_key: Option<P>,
     ) -> Self
-        where S: Into<String>, P: AsRef<Path>
+    where
+        S: Into<String>,
+        P: AsRef<Path>,
     {
         SshConfiguration {
             port,
@@ -44,13 +46,10 @@ impl SshConfiguration {
             public_key: as_path_buf_option(public_key),
         }
     }
-    pub fn new_with_password<S>(
-        host: S,
-        port: u16,
-        command: S,
-        username: S,
-        password: S,
-    ) -> Self where S: Into<String> {
+    pub fn new_with_password<S>(host: S, port: u16, command: S, username: S, password: S) -> Self
+    where
+        S: Into<String>,
+    {
         SshConfiguration {
             port,
             host: host.into(),
@@ -72,7 +71,9 @@ impl SshConfiguration {
         public_key: Option<P>,
         passphrase: Option<S>,
     ) -> Self
-        where S: Into<String>, P: AsRef<Path>
+    where
+        S: Into<String>,
+        P: AsRef<Path>,
     {
         let passphrase_string = match passphrase {
             Some(p) => Some(p.into()),
@@ -89,7 +90,6 @@ impl SshConfiguration {
             public_key: as_path_buf_option(public_key),
         }
     }
-
 
     //    pub fn new_with_public_key<S>(
     //        host: S,
@@ -154,13 +154,13 @@ impl SshConfiguration {
     pub fn private_key(&self) -> Option<PathBuf> {
         match self.private_key {
             Some(ref p) => patch_key_path(p),
-            None => None
+            None => None,
         }
     }
     pub fn public_key(&self) -> Option<PathBuf> {
         match self.public_key {
             Some(ref p) => patch_key_path(p),
-            None => None
+            None => None,
         }
     }
 }
@@ -168,7 +168,7 @@ impl SshConfiguration {
 fn as_path_buf_option<P: AsRef<Path>>(input: Option<P>) -> Option<PathBuf> {
     match input {
         Some(p) => Some(p.as_ref().to_path_buf()),
-        None => None
+        None => None,
     }
 }
 
@@ -182,7 +182,7 @@ fn patch_key_path(p: &PathBuf) -> Option<PathBuf> {
 
                 Some(home)
             }
-            None => None
+            None => None,
         }
     } else {
         Some(p.clone())
@@ -195,12 +195,11 @@ mod tests {
 
     use super::*;
 
-// username:password@host:port command
+    // username:password@host:port command
     // username@host:port command
     // username:password@host command
     // username@host command
     // private_key+username@host:port command
-
 
     #[test]
     fn new_with_public_key_test() {
@@ -218,7 +217,15 @@ mod tests {
                 private_key: Some(private_key.clone()),
                 public_key: None,
             },
-            SshConfiguration::new_with_public_key("localhost", 22, "cmd", "daniel", private_key.clone(), None, None)
+            SshConfiguration::new_with_public_key(
+                "localhost",
+                22,
+                "cmd",
+                "daniel",
+                private_key.clone(),
+                None,
+                None
+            )
         );
 
         assert_eq!(
@@ -232,7 +239,15 @@ mod tests {
                 private_key: Some(private_key.clone()),
                 public_key: Some(public_key.clone()),
             },
-            SshConfiguration::new_with_public_key("localhost", 22, "cmd", "daniel", private_key.clone(), Some(public_key.clone()), None)
+            SshConfiguration::new_with_public_key(
+                "localhost",
+                22,
+                "cmd",
+                "daniel",
+                private_key.clone(),
+                Some(public_key.clone()),
+                None
+            )
         );
 
         assert_eq!(
@@ -246,7 +261,15 @@ mod tests {
                 private_key: Some(private_key.clone()),
                 public_key: Some(public_key.clone()),
             },
-            SshConfiguration::new_with_public_key("localhost", 22, "cmd", "daniel", private_key.clone(), Some(public_key.clone()), Some("passphrase"))
+            SshConfiguration::new_with_public_key(
+                "localhost",
+                22,
+                "cmd",
+                "daniel",
+                private_key.clone(),
+                Some(public_key.clone()),
+                Some("passphrase")
+            )
         );
     }
 
@@ -301,7 +324,11 @@ mod tests {
             c.private_key().unwrap().to_string_lossy()
         );
         assert_eq!(
-            format!("{}/{}", Helper::get_ssh_dir().to_string_lossy(), "my_key.pub"),
+            format!(
+                "{}/{}",
+                Helper::get_ssh_dir().to_string_lossy(),
+                "my_key.pub"
+            ),
             c.public_key().unwrap().to_string_lossy()
         );
     }

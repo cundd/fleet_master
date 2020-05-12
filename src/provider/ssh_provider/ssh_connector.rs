@@ -15,7 +15,11 @@ impl SshConnector {
     }
 
     /// Establish a SSH connection with the given configuration
-    pub fn connect(&self, configuration: &Configuration, tcp: &TcpStream) -> Result<Session, Error> {
+    pub fn connect(
+        &self,
+        configuration: &Configuration,
+        tcp: &TcpStream,
+    ) -> Result<Session, Error> {
         // Connect to the SSH server
         let mut session = Session::new().unwrap();
         session.handshake(&tcp).unwrap();
@@ -33,15 +37,22 @@ impl SshConnector {
         }
     }
 
-    fn authenticate_password(&self, configuration: &Configuration, session: Session) -> Result<Session, Error> {
+    fn authenticate_password(
+        &self,
+        configuration: &Configuration,
+        session: Session,
+    ) -> Result<Session, Error> {
         let password = configuration.password().unwrap();
         session.userauth_password(&configuration.username(), &password)?;
 
         Ok(session)
     }
 
-
-    fn authenticate_agent(&self, configuration: &Configuration, session: Session) -> Result<Session, Error> {
+    fn authenticate_agent(
+        &self,
+        configuration: &Configuration,
+        session: Session,
+    ) -> Result<Session, Error> {
         session.userauth_agent(&configuration.username())?;
 
         Ok(session)
@@ -55,7 +66,11 @@ impl SshConnector {
         self.get_passphrase_from_env()
     }
 
-    fn authenticate_public_key(&self, configuration: &Configuration, session: Session) -> Result<Session, Error> {
+    fn authenticate_public_key(
+        &self,
+        configuration: &Configuration,
+        session: Session,
+    ) -> Result<Session, Error> {
         let passphrase_option = self.get_passphrase(&configuration);
         let passphrase: Option<&str> = match passphrase_option {
             Some(ref val) => Some(&val),

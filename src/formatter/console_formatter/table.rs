@@ -8,13 +8,17 @@ pub struct Table;
 
 impl Table {
     pub fn top_header<S>(input: &Matrix<S>) -> String
-        where S: Into<String> + Clone + Display + Debug {
+    where
+        S: Into<String> + Clone + Display + Debug,
+    {
         let column_widths = calc_column_widths(input);
         build_layout_top(&column_widths, input)
     }
 
     pub fn left_header<S>(input: &Matrix<S>) -> String
-        where S: Into<String> + Clone + Display + Debug {
+    where
+        S: Into<String> + Clone + Display + Debug,
+    {
         let transposed = input.transpose();
         let column_widths = calc_column_widths(&transposed);
         build_layout_left(&column_widths, &transposed)
@@ -22,7 +26,9 @@ impl Table {
 }
 
 fn build_layout_top<S>(column_widths: &[usize], input: &Matrix<S>) -> String
-    where S: Into<String> + Clone + Display + Debug {
+where
+    S: Into<String> + Clone + Display + Debug,
+{
     let mut output = "".to_owned();
 
     for (i, row) in input.data().into_iter().enumerate() {
@@ -46,7 +52,9 @@ fn build_layout_top<S>(column_widths: &[usize], input: &Matrix<S>) -> String
 }
 
 fn build_layout_left<S>(column_widths: &[usize], input: &Matrix<S>) -> String
-    where S: Into<String> + Clone + Display + Debug {
+where
+    S: Into<String> + Clone + Display + Debug,
+{
     let mut output = "".to_owned();
 
     for row in input.data().into_iter() {
@@ -60,9 +68,10 @@ fn build_layout_left<S>(column_widths: &[usize], input: &Matrix<S>) -> String
     output
 }
 
-
 fn calc_column_widths<S>(input: &Matrix<S>) -> Vec<usize>
-    where S: Into<String> + Clone + Debug + Display {
+where
+    S: Into<String> + Clone + Debug + Display,
+{
     let first_row = input.data().first();
     if first_row.is_none() {
         return vec![];
@@ -73,7 +82,9 @@ fn calc_column_widths<S>(input: &Matrix<S>) -> Vec<usize>
     for row in input.data().into_iter() {
         for (cell, previous_value) in row.iter().zip(column_widths.iter_mut()) {
             let new = format!("{}", cell).len();
-            if new > *previous_value { *previous_value = new }
+            if new > *previous_value {
+                *previous_value = new
+            }
         }
     }
 
@@ -86,13 +97,13 @@ mod tests {
 
     #[test]
     fn top_header_test() {
-        let content = vec!(
-            vec!("Fruit", "Color"),
-            vec!("Apple", "Red"),
-            vec!("Pear", "Green"),
-            vec!("Banana", "Yellow"),
-            vec!("Orange", "Orange"),
-        );
+        let content = vec![
+            vec!["Fruit", "Color"],
+            vec!["Apple", "Red"],
+            vec!["Pear", "Green"],
+            vec!["Banana", "Yellow"],
+            vec!["Orange", "Orange"],
+        ];
 
         let matrix = Matrix::from_vec(content);
         let output = Table::top_header(&matrix);
@@ -106,13 +117,13 @@ mod tests {
 
     #[test]
     fn left_header_test() {
-        let content = vec!(
-            vec!("Fruit", "Color"),
-            vec!("Apple", "Red"),
-            vec!("Pear", "Green"),
-            vec!("Banana", "Yellow"),
-            vec!("Orange", "Orange"),
-        );
+        let content = vec![
+            vec!["Fruit", "Color"],
+            vec!["Apple", "Red"],
+            vec!["Pear", "Green"],
+            vec!["Banana", "Yellow"],
+            vec!["Orange", "Orange"],
+        ];
 
         let matrix = Matrix::from_vec(content);
         let output = Table::left_header(&matrix);
@@ -126,4 +137,3 @@ mod tests {
         assert_eq!(expected, output);
     }
 }
-

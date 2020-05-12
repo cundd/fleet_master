@@ -8,18 +8,24 @@ impl InformationCollectionFilter {
     ///
     /// If `exact` is `TRUE` only the package's key is tested and has to be the same as the search
     /// If `exact` is `FALSE` packages are returned that contain the search string in either the key or description
-    pub fn filter_by_package(collection: InformationCollection, search: &str, exact: bool) -> InformationCollection {
-        collection.into_iter().filter_map(|(host, information)| {
-            let packages = information.packages.clone();
-            if 0 < PackageFilter::filter(packages, search, exact).len() {
-                Some((host, information))
-            } else {
-                None
-            }
-        }).collect()
+    pub fn filter_by_package(
+        collection: InformationCollection,
+        search: &str,
+        exact: bool,
+    ) -> InformationCollection {
+        collection
+            .into_iter()
+            .filter_map(|(host, information)| {
+                let packages = information.packages.clone();
+                if 0 < PackageFilter::filter(packages, search, exact).len() {
+                    Some((host, information))
+                } else {
+                    None
+                }
+            })
+            .collect()
     }
 }
-
 
 #[cfg(test)]
 mod tests {
@@ -38,7 +44,8 @@ mod tests {
     #[test]
     fn filter_by_package_test() {
         let collection = build_test_collection();
-        let result = InformationCollectionFilter::filter_by_package(collection, "not-a-package", false);
+        let result =
+            InformationCollectionFilter::filter_by_package(collection, "not-a-package", false);
 
         assert_eq!(0, result.len());
     }

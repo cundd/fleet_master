@@ -23,9 +23,11 @@ pub fn detect_configuration_file() -> Result<PathBuf, Error> {
         return Ok(file);
     }
 
-    Err(Error::new(format!("Could not detect the configuration file: No configuration file found in {:?}", pwd)))
+    Err(Error::new(format!(
+        "Could not detect the configuration file: No configuration file found in {:?}",
+        pwd
+    )))
 }
-
 
 #[cfg(test)]
 mod tests {
@@ -40,7 +42,7 @@ mod tests {
         if let Ok(test_threads_count_str) = env::var("RUST_TEST_THREADS") {
             return match test_threads_count_str.parse::<i32>() {
                 Ok(i) => i > 1,
-                Err(_) => false
+                Err(_) => false,
             };
         }
 
@@ -66,8 +68,15 @@ mod tests {
         set_current_dir_for_testing("configuration_file");
 
         let configuration_file_result = detect_configuration_file();
-        assert!(configuration_file_result.is_ok(), "{:?}", configuration_file_result);
-        assert_eq!(test_helpers::get_test_resource_path("configuration_file/fleet.json"), configuration_file_result.unwrap());
+        assert!(
+            configuration_file_result.is_ok(),
+            "{:?}",
+            configuration_file_result
+        );
+        assert_eq!(
+            test_helpers::get_test_resource_path("configuration_file/fleet.json"),
+            configuration_file_result.unwrap()
+        );
     }
 
     #[test]
@@ -80,7 +89,14 @@ mod tests {
         set_current_dir_for_testing("configuration_dot_file");
 
         let configuration_file_result = detect_configuration_file();
-        assert!(configuration_file_result.is_ok(), "{:?}", configuration_file_result);
-        assert_eq!(test_helpers::get_test_resource_path("configuration_dot_file/.fleet.json"), configuration_file_result.unwrap());
+        assert!(
+            configuration_file_result.is_ok(),
+            "{:?}",
+            configuration_file_result
+        );
+        assert_eq!(
+            test_helpers::get_test_resource_path("configuration_dot_file/.fleet.json"),
+            configuration_file_result.unwrap()
+        );
     }
 }

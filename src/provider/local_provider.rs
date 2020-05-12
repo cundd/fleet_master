@@ -15,7 +15,6 @@ impl super::Provider for LocalProvider {
     }
 }
 
-
 #[cfg(test)]
 mod tests {
     use crate::constants;
@@ -30,8 +29,14 @@ mod tests {
         let test_information = Information::new_for_current_env();
 
         assert_eq!(constants::PROTOCOL, test_information.fleet.protocol);
-        assert_eq!(constants::PROVIDER_VERSION, test_information.fleet.provider_version);
-        assert_eq!(constants::PROVIDER_NAME, test_information.fleet.provider_name);
+        assert_eq!(
+            constants::PROVIDER_VERSION,
+            test_information.fleet.provider_version
+        );
+        assert_eq!(
+            constants::PROVIDER_NAME,
+            test_information.fleet.provider_name
+        );
         assert_eq!(test_information, provider_information);
     }
 }

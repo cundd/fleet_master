@@ -9,7 +9,9 @@ impl Printer {
     /// Prints the result
     pub fn print_result(o: Result<String, Error>) {
         match o {
-            Ok(text) => { println!("{}", text); }
+            Ok(text) => {
+                println!("{}", text);
+            }
             Err(e) => Self::print_error(e),
         }
     }

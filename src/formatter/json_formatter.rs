@@ -17,16 +17,24 @@ impl JsonFormatter {
     }
 }
 
-
 impl super::FormatterTrait for JsonFormatter {
-    fn format_information(&self, _: &str, information: &Information, show_packages: bool) -> FormatterResult {
+    fn format_information(
+        &self,
+        _: &str,
+        information: &Information,
+        show_packages: bool,
+    ) -> FormatterResult {
         if !show_packages {
             self.format_data(information.without_packages())
         } else {
             self.format_data(information)
         }
     }
-    fn format_information_collection(&self, information: InformationCollection, show_packages: bool) -> FormatterResult {
+    fn format_information_collection(
+        &self,
+        information: InformationCollection,
+        show_packages: bool,
+    ) -> FormatterResult {
         let information_collection = if !show_packages {
             collection_without_packages(information)
         } else {
@@ -40,8 +48,14 @@ impl super::FormatterTrait for JsonFormatter {
         self.format_data(packages)
     }
 
-    fn format_packages_from_information_collection(&self, information_collection: InformationCollection) -> FormatterResult {
-        let packages_collection: Vec<Packages> = information_collection.into_iter().map(|(_, i)| i.packages).collect();
+    fn format_packages_from_information_collection(
+        &self,
+        information_collection: InformationCollection,
+    ) -> FormatterResult {
+        let packages_collection: Vec<Packages> = information_collection
+            .into_iter()
+            .map(|(_, i)| i.packages)
+            .collect();
 
         self.format_data(&packages_collection)
     }

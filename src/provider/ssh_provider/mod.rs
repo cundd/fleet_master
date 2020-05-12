@@ -35,7 +35,10 @@ fn fetch_information_through_ssh(configuration: &Configuration) -> Result<Inform
     Ok(information)
 }
 
-fn call_ssh_command<S: Into<String>>(command: S, session: &Session) -> Result<String, Error> where S: Into<String> {
+fn call_ssh_command<S: Into<String>>(command: S, session: &Session) -> Result<String, Error>
+where
+    S: Into<String>,
+{
     let command_string: String = command.into();
 
     // Open channel
@@ -68,7 +71,6 @@ fn call_ssh_command<S: Into<String>>(command: S, session: &Session) -> Result<St
     }
 }
 
-
 impl SshProvider {
     /// Fetch information from the server defined in `configuration`
     pub fn get_information(&self, configuration: &Configuration) -> Result<Information, Error> {
@@ -76,7 +78,10 @@ impl SshProvider {
     }
 
     /// Fetch the information for all hosts in the given configuration collection
-    pub fn get_information_for_collection(&self, configuration_collection: ConfigurationCollection) -> (InformationCollection, ErrorCollection) {
+    pub fn get_information_for_collection(
+        &self,
+        configuration_collection: ConfigurationCollection,
+    ) -> (InformationCollection, ErrorCollection) {
         if configuration_collection.len() == 0 {
             return (InformationCollection::new(), ErrorCollection::new());
         }
@@ -87,14 +92,21 @@ impl SshProvider {
     }
 
     /// Fetch the information for all hosts in the given configuration collection synchronously
-    fn get_information_for_collection_sync(&self, configuration_collection: ConfigurationCollection) -> (InformationCollection, ErrorCollection) {
+    fn get_information_for_collection_sync(
+        &self,
+        configuration_collection: ConfigurationCollection,
+    ) -> (InformationCollection, ErrorCollection) {
         let mut error_collection = ErrorCollection::new();
         let mut information_collection = InformationCollection::new();
 
         for (host, configuration) in configuration_collection {
             match self.get_information(&configuration) {
-                Ok(i) => { let _ = information_collection.insert(host, i); }
-                Err(e) => { let _ = error_collection.insert(host, e); }
+                Ok(i) => {
+                    let _ = information_collection.insert(host, i);
+                }
+                Err(e) => {
+                    let _ = error_collection.insert(host, e);
+                }
             };
         }
 
@@ -102,17 +114,21 @@ impl SshProvider {
     }
 
     /// Fetch the information for all hosts in the given configuration collection asynchronously
-    fn get_information_for_collection_async(&self, configuration_collection: ConfigurationCollection) -> (InformationCollection, ErrorCollection) {
+    fn get_information_for_collection_async(
+        &self,
+        configuration_collection: ConfigurationCollection,
+    ) -> (InformationCollection, ErrorCollection) {
         let mut error_collection = ErrorCollection::new();
         let mut information_collection = InformationCollection::new();
 
         let number_of_threads = self.get_number_of_threads();
 
-
         let (tx, rx) = mpsc::channel();
 
-        let size_of_chunk: usize = (configuration_collection.len() as f32 / number_of_threads as f32).ceil() as usize;
-        let split_configuration_collection: Vec<ConfigurationCollection> = chunk_configuration_collection(configuration_collection, size_of_chunk);
+        let size_of_chunk: usize =
+            (configuration_collection.len() as f32 / number_of_threads as f32).ceil() as usize;
+        let split_configuration_collection: Vec<ConfigurationCollection> =
+            chunk_configuration_collection(configuration_collection, size_of_chunk);
         let split_count = split_configuration_collection.len();
 
         for chunk in split_configuration_collection {
@@ -124,12 +140,17 @@ impl SshProvider {
 
                 for (host, configuration) in chunk {
                     match fetch_information_through_ssh(&configuration) {
-                        Ok(i) => { let _ = information_collection_l.insert(host, i); }
-                        Err(e) => { let _ = error_collection_l.insert(host, e); }
+                        Ok(i) => {
+                            let _ = information_collection_l.insert(host, i);
+                        }
+                        Err(e) => {
+                            let _ = error_collection_l.insert(host, e);
+                        }
                     };
                 }
 
-                tx.send((information_collection_l, error_collection_l)).unwrap();
+                tx.send((information_collection_l, error_collection_l))
+                    .unwrap();
             });
         }
 
@@ -146,7 +167,6 @@ impl SshProvider {
         return 4;
     }
 }
-
 
 impl super::Provider for SshProvider {
     fn new() -> Self {

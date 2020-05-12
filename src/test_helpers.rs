@@ -39,7 +39,7 @@ pub fn get_test_packages() -> Packages {
 
 #[allow(unused)]
 pub struct ScopeCall<F: FnOnce()> {
-    pub callback: Option<F>
+    pub callback: Option<F>,
 }
 
 impl<F: FnOnce()> Drop for ScopeCall<F> {
@@ -51,6 +51,10 @@ impl<F: FnOnce()> Drop for ScopeCall<F> {
 #[macro_export]
 macro_rules! cleanup {
     ($e:expr) => {
-        let _scope_call = test_helpers::ScopeCall { callback: Some(|| -> () { $e; } )};
+        let _scope_call = test_helpers::ScopeCall {
+            callback: Some(|| -> () {
+                $e;
+            }),
+        };
     };
 }

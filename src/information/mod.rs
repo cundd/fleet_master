@@ -5,11 +5,10 @@ pub use self::packages::*;
 pub use self::platform::Platform;
 pub use self::system::*;
 
-mod fleet;
-mod system;
-mod platform;
 mod application;
-mod packages;
-mod information;
 mod collection;
-
+mod fleet;
+mod information;
+mod packages;
+mod platform;
+mod system;

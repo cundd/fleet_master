@@ -4,18 +4,24 @@ use std::iter::IntoIterator;
 use std::vec::IntoIter as VecIntoIter;
 
 #[derive(Debug, PartialEq, Clone)]
-pub struct Matrix<T> where T: Clone {
+pub struct Matrix<T>
+where
+    T: Clone,
+{
     rows: usize,
     columns: usize,
     data: Vec<Vec<T>>,
 }
 
-impl<T> Matrix<T> where T: Clone + Debug {
+impl<T> Matrix<T>
+where
+    T: Clone + Debug,
+{
     pub fn new() -> Matrix<T> {
         Matrix {
             rows: 0,
             columns: 0,
-            data: vec!(),
+            data: vec![],
         }
     }
 
@@ -94,7 +100,6 @@ impl<T> Matrix<T> where T: Clone + Debug {
     }
 }
 
-
 impl<T: Clone> IntoIterator for Matrix<T> {
     type Item = Vec<T>;
 
@@ -105,18 +110,17 @@ impl<T: Clone> IntoIterator for Matrix<T> {
     }
 }
 
-
 #[cfg(test)]
 mod tests {
     use super::*;
 
     fn build_data() -> Vec<Vec<&'static str>> {
-        vec!(
-            vec!("Apple", "Red"),
-            vec!("Pear", "Green"),
-            vec!("Banana", "Yellow"),
-            vec!("Orange", "Orange"),
-        )
+        vec![
+            vec!["Apple", "Red"],
+            vec!["Pear", "Green"],
+            vec!["Banana", "Yellow"],
+            vec!["Orange", "Orange"],
+        ]
     }
 
     #[test]
@@ -130,17 +134,17 @@ mod tests {
 
     #[test]
     fn from_slice_test() {
-        let apple = vec!("Apple", "Red");
-        let pear = vec!("Pear", "Green");
-        let banana = vec!("Banana", "Yellow");
-        let orange = vec!("Orange", "Orange");
+        let apple = vec!["Apple", "Red"];
+        let pear = vec!["Pear", "Green"];
+        let banana = vec!["Banana", "Yellow"];
+        let orange = vec!["Orange", "Orange"];
 
-        let data = vec!(
+        let data = vec![
             apple.as_slice(),
             pear.as_slice(),
             banana.as_slice(),
             orange.as_slice(),
-        );
+        ];
         let m = Matrix::from_slice(&data);
 
         assert_eq!(4, m.rows);
@@ -199,7 +203,7 @@ mod tests {
                 1 => assert_eq!(vec!("Pear", "Green"), row),
                 2 => assert_eq!(vec!("Banana", "Yellow"), row),
                 3 => assert_eq!(vec!("Orange", "Orange"), row),
-                _ => panic!("Unexpected iteration")
+                _ => panic!("Unexpected iteration"),
             }
         }
     }
@@ -214,7 +218,7 @@ mod tests {
                 1 => assert_eq!(vec!("Pear", "Green"), row),
                 2 => assert_eq!(vec!("Banana", "Yellow"), row),
                 3 => assert_eq!(vec!("Orange", "Orange"), row),
-                _ => panic!("Unexpected iteration")
+                _ => panic!("Unexpected iteration"),
             }
 
             i += 1;
@@ -223,20 +227,9 @@ mod tests {
 
     #[test]
     fn transpose_u8_test() {
-        let m = Matrix::from_vec(
-            vec!(
-                vec!(11, 12, 13, 14),
-                vec!(21, 22, 23, 24),
-            )
-        );
-        let expected_rotated = Matrix::from_vec(
-            vec!(
-                vec!(11, 21),
-                vec!(12, 22),
-                vec!(13, 23),
-                vec!(14, 24),
-            )
-        );
+        let m = Matrix::from_vec(vec![vec![11, 12, 13, 14], vec![21, 22, 23, 24]]);
+        let expected_rotated =
+            Matrix::from_vec(vec![vec![11, 21], vec![12, 22], vec![13, 23], vec![14, 24]]);
 
         assert_eq!(expected_rotated, m.transpose());
     }
@@ -244,13 +237,10 @@ mod tests {
     #[test]
     fn transpose_str_test() {
         let m = Matrix::from_vec(build_data());
-        let expected_rotated = Matrix::from_vec(
-            vec!(
-                vec!("Apple", "Pear", "Banana", "Orange"),
-                vec!("Red", "Green", "Yellow", "Orange"),
-            )
-        );
-
+        let expected_rotated = Matrix::from_vec(vec![
+            vec!["Apple", "Pear", "Banana", "Orange"],
+            vec!["Red", "Green", "Yellow", "Orange"],
+        ]);
 
         assert_eq!(expected_rotated, m.transpose());
     }
@@ -279,7 +269,7 @@ mod tests {
     fn push_row_test() {
         let mut m = Matrix::from_vec(build_data());
 
-        m.push_row(vec!("Grape", "Blue"));
+        m.push_row(vec!["Grape", "Blue"]);
 
         assert_eq!(
             vec!(
@@ -298,7 +288,7 @@ mod tests {
     fn prepend_row_test() {
         let mut m = Matrix::from_vec(build_data());
 
-        m.prepend_row(vec!("Grape", "Blue"));
+        m.prepend_row(vec!["Grape", "Blue"]);
 
         assert_eq!(
             vec!(

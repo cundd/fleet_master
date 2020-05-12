@@ -21,7 +21,7 @@ impl ConfigurationProvider {
     pub fn load(path: &Path) -> Result<ConfigurationCollection, Error> {
         let file = match File::open(path) {
             Ok(file) => file,
-            Err(e) => return Err(Error::with_error_and_details(&e, e.to_string()))
+            Err(e) => return Err(Error::with_error_and_details(&e, e.to_string())),
         };
 
         if let Some(extension) = path.extension() {
@@ -29,15 +29,13 @@ impl ConfigurationProvider {
                 #[cfg(feature = "yaml")]
                 "yaml" => ConfigurationProvider::load_yaml(file),
                 "json" => ConfigurationProvider::load_json(file),
-                _ => Err(build_file_format_error(extension))
+                _ => Err(build_file_format_error(extension)),
             }
         } else {
-            Err(Error::new(
-                format!(
-                    "Could not load configuration from '{}'",
-                    path.to_string_lossy()
-                )
-            ))
+            Err(Error::new(format!(
+                "Could not load configuration from '{}'",
+                path.to_string_lossy()
+            )))
         }
     }
 
@@ -58,12 +56,10 @@ impl ConfigurationProvider {
 }
 
 fn build_file_format_error(extension: &OsStr) -> Error {
-    Error::new(
-        format!(
-            "Could not load configuration from file with extension '{}'",
-            extension.to_string_lossy()
-        )
-    )
+    Error::new(format!(
+        "Could not load configuration from file with extension '{}'",
+        extension.to_string_lossy()
+    ))
 }
 
 #[cfg(test)]

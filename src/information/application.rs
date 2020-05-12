@@ -10,7 +10,10 @@ pub struct Application {
 }
 
 impl Application {
-    pub fn new<S>(name: S, version: S, meta: HashMap<String, String>) -> Self where S: Into<String> {
+    pub fn new<S>(name: S, version: S, meta: HashMap<String, String>) -> Self
+    where
+        S: Into<String>,
+    {
         Application {
             name: name.into(),
             version: version.into(),
@@ -19,10 +22,6 @@ impl Application {
     }
 
     pub fn new_for_current_env() -> Self {
-        Application::new(
-            "fleet",
-            constants::PROVIDER_VERSION,
-            HashMap::new(),
-        )
+        Application::new("fleet", constants::PROVIDER_VERSION, HashMap::new())
     }
 }

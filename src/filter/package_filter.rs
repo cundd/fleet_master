@@ -11,18 +11,20 @@ impl PackageFilter {
     /// If `exact` is `TRUE` only the package's key is tested and has to be the same as the search
     /// If `exact` is `FALSE` packages are returned that contain the search string in either the key or description
     pub fn filter(packages: Packages, search: &str, exact: bool) -> Packages {
-        let filtered: HashMap<String, Package> = packages.into_iter().filter(|&(_, ref package)| {
-            if exact {
-                package.key == search
-            } else {
-                package.description.contains(search) || package.key.contains(search)
-            }
-        }).collect();
+        let filtered: HashMap<String, Package> = packages
+            .into_iter()
+            .filter(|&(_, ref package)| {
+                if exact {
+                    package.key == search
+                } else {
+                    package.description.contains(search) || package.key.contains(search)
+                }
+            })
+            .collect();
 
         Packages::new_with_packages(filtered)
     }
 }
-
 
 #[cfg(test)]
 mod tests {
@@ -32,15 +34,20 @@ mod tests {
 
     #[test]
     fn filter_by_package_empty_test() {
-        assert_eq!(0, PackageFilter::filter(get_test_packages(), "not-a-package", false).len());
-        assert_eq!(0, PackageFilter::filter(get_test_packages(), "not-a-package", true).len());
+        assert_eq!(
+            0,
+            PackageFilter::filter(get_test_packages(), "not-a-package", false).len()
+        );
+        assert_eq!(
+            0,
+            PackageFilter::filter(get_test_packages(), "not-a-package", true).len()
+        );
     }
 
     #[test]
     fn filter_by_package_test() {
         let result = PackageFilter::filter(get_test_packages(), "news", false);
         assert_eq!(3, result.len());
-
 
         let result = PackageFilter::filter(get_test_packages(), "newsletter", false);
         assert_eq!(1, result.len());

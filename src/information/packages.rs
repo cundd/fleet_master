@@ -24,7 +24,9 @@ pub struct Packages {
 
 impl Packages {
     pub fn new() -> Self {
-        Packages { all: HashMap::new() }
+        Packages {
+            all: HashMap::new(),
+        }
     }
 
     pub fn new_with_packages(packages: HashMap<String, Package>) -> Self {
@@ -33,7 +35,7 @@ impl Packages {
 
     pub fn new_for_current_env() -> Self {
         Packages {
-            all: HashMap::new()
+            all: HashMap::new(),
         }
     }
 
@@ -56,7 +58,8 @@ impl Packages {
 
 impl<'a> Index<&'a str> for Packages {
     type Output = Package;
-    fn index(&self, s: &'a str) -> &Self::Output { // '
+    fn index(&self, s: &'a str) -> &Self::Output {
+        // '
         &self.all[s]
     }
 }

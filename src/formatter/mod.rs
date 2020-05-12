@@ -6,8 +6,8 @@ use crate::information::*;
 pub use self::console_formatter::ConsoleFormatter;
 pub use self::json_formatter::JsonFormatter;
 
-mod json_formatter;
 mod console_formatter;
+mod json_formatter;
 
 type FormatterResult = Result<String, Error>;
 
@@ -16,20 +16,31 @@ pub trait FormatterTrait {
     /// Format the given [`Information`]
     ///
     /// Some implementations may ignore `show_packages`
-    fn format_information(&self, host: &str, information: &Information, show_packages: bool) -> FormatterResult;
+    fn format_information(
+        &self,
+        host: &str,
+        information: &Information,
+        show_packages: bool,
+    ) -> FormatterResult;
 
     /// Format all [`Information`] objects in the collection
     ///
     /// Some implementations may ignore `show_packages`
-    fn format_information_collection(&self, information: InformationCollection, show_packages: bool) -> FormatterResult;
+    fn format_information_collection(
+        &self,
+        information: InformationCollection,
+        show_packages: bool,
+    ) -> FormatterResult;
 
     /// Format the given [`Packages`]
     fn format_packages(&self, packages: &Packages) -> FormatterResult;
 
     /// Format the [`Packages`] of all [`Information`] objects in the collection
-    fn format_packages_from_information_collection(&self, information_collection: InformationCollection) -> FormatterResult;
+    fn format_packages_from_information_collection(
+        &self,
+        information_collection: InformationCollection,
+    ) -> FormatterResult;
 }
-
 
 /// Wrapper around the different formatter types
 pub enum Formatter {
@@ -38,17 +49,28 @@ pub enum Formatter {
 }
 
 impl FormatterTrait for Formatter {
-    fn format_information(&self, host: &str, information: &Information, show_packages: bool) -> FormatterResult {
+    fn format_information(
+        &self,
+        host: &str,
+        information: &Information,
+        show_packages: bool,
+    ) -> FormatterResult {
         match self {
             &Formatter::Json(ref f) => f.format_information(host, information, show_packages),
             &Formatter::Console(ref f) => f.format_information(host, information, show_packages),
         }
     }
 
-    fn format_information_collection(&self, information: InformationCollection, show_packages: bool) -> FormatterResult {
+    fn format_information_collection(
+        &self,
+        information: InformationCollection,
+        show_packages: bool,
+    ) -> FormatterResult {
         match self {
             &Formatter::Json(ref f) => f.format_information_collection(information, show_packages),
-            &Formatter::Console(ref f) => f.format_information_collection(information, show_packages),
+            &Formatter::Console(ref f) => {
+                f.format_information_collection(information, show_packages)
+            }
         }
     }
 
@@ -59,16 +81,26 @@ impl FormatterTrait for Formatter {
         }
     }
 
-    fn format_packages_from_information_collection(&self, information_collection: InformationCollection) -> FormatterResult {
+    fn format_packages_from_information_collection(
+        &self,
+        information_collection: InformationCollection,
+    ) -> FormatterResult {
         match self {
-            &Formatter::Json(ref f) => f.format_packages_from_information_collection(information_collection),
-            &Formatter::Console(ref f) => f.format_packages_from_information_collection(information_collection),
+            &Formatter::Json(ref f) => {
+                f.format_packages_from_information_collection(information_collection)
+            }
+            &Formatter::Console(ref f) => {
+                f.format_packages_from_information_collection(information_collection)
+            }
         }
     }
 }
 
 /// Returns the formatter for the matches
-pub fn get_formatter<'x>(default_format: &str, matches_option: Option<&'x ArgMatches<'x>>) -> Result<Formatter, Error> {
+pub fn get_formatter<'x>(
+    default_format: &str,
+    matches_option: Option<&'x ArgMatches<'x>>,
+) -> Result<Formatter, Error> {
     get_formatter_for_format(&get_format(default_format, matches_option))
 }
 
@@ -77,7 +109,10 @@ fn get_formatter_for_format(format: &str) -> Result<Formatter, Error> {
     match format {
         "json" => Ok(Formatter::Json(JsonFormatter {})),
         "console" => Ok(Formatter::Console(ConsoleFormatter {})),
-        _ => Err(Error::new(format!("No formatter found for format {}", format)))
+        _ => Err(Error::new(format!(
+            "No formatter found for format {}",
+            format
+        ))),
     }
 }
 

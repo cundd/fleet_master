@@ -7,7 +7,10 @@ pub struct Fleet {
 }
 
 impl Fleet {
-    pub fn new<S>(protocol: S, provider_version: S, provider_name: S) -> Self where S: Into<String> {
+    pub fn new<S>(protocol: S, provider_version: S, provider_name: S) -> Self
+    where
+        S: Into<String>,
+    {
         Fleet {
             protocol: protocol.into(),
             provider_version: provider_version.into(),

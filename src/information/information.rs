@@ -15,20 +15,24 @@ impl Information {
     /// Aggregate information from the current host
     pub fn new_for_current_env() -> Self {
         Information {
-            fleet: Fleet::new(constants::PROTOCOL, constants::PROVIDER_VERSION, constants::PROVIDER_NAME),
+            fleet: Fleet::new(
+                constants::PROTOCOL,
+                constants::PROVIDER_VERSION,
+                constants::PROVIDER_NAME,
+            ),
             packages: Packages::new_for_current_env(),
             system: System::new_for_current_env(),
         }
     }
 
-//    /// Returns a empty information instance
-//    pub fn new() -> Self {
-//        Information {
-//            fleet: Fleet::new("", "", ""),
-//            packages: Packages::new(),
-//            system: System::new_for_current_env()
-//        }
-//    }
+    //    /// Returns a empty information instance
+    //    pub fn new() -> Self {
+    //        Information {
+    //            fleet: Fleet::new("", "", ""),
+    //            packages: Packages::new(),
+    //            system: System::new_for_current_env()
+    //        }
+    //    }
 
     /// Returns a copy of the information without packages
     pub fn without_packages(&self) -> Self {
