@@ -17,13 +17,13 @@ impl FlatError {
     }
     pub fn from_error(error: &dyn StdError) -> Self {
         Self {
-            msg: error.description().to_owned(),
+            msg: error.to_string(),
         }
     }
 
     pub fn with_error_and_details<S: Into<String>>(error: &dyn StdError, message: S) -> Self {
         Self {
-            msg: format!("{} (Details: '{}')", error.description(), message.into()),
+            msg: format!("{} (Details: '{}')", error.to_string(), message.into()),
         }
     }
 

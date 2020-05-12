@@ -20,14 +20,14 @@ impl super::FleetError for Error {
 
     fn from_error(error: &dyn error::Error) -> Self {
         Self {
-            msg: error.description().to_owned(),
+            msg: error.to_string(),
             cause: None, //cause: Some(&error)
         }
     }
 
     fn with_error_and_details<S: Into<String>>(error: &dyn error::Error, message: S) -> Self {
         Self {
-            msg: format!("{} (Details: '{}')", error.description(), message.into()),
+            msg: format!("{} (Details: '{}')", error.to_string(), message.into()),
             cause: None, //cause: Some(&error)
         }
     }
