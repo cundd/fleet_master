@@ -24,14 +24,14 @@ impl SshConnector {
         let mut session = Session::new().unwrap();
         session.handshake(&tcp).unwrap();
 
-        if configuration.password().is_some() {
-            return self.authenticate_password(configuration, session);
-        } else if configuration.private_key().is_some() {
-            return self.authenticate_public_key(configuration, session);
+        if session.authenticated() {
+            return Ok(session);
         }
 
-        if session.authenticated() {
-            Ok(session)
+        if configuration.password().is_some() {
+            self.authenticate_password(configuration, session)
+        } else if configuration.private_key().is_some() {
+            self.authenticate_public_key(configuration, session)
         } else {
             self.authenticate_agent(configuration, session)
         }
