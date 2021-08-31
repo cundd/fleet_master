@@ -4,7 +4,7 @@ fn uname(key: &str) -> String {
     let flag = format!("-{}", key);
     let output = match Command::new("uname").arg(flag).output() {
         Ok(o) => o,
-        Err(e) => panic!(e),
+        Err(e) => panic!("{}", e),
     };
     let stdout = String::from_utf8_lossy(&output.stdout).to_string();
 
