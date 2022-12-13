@@ -2,8 +2,6 @@ use std::fs;
 use std::fs::File;
 use std::path::PathBuf;
 
-use serde_json;
-
 use crate::error::Error;
 use crate::information::*;
 
@@ -63,11 +61,11 @@ mod tests {
         let core: &Package = &information.packages["core"];
         assert_eq!(core.key, "core");
         assert_eq!(core.state, "active");
-        assert_eq!(core.is_active(), true);
+        assert!(core.is_active());
 
         let recycler: &Package = &information.packages["recycler"];
         assert_eq!(recycler.key, "recycler");
         assert_eq!(recycler.state, "inactive");
-        assert_eq!(recycler.is_active(), false);
+        assert!(!recycler.is_active());
     }
 }

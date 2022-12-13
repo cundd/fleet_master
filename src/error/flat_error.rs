@@ -23,7 +23,7 @@ impl FlatError {
 
     pub fn with_error_and_details<S: Into<String>>(error: &dyn StdError, message: S) -> Self {
         Self {
-            msg: format!("{} (Details: '{}')", error.to_string(), message.into()),
+            msg: format!("{} (Details: '{}')", error, message.into()),
         }
     }
 
@@ -46,7 +46,7 @@ impl super::FleetError for FlatError {
     }
 
     fn message(&self) -> &str {
-        Self::message(&self)
+        Self::message(self)
     }
 }
 

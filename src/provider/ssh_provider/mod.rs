@@ -1,17 +1,13 @@
+use self::ssh_connector::SshConnector;
+use crate::configuration::*;
+use crate::error::*;
+use crate::information::*;
+use ssh2::Channel;
+use ssh2::Session;
 use std::io::prelude::*;
 use std::net::TcpStream;
 use std::sync::mpsc;
 use std::thread;
-
-use serde_json;
-use ssh2::Channel;
-use ssh2::Session;
-
-use crate::configuration::*;
-use crate::error::*;
-use crate::information::*;
-
-use self::ssh_connector::SshConnector;
 
 mod ssh_connector;
 
@@ -21,10 +17,10 @@ pub struct SshProvider;
 fn fetch_information_through_ssh(configuration: &Configuration) -> Result<Information, Error> {
     let address = format!("{}:{}", configuration.host(), configuration.port());
     let tcp = TcpStream::connect(&address)?;
-    let session: Session = SshConnector::new().connect(&configuration, &tcp)?;
+    let session: Session = SshConnector::new().connect(configuration, &tcp)?;
 
     let mut command = String::new();
-    command.push_str(&configuration.command());
+    command.push_str(configuration.command());
 
     let content = call_ssh_command(command, &session)?;
     let information: Information = match serde_json::from_str(&content) {
@@ -53,7 +49,7 @@ where
     }
 
     let exit_status = channel.exit_status()?;
-    if exit_status == 0 && output.len() > 0 {
+    if exit_status == 0 && !output.is_empty() {
         return Ok(output);
     }
 
@@ -61,7 +57,7 @@ where
     match Read::read_to_string(&mut channel.stderr(), &mut error_output) {
         Ok(_) => {
             let error_output_trimmed = error_output.trim();
-            if error_output_trimmed.len() > 0 {
+            if !error_output_trimmed.is_empty() {
                 Err(Error::new(error_output_trimmed))
             } else {
                 Err(Error::new(output.trim()))
@@ -82,7 +78,7 @@ impl SshProvider {
         &self,
         configuration_collection: ConfigurationCollection,
     ) -> (InformationCollection, ErrorCollection) {
-        if configuration_collection.len() == 0 {
+        if configuration_collection.is_empty() {
             return (InformationCollection::new(), ErrorCollection::new());
         }
         if configuration_collection.len() <= self.get_number_of_threads() {
@@ -164,7 +160,7 @@ impl SshProvider {
     }
 
     fn get_number_of_threads(&self) -> usize {
-        return 4;
+        4
     }
 }
 

@@ -27,7 +27,7 @@ impl super::FleetError for Error {
 
     fn with_error_and_details<S: Into<String>>(error: &dyn error::Error, message: S) -> Self {
         Self {
-            msg: format!("{} (Details: '{}')", error.to_string(), message.into()),
+            msg: format!("{} (Details: '{}')", error, message.into()),
             cause: None, //cause: Some(&error)
         }
     }

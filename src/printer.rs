@@ -58,7 +58,7 @@ impl Printer {
 }
 
 pub fn prepare_message(message: &str) -> String {
-    let single_line = message.replace("\n", " ");
+    let single_line = message.replace('\n', " ");
     if single_line.chars().count() > 120 {
         format!("{}…", single_line.chars().take(120).collect::<String>())
     } else {

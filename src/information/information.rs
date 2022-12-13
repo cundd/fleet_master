@@ -57,5 +57,6 @@ mod tests {
         assert_eq!(constants::PROVIDER_NAME, info.fleet.provider_name);
 
         assert_eq!(0, info.packages.len());
+        assert!(info.packages.is_empty());
     }
 }

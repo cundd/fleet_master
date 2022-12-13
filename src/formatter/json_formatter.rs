@@ -1,10 +1,6 @@
-use serde;
-use serde_json;
-
+use super::FormatterResult;
 use crate::error::*;
 use crate::information::*;
-
-use super::FormatterResult;
 
 pub struct JsonFormatter;
 

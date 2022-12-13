@@ -2,7 +2,7 @@ use std::path::*;
 
 use dirs;
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Clone)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Clone)]
 pub struct SshConfiguration {
     host: String,
 
@@ -75,10 +75,7 @@ impl SshConfiguration {
         S: Into<String>,
         P: AsRef<Path>,
     {
-        let passphrase_string = match passphrase {
-            Some(p) => Some(p.into()),
-            None => None,
-        };
+        let passphrase_string = passphrase.map(|p| p.into());
         SshConfiguration {
             port,
             host: host.into(),
@@ -90,35 +87,6 @@ impl SshConfiguration {
             public_key: as_path_buf_option(public_key),
         }
     }
-
-    //    pub fn new_with_public_key<S>(
-    //        host: S,
-    //        port: S,
-    //        command: S,
-    //        username: S,
-    //        private_key: S,
-    //        public_key: Option<S>,
-    //        passphrase: Option<S>,
-    //    ) -> Self where S: Into<String> {
-    //        let passphrase_string = match passphrase {
-    //            Some(p) => Some(p.into()),
-    //            None => None,
-    //        };
-    //        let public_key_string = match public_key {
-    //            Some(p) => Some(PathBuf::from(p.into())),
-    //            None => None,
-    //        };
-    //        SshConfiguration {
-    //            host: host.into(),
-    //            port: port.into(),
-    //            command: command.into(),
-    //            username: username.into(),
-    //            password: None,
-    //            passphrase: passphrase_string,
-    //            private_key: Some(PathBuf::from(private_key.into())),
-    //            public_key: public_key_string,
-    //        }
-    //    }
 
     pub fn new_empty() -> Self {
         SshConfiguration {
@@ -166,13 +134,10 @@ impl SshConfiguration {
 }
 
 fn as_path_buf_option<P: AsRef<Path>>(input: Option<P>) -> Option<PathBuf> {
-    match input {
-        Some(p) => Some(p.as_ref().to_path_buf()),
-        None => None,
-    }
+    input.map(|p| p.as_ref().to_path_buf())
 }
 
-fn patch_key_path(p: &PathBuf) -> Option<PathBuf> {
+fn patch_key_path(p: &Path) -> Option<PathBuf> {
     if p.starts_with("~/") {
         let path_relative: String = p.to_string_lossy().chars().skip(2).collect();
 
@@ -185,7 +150,7 @@ fn patch_key_path(p: &PathBuf) -> Option<PathBuf> {
             None => None,
         }
     } else {
-        Some(p.clone())
+        Some(p.to_path_buf())
     }
 }
 
@@ -266,8 +231,8 @@ mod tests {
                 22,
                 "cmd",
                 "daniel",
-                private_key.clone(),
-                Some(public_key.clone()),
+                private_key,
+                Some(public_key),
                 Some("passphrase")
             )
         );

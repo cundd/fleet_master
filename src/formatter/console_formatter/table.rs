@@ -31,7 +31,7 @@ where
 {
     let mut output = "".to_owned();
 
-    for (i, row) in input.data().into_iter().enumerate() {
+    for (i, row) in input.data().iter().enumerate() {
         output += "|";
         for (cell, width) in row.iter().zip(column_widths) {
             output += &format!(" {:width$} |", cell, width = width);
@@ -57,7 +57,7 @@ where
 {
     let mut output = "".to_owned();
 
-    for row in input.data().into_iter() {
+    for row in input.data().iter() {
         output += "|";
         for (cell, width) in row.iter().zip(column_widths) {
             output += &format!(" {:width$} |", cell, width = width);
@@ -79,7 +79,7 @@ where
 
     let mut column_widths = vec![0; first_row.unwrap().len()];
 
-    for row in input.data().into_iter() {
+    for row in input.data().iter() {
         for (cell, previous_value) in row.iter().zip(column_widths.iter_mut()) {
             let new = format!("{}", cell).len();
             if new > *previous_value {

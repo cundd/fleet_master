@@ -56,8 +56,8 @@ impl FormatterTrait for Formatter {
         show_packages: bool,
     ) -> FormatterResult {
         match self {
-            &Formatter::Json(ref f) => f.format_information(host, information, show_packages),
-            &Formatter::Console(ref f) => f.format_information(host, information, show_packages),
+            Formatter::Json(ref f) => f.format_information(host, information, show_packages),
+            Formatter::Console(ref f) => f.format_information(host, information, show_packages),
         }
     }
 
@@ -67,8 +67,8 @@ impl FormatterTrait for Formatter {
         show_packages: bool,
     ) -> FormatterResult {
         match self {
-            &Formatter::Json(ref f) => f.format_information_collection(information, show_packages),
-            &Formatter::Console(ref f) => {
+            Formatter::Json(ref f) => f.format_information_collection(information, show_packages),
+            Formatter::Console(ref f) => {
                 f.format_information_collection(information, show_packages)
             }
         }
@@ -76,8 +76,8 @@ impl FormatterTrait for Formatter {
 
     fn format_packages(&self, packages: &Packages) -> FormatterResult {
         match self {
-            &Formatter::Json(ref f) => f.format_packages(packages),
-            &Formatter::Console(ref f) => f.format_packages(packages),
+            Formatter::Json(ref f) => f.format_packages(packages),
+            Formatter::Console(ref f) => f.format_packages(packages),
         }
     }
 
@@ -86,10 +86,10 @@ impl FormatterTrait for Formatter {
         information_collection: InformationCollection,
     ) -> FormatterResult {
         match self {
-            &Formatter::Json(ref f) => {
+            Formatter::Json(ref f) => {
                 f.format_packages_from_information_collection(information_collection)
             }
-            &Formatter::Console(ref f) => {
+            Formatter::Console(ref f) => {
                 f.format_packages_from_information_collection(information_collection)
             }
         }
@@ -101,7 +101,7 @@ pub fn get_formatter<'x>(
     default_format: &str,
     matches_option: Option<&'x ArgMatches<'x>>,
 ) -> Result<Formatter, Error> {
-    get_formatter_for_format(&get_format(default_format, matches_option))
+    get_formatter_for_format(get_format(default_format, matches_option))
 }
 
 /// Returns the formatter for the given format string

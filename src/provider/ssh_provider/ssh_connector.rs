@@ -22,7 +22,7 @@ impl SshConnector {
     ) -> Result<Session, Error> {
         // Connect to the SSH server
         let mut session = Session::new().unwrap();
-        session.handshake(&tcp).unwrap();
+        session.handshake(tcp).unwrap();
 
         if session.authenticated() {
             return Ok(session);
@@ -43,7 +43,7 @@ impl SshConnector {
         session: Session,
     ) -> Result<Session, Error> {
         let password = configuration.password().unwrap();
-        session.userauth_password(&configuration.username(), &password)?;
+        session.userauth_password(configuration.username(), &password)?;
 
         Ok(session)
     }
@@ -53,7 +53,7 @@ impl SshConnector {
         configuration: &Configuration,
         session: Session,
     ) -> Result<Session, Error> {
-        session.userauth_agent(&configuration.username())?;
+        session.userauth_agent(configuration.username())?;
 
         Ok(session)
     }
@@ -71,31 +71,20 @@ impl SshConnector {
         configuration: &Configuration,
         session: Session,
     ) -> Result<Session, Error> {
-        let passphrase_option = self.get_passphrase(&configuration);
-        let passphrase: Option<&str> = match passphrase_option {
-            Some(ref val) => Some(&val),
-            None => None,
-        };
-
-        let public_key = match configuration.public_key() {
-            Some(p) => Some(p.clone()),
-            None => None,
-        };
+        let passphrase_option = self.get_passphrase(configuration);
+        let passphrase: Option<&str> = passphrase_option.as_ref().map(|x| x as _);
 
         session.userauth_pubkey_file(
-            &configuration.username(),
-            match public_key {
-                Some(ref p) => Some(p),
-                None => None,
-            },
-            &configuration.private_key().as_ref().unwrap(),
+            configuration.username(),
+            configuration.public_key().as_ref().map(|x| x as _),
+            configuration.private_key().as_ref().unwrap(),
             passphrase,
         )?;
 
         Ok(session)
     }
 
-    fn get_passphrase_from_env<'a>(&self) -> Option<String> {
+    fn get_passphrase_from_env(&self) -> Option<String> {
         let key = "PASSPHRASE";
         match env::var(key) {
             Ok(val) => Some(val),

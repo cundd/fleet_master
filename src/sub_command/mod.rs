@@ -60,9 +60,9 @@ pub trait SubCommandTrait {
     fn get_hosts<'a>(&self, matches_option: &'a ArgMatches) -> Option<Vec<&'a str>> {
         if let Some(hosts_input) = matches_option.value_of("hosts") {
             let hosts = hosts_input
-                .split(",")
+                .split(',')
                 .map(|host| host.trim())
-                .filter(|host| host.len() > 0)
+                .filter(|host| !host.is_empty())
                 .collect::<Vec<&str>>();
 
             return Some(hosts);
@@ -148,10 +148,10 @@ pub trait SshCommandTrait: SubCommandTrait {
         let configuration_collection = ConfigurationProvider::load(configuration_file.as_path())?;
         let filtered: ConfigurationCollection = configuration_collection
             .into_iter()
-            .filter(|&(ref host, _)| host.len() > 0 && hosts.contains(&host.as_str()))
+            .filter(|&(ref host, _)| !host.is_empty() && hosts.contains(&host.as_str()))
             .collect();
 
-        if filtered.len() == 0 {
+        if filtered.is_empty() {
             Err(Error::new(format!(
                 "{}: {}",
                 if hosts.len() > 1 {
@@ -179,7 +179,7 @@ pub trait SshCommandTrait: SubCommandTrait {
                     return Err(Error::new(format!(
                         "Error when loading configuration file '{}': {}",
                         configuration_file.to_string_lossy(),
-                        e.to_string()
+                        e
                     )))
                 }
             };
@@ -217,13 +217,13 @@ impl SubCommandTrait for SubCommand {
         formatter: &F,
         matches_option: Option<&ArgMatches>,
     ) -> Result<(), Error> {
-        match self {
-            &SubCommand::ListCommand(ref c) => c.exec(formatter, matches_option),
-            &SubCommand::ShowCommand(ref c) => c.exec(formatter, matches_option),
-            &SubCommand::PackagesCommand(ref c) => c.exec(formatter, matches_option),
-            &SubCommand::ProvideCommand(ref c) => c.exec(formatter, matches_option),
-            &SubCommand::SearchCommand(ref c) => c.exec(formatter, matches_option),
-            &SubCommand::CheckCommand(ref c) => c.exec(formatter, matches_option),
+        match *self {
+            SubCommand::ListCommand(ref c) => c.exec(formatter, matches_option),
+            SubCommand::ShowCommand(ref c) => c.exec(formatter, matches_option),
+            SubCommand::PackagesCommand(ref c) => c.exec(formatter, matches_option),
+            SubCommand::ProvideCommand(ref c) => c.exec(formatter, matches_option),
+            SubCommand::SearchCommand(ref c) => c.exec(formatter, matches_option),
+            SubCommand::CheckCommand(ref c) => c.exec(formatter, matches_option),
         }
     }
 }

@@ -1,10 +1,7 @@
+use crate::information::*;
 use std::collections::HashMap;
 use std::fs;
 use std::path::PathBuf;
-
-use serde_json;
-
-use crate::information::*;
 
 /// Returns the path to the testing resources
 pub fn get_test_resources_path() -> PathBuf {
@@ -19,7 +16,7 @@ pub fn get_test_resources_path() -> PathBuf {
 pub fn get_test_resource_path(resource_name: &str) -> PathBuf {
     let mut file_path = get_test_resources_path();
 
-    for sub_path in resource_name.split("/") {
+    for sub_path in resource_name.split('/') {
         file_path.push(sub_path);
     }
 
@@ -29,7 +26,7 @@ pub fn get_test_resource_path(resource_name: &str) -> PathBuf {
 /// Return [`Packages`] instance for testing
 pub fn get_test_packages() -> Packages {
     let content = include_str!(concat!(env!("CARGO_MANIFEST_DIR"), "/tests/packages.json"));
-    let packages: HashMap<String, Package> = match serde_json::from_str(&content) {
+    let packages: HashMap<String, Package> = match serde_json::from_str(content) {
         Ok(collection) => collection,
         Err(e) => panic!("Could not deserialize test packages: {}", e),
     };

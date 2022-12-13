@@ -11,7 +11,7 @@ mod table;
 
 pub struct ConsoleFormatter;
 
-const HEADERS: &'static [&'static str] = &[
+const HEADERS: &[&str] = &[
     "Host",                       // host
     "Fleet: Protocol",            // fleet.protocol
     "Fleet: Provider version",    // fleet.provider_version
@@ -29,7 +29,7 @@ const HEADERS: &'static [&'static str] = &[
     "System Application Install Mode", // system.application.install_mode
 ];
 
-const PACKAGE_HEADERS: &'static [&'static str] = &["Key", "Version", "State", "Description"];
+const PACKAGE_HEADERS: &[&str] = &["Key", "Version", "State", "Description"];
 
 impl super::FormatterTrait for ConsoleFormatter {
     fn format_information(
@@ -65,7 +65,7 @@ impl super::FormatterTrait for ConsoleFormatter {
     ) -> super::FormatterResult {
         let mut output = "".to_owned();
         for (host, information) in information_collection {
-            if information.packages.len() > 0 {
+            if !information.packages.is_empty() {
                 output += &(format!("Packages of host '{}':\n", host));
                 let matrix = Matrix::from_packages(&information.packages);
                 output += &Table::top_header(&matrix);

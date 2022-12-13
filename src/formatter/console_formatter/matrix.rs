@@ -1,9 +1,8 @@
-#[allow(dead_code)]
 use std::fmt::Debug;
 use std::iter::IntoIterator;
 use std::vec::IntoIter as VecIntoIter;
 
-#[derive(Debug, PartialEq, Clone)]
+#[derive(Debug, PartialEq, Clone, Eq)]
 pub struct Matrix<T>
 where
     T: Clone,
@@ -33,14 +32,9 @@ where
 
         Matrix {
             rows: input.len(),
-            columns: columns,
+            columns,
             data: input,
         }
-    }
-
-    #[allow(unused)]
-    pub fn from_vec_ref(input: &Vec<Vec<T>>) -> Matrix<T> {
-        unimplemented!()
     }
 
     pub fn from_slice(input: &[&[T]]) -> Matrix<T> {
@@ -76,7 +70,7 @@ where
         }
 
         for new_row_index in 0..self.columns {
-            let ref mut new_row = new_data[new_row_index];
+            let new_row = &mut new_data[new_row_index];
             for new_column_index in 0..self.rows {
                 new_row.push(self.data[new_column_index][new_row_index].clone())
             }

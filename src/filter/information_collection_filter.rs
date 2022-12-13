@@ -17,7 +17,7 @@ impl InformationCollectionFilter {
             .into_iter()
             .filter_map(|(host, information)| {
                 let packages = information.packages.clone();
-                if 0 < PackageFilter::filter(packages, search, exact).len() {
+                if !PackageFilter::filter(packages, search, exact).is_empty() {
                     Some((host, information))
                 } else {
                     None

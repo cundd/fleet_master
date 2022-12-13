@@ -56,6 +56,7 @@ mod tests {
     fn assert_collection_without_packages(collection: &InformationCollection) {
         for information in collection.values() {
             assert_eq!(0, information.packages.len());
+            assert!(information.packages.is_empty());
         }
     }
 

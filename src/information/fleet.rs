@@ -1,4 +1,4 @@
-#[derive(Clone, Serialize, Deserialize, Debug, PartialEq)]
+#[derive(Clone, Serialize, Deserialize, Debug, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
 pub struct Fleet {
     pub protocol: String,
@@ -18,8 +18,3 @@ impl Fleet {
         }
     }
 }
-
-// "fleet": {
-//        "protocol": "0.1.0",
-//        "providerVersion": "0.1.0"
-//    },

@@ -46,7 +46,7 @@ mod tests {
             };
         }
 
-        return true;
+        true
     }
 
     /// Change the working dir to the given testing directory
@@ -55,7 +55,7 @@ mod tests {
         if !new_pwd.exists() {
             panic!("New working dir {:?} does not exist", new_pwd);
         }
-        env::set_current_dir(new_pwd.clone()).unwrap();
+        env::set_current_dir(new_pwd).unwrap();
     }
 
     #[test]

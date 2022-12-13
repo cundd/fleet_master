@@ -38,10 +38,12 @@ mod tests {
             0,
             PackageFilter::filter(get_test_packages(), "not-a-package", false).len()
         );
+        assert!(PackageFilter::filter(get_test_packages(), "not-a-package", false).is_empty());
         assert_eq!(
             0,
             PackageFilter::filter(get_test_packages(), "not-a-package", true).len()
         );
+        assert!(PackageFilter::filter(get_test_packages(), "not-a-package", true).is_empty());
     }
 
     #[test]

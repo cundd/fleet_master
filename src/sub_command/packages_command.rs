@@ -20,7 +20,7 @@ impl SubCommandTrait for PackagesCommand {
 
         let (information_collection, _) = match hosts_result {
             Some(hosts) => {
-                if hosts.len() == 0 {
+                if hosts.is_empty() {
                     return Err(Error::new("No hosts given"));
                 }
                 self.fetch_information_for_hosts(hosts, subcommand_matches_option)?
