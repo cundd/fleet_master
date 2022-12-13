@@ -24,8 +24,9 @@ const HEADERS: &'static [&'static str] = &[
     "System Platform OS version", // system.platform.os.version
     "System Platform OS machine", // system.platform.os.machine
     // "System Platform OS info", // system.platform.os.info
-    "System Application Name",    // system.application.name
-    "System Application Version", // system.application.version
+    "System Application Name",         // system.application.name
+    "System Application Version",      // system.application.version
+    "System Application Install Mode", // system.application.install_mode
 ];
 
 const PACKAGE_HEADERS: &'static [&'static str] = &["Key", "Version", "State", "Description"];
@@ -112,6 +113,7 @@ impl Matrix<String> {
             // cells.push(info.system.platform.os.info);
             cells.push(info.system.application.name);
             cells.push(info.system.application.version);
+            cells.push(info.system.application.install_mode.unwrap_or_default());
 
             rows.push(cells);
         }
