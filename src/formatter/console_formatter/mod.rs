@@ -1,7 +1,5 @@
 use std::collections::BTreeMap;
-
 use crate::information::*;
-
 use self::matrix::Matrix;
 use self::table::Table;
 
@@ -12,21 +10,16 @@ mod table;
 pub struct ConsoleFormatter;
 
 const HEADERS: &[&str] = &[
-    "Host",                       // host
-    "Fleet: Protocol",            // fleet.protocol
-    "Fleet: Provider version",    // fleet.provider_version
-    "Fleet: Provider name",       // fleet.provider_name
-    "System Platform Language",   // system.platform.language
-    "System Platform Version",    // system.platform.version
-    "System Platform Sapi",       // system.platform.sapi
-    "System Platform Host",       // system.platform.host
-    "System Platform OS vendor",  // system.platform.os.vendor
-    "System Platform OS version", // system.platform.os.version
-    "System Platform OS machine", // system.platform.os.machine
-    // "System Platform OS info", // system.platform.os.info
-    "System Application Name",         // system.application.name
-    "System Application Version",      // system.application.version
-    "System Application Install Mode", // system.application.install_mode
+    "Host",
+    "Provider",
+    "Lang",
+    "Version",
+    "Sapi",
+    "Host",
+    "OS",
+    "App Name",
+    "App Version",
+    "App Install Mode",
 ];
 
 const PACKAGE_HEADERS: &[&str] = &["Key", "Version", "State", "Description"];
@@ -51,7 +44,7 @@ impl super::FormatterTrait for ConsoleFormatter {
         show_packages: bool,
     ) -> super::FormatterResult {
         let matrix = Matrix::from_information_collection(information, show_packages);
-        Ok(Table::left_header(&matrix))
+        Ok(Table::top_header(&matrix))
     }
 
     fn format_packages(&self, packages: &Packages) -> super::FormatterResult {
@@ -100,17 +93,12 @@ impl Matrix<String> {
             let mut cells: Vec<String> = Vec::with_capacity(HEADERS.len());
 
             cells.push(host);
-            cells.push(info.fleet.protocol);
-            cells.push(info.fleet.provider_version);
-            cells.push(info.fleet.provider_name);
+            cells.push(format!("{} ({})", info.fleet.provider_name, info.fleet.provider_version));
             cells.push(info.system.platform.language);
             cells.push(info.system.platform.version);
             cells.push(info.system.platform.sapi);
             cells.push(info.system.platform.host);
-            cells.push(info.system.platform.os.vendor);
-            cells.push(info.system.platform.os.version);
-            cells.push(info.system.platform.os.machine);
-            // cells.push(info.system.platform.os.info);
+            cells.push(format!("{} ({} {})", info.system.platform.os.vendor, info.system.platform.os.version, info.system.platform.os.machine));
             cells.push(info.system.application.name);
             cells.push(info.system.application.version);
             cells.push(info.system.application.install_mode.unwrap_or_default());
