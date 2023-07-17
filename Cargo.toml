@@ -13,7 +13,7 @@ yaml = ["serde_yaml"]
 serde = "1.0"
 serde_derive = "1.0"
 serde_json = "1.0"
-serde_yaml = { version = "0.7", optional = true }
+serde_yaml = { version = "0.9", optional = true }
 ssh2 = "0.3"
 clap = "2.23"
 ansi_term = "0.9"
