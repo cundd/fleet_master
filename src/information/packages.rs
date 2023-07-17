@@ -17,7 +17,7 @@ impl Package {
     }
 }
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Clone)]
+#[derive(Default, Serialize, Deserialize, Debug, PartialEq, Eq, Clone)]
 pub struct Packages {
     pub all: HashMap<String, Package>,
 }
@@ -63,22 +63,6 @@ impl Packages {
 impl<'a> Index<&'a str> for Packages {
     type Output = Package;
     fn index(&self, s: &'a str) -> &Self::Output {
-        // '
         &self.all[s]
     }
 }
-
-//"all": {
-//    "core": {
-//        "key": "core",
-//        "version": "8.7.0",
-//        "description": "TYPO3 Core",
-//        "state": "active"
-//    },
-//    "extbase": {
-//        "key": "extbase",
-//        "version": "8.7.0",
-//        "description": "TYPO3 Core",
-//        "state": "active"
-//    },
-//}
