@@ -15,14 +15,11 @@ impl SshConnector {
     }
 
     /// Establish a SSH connection with the given configuration
-    pub fn connect(
-        &self,
-        configuration: &Configuration,
-        tcp: &TcpStream,
-    ) -> Result<Session, Error> {
+    pub fn connect(&self, configuration: &Configuration, tcp: TcpStream) -> Result<Session, Error> {
         // Connect to the SSH server
         let mut session = Session::new().unwrap();
-        session.handshake(tcp).unwrap();
+        session.set_tcp_stream(tcp);
+        session.handshake().unwrap();
 
         if session.authenticated() {
             return Ok(session);

@@ -17,7 +17,7 @@ pub struct SshProvider;
 fn fetch_information_through_ssh(configuration: &Configuration) -> Result<Information, Error> {
     let address = format!("{}:{}", configuration.host(), configuration.port());
     let tcp = TcpStream::connect(&address)?;
-    let session: Session = SshConnector::new().connect(configuration, &tcp)?;
+    let session: Session = SshConnector::new().connect(configuration, tcp)?;
 
     let mut command = String::new();
     command.push_str(configuration.command());
