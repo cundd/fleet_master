@@ -1,4 +1,3 @@
-pub use self::file_provider::FileProvider;
 pub use self::local_provider::LocalProvider;
 pub use self::ssh_provider::SshProvider;
 
