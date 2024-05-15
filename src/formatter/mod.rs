@@ -1,13 +1,10 @@
-use clap::ArgMatches;
-
-use crate::error::*;
-use crate::information::*;
+mod console_formatter;
+mod json_formatter;
 
 pub use self::console_formatter::ConsoleFormatter;
 pub use self::json_formatter::JsonFormatter;
-
-mod console_formatter;
-mod json_formatter;
+use crate::error::*;
+use crate::information::*;
 
 type FormatterResult = Result<String, Error>;
 
@@ -95,17 +92,17 @@ impl FormatterTrait for Formatter {
         }
     }
 }
-
-/// Returns the formatter for the matches
-pub fn get_formatter<'x>(
-    default_format: &str,
-    matches_option: Option<&'x ArgMatches<'x>>,
-) -> Result<Formatter, Error> {
-    get_formatter_for_format(get_format(default_format, matches_option))
-}
+//
+// /// Returns the formatter for the matches
+// pub fn get_formatter<T: DefaultArgsTrait>(
+//     default_format: &str,
+//     args: T,
+// ) -> Result<Formatter, Error> {
+//     get_formatter_for_format(get_format(default_format, args))
+// }
 
 /// Returns the formatter for the given format string
-fn get_formatter_for_format(format: &str) -> Result<Formatter, Error> {
+pub fn get_formatter(format: &str) -> Result<Formatter, Error> {
     match format {
         "json" => Ok(Formatter::Json(JsonFormatter {})),
         "console" => Ok(Formatter::Console(ConsoleFormatter {})),
@@ -113,12 +110,5 @@ fn get_formatter_for_format(format: &str) -> Result<Formatter, Error> {
             "No formatter found for format {}",
             format
         ))),
-    }
-}
-
-fn get_format<'x>(default_format: &'x str, matches_option: Option<&'x ArgMatches<'x>>) -> &'x str {
-    match matches_option {
-        Some(matches) => matches.value_of("format").unwrap_or(default_format),
-        None => default_format,
     }
 }

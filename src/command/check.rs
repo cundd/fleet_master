@@ -1,26 +1,29 @@
-extern crate ansi_term;
-
+use super::{ssh_fetch::fetch_information_collection, CommandTrait, DefaultArgs};
+use crate::{error::Error, prepare_message, FormatterTrait};
 use ansi_term::Colour;
-use clap::ArgMatches;
+use clap::Args;
+use std::path::PathBuf;
 
-use crate::error::Error;
-use crate::formatter::*;
-use crate::printer::prepare_message;
-use crate::sub_command::SshCommandTrait;
-use crate::sub_command::SubCommandTrait;
+#[derive(Args, Debug)]
+pub struct CheckArgs {
+    #[command(flatten)]
+    pub common: DefaultArgs,
+}
 
-pub struct CheckCommand;
+#[derive(Default)]
+pub struct CheckCommand {}
 
-impl SshCommandTrait for CheckCommand {}
+impl CommandTrait for CheckCommand {
+    type Args = CheckArgs;
 
-impl SubCommandTrait for CheckCommand {
     fn exec<F: FormatterTrait>(
         &self,
         _formatter: &F,
-        subcommand_matches_option: Option<&ArgMatches>,
+        configuration_file: PathBuf,
+        _arguments: &CheckArgs,
     ) -> Result<(), Error> {
         let (information_collection, error_collection) =
-            match self.fetch_information_collection(subcommand_matches_option) {
+            match fetch_information_collection(configuration_file) {
                 Ok(r) => r,
                 Err(e) => return Err(e),
             };
