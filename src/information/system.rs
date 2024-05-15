@@ -1,5 +1,6 @@
 use super::application::*;
 use super::platform::*;
+use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Serialize, Deserialize, Debug, PartialEq)]
 pub struct System {

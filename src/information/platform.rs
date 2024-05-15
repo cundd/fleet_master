@@ -1,3 +1,4 @@
+use serde::{Deserialize, Serialize};
 use std::process::Command;
 
 fn uname(key: &str) -> String {

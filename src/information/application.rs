@@ -1,6 +1,6 @@
-use std::collections::HashMap;
-
 use crate::constants;
+use serde::{Deserialize, Serialize};
+use std::collections::HashMap;
 
 #[derive(Clone, Serialize, Deserialize, Debug, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]

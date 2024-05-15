@@ -1,23 +1,8 @@
-extern crate ansi_term;
-extern crate clap;
-extern crate serde;
-#[macro_use]
-extern crate serde_derive;
-extern crate serde_json;
-#[cfg(feature = "yaml")]
-extern crate serde_yaml;
-extern crate ssh2;
-
-use clap::{App, Arg, SubCommand};
-
 use crate::formatter::*;
 use crate::printer::*;
 use crate::sub_command::SubCommand as FleetSubCommand;
 use crate::sub_command::*;
-
-#[macro_use]
-#[cfg(test)]
-mod test_helpers;
+use clap::{App, Arg, SubCommand};
 
 pub mod configuration;
 pub mod constants;
@@ -28,6 +13,9 @@ pub mod information;
 mod printer;
 mod provider;
 mod sub_command;
+
+#[cfg(test)]
+mod test_helpers;
 
 fn main() {
     let format_arg = Arg::with_name("format")

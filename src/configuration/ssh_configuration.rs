@@ -1,6 +1,6 @@
-use std::path::*;
-
 use dirs;
+use serde::{Deserialize, Serialize};
+use std::path::*;
 
 #[derive(Serialize, Deserialize, Debug, PartialEq, Eq, Clone)]
 pub struct SshConfiguration {
