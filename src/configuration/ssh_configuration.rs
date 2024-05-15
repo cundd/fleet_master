@@ -21,6 +21,7 @@ fn default_port() -> u16 {
 }
 
 impl SshConfiguration {
+    #[allow(clippy::too_many_arguments)]
     pub fn new<S, P>(
         host: S,
         port: u16,

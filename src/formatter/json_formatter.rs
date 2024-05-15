@@ -37,7 +37,7 @@ impl super::FormatterTrait for JsonFormatter {
             information
         };
 
-        self.format_data(&information_collection)
+        self.format_data(information_collection)
     }
 
     fn format_packages(&self, packages: &Packages) -> FormatterResult {
@@ -49,10 +49,10 @@ impl super::FormatterTrait for JsonFormatter {
         information_collection: InformationCollection,
     ) -> FormatterResult {
         let packages_collection: Vec<Packages> = information_collection
-            .into_iter()
-            .map(|(_, i)| i.packages)
+            .into_values()
+            .map(|i| i.packages)
             .collect();
 
-        self.format_data(&packages_collection)
+        self.format_data(packages_collection)
     }
 }

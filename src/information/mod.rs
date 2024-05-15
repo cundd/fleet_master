@@ -8,6 +8,7 @@ pub use self::system::*;
 mod application;
 mod collection;
 mod fleet;
+#[allow(clippy::module_inception)]
 mod information;
 mod packages;
 mod platform;

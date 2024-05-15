@@ -69,8 +69,13 @@ where
             new_data.push(new_row);
         }
 
-        for new_row_index in 0..self.columns {
-            let new_row = &mut new_data[new_row_index];
+        // for new_row_index in 0..self.columns {
+        //     let new_row = &mut new_data[new_row_index];
+        //     for new_column_index in 0..self.rows {
+        //         new_row.push(self.data[new_column_index][new_row_index].clone())
+        //     }
+        // }
+        for (new_row_index, new_row) in new_data.iter_mut().enumerate().take(self.columns) {
             for new_column_index in 0..self.rows {
                 new_row.push(self.data[new_column_index][new_row_index].clone())
             }
@@ -205,8 +210,7 @@ mod tests {
     #[test]
     fn for_test() {
         let m = Matrix::from_vec(build_data());
-        let mut i = 0;
-        for row in m {
+        for (i, row) in m.into_iter().enumerate() {
             match i {
                 0 => assert_eq!(vec!("Apple", "Red"), row),
                 1 => assert_eq!(vec!("Pear", "Green"), row),
@@ -214,8 +218,6 @@ mod tests {
                 3 => assert_eq!(vec!("Orange", "Orange"), row),
                 _ => panic!("Unexpected iteration"),
             }
-
-            i += 1;
         }
     }
 

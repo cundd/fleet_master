@@ -4,7 +4,8 @@ use std::fmt::Display;
 
 pub use self::flat_error::FlatError as Error;
 
-#[allow(unused)]
+// #[allow(unused)]
+#[allow(clippy::module_inception)]
 mod error;
 mod flat_error;
 

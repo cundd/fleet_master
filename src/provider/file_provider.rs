@@ -13,7 +13,7 @@ impl FileProvider {
     where
         S: Into<String>,
     {
-        let absolute_file_path: PathBuf = match fs::canonicalize(&uri.into()) {
+        let absolute_file_path: PathBuf = match fs::canonicalize(uri.into()) {
             Ok(p) => p,
             Err(e) => return Err(Error::from_error(&e)),
         };

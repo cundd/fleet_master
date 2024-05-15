@@ -13,7 +13,7 @@ impl PackageFilter {
     pub fn filter(packages: Packages, search: &str, exact: bool) -> Packages {
         let filtered: HashMap<String, Package> = packages
             .into_iter()
-            .filter(|&(_, ref package)| {
+            .filter(|(_, package)| {
                 if exact {
                     package.key == search
                 } else {

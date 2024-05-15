@@ -148,7 +148,7 @@ pub trait SshCommandTrait: SubCommandTrait {
         let configuration_collection = ConfigurationProvider::load(configuration_file.as_path())?;
         let filtered: ConfigurationCollection = configuration_collection
             .into_iter()
-            .filter(|&(ref host, _)| !host.is_empty() && hosts.contains(&host.as_str()))
+            .filter(|(host, _)| !host.is_empty() && hosts.contains(&host.as_str()))
             .collect();
 
         if filtered.is_empty() {
@@ -201,6 +201,7 @@ pub trait SshCommandTrait: SubCommandTrait {
     }
 }
 
+#[allow(clippy::enum_variant_names)]
 /// Wrapper type to dispatch to the concrete subcommand
 pub enum SubCommand {
     ListCommand(ListCommand),

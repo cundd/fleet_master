@@ -51,12 +51,18 @@ impl Packages {
         self.all.iter()
     }
 
-    pub fn into_iter(self) -> IntoIter<String, Package> {
-        self.all.into_iter()
-    }
-
     pub fn get(&self, key: &str) -> Option<&Package> {
         self.all.get(key)
+    }
+}
+
+impl IntoIterator for Packages {
+    type Item = (String, Package);
+
+    type IntoIter = IntoIter<String, Package>;
+
+    fn into_iter(self) -> Self::IntoIter {
+        self.all.into_iter()
     }
 }
 

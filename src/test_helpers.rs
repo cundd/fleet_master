@@ -6,7 +6,7 @@ use std::path::PathBuf;
 /// Returns the path to the testing resources
 pub fn get_test_resources_path() -> PathBuf {
     let file_path = format!("{}/{}", env!("CARGO_MANIFEST_DIR"), "tests");
-    match fs::canonicalize(&file_path) {
+    match fs::canonicalize(file_path) {
         Ok(f) => f,
         Err(e) => panic!("Error for file {}: {}", file!(), e),
     }
