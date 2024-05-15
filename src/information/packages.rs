@@ -52,7 +52,6 @@ impl Packages {
     pub fn iter(&self) -> Iter<String, Package> {
         self.all.iter()
     }
-
 }
 
 impl IntoIterator for Packages {
