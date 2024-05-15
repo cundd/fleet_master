@@ -1,8 +1,6 @@
-use std::collections::BTreeMap;
-
-use crate::error::*;
-
 use super::information::*;
+use crate::error::*;
+use std::collections::BTreeMap;
 
 pub type InformationCollection = BTreeMap<String, Information>;
 pub type CollectionResult = Result<(InformationCollection, ErrorCollection), Error>;
@@ -15,7 +13,6 @@ impl InformationCollectionTrait for InformationCollection {
     #[allow(unused_variables)]
     fn new_with_capacity(capacity: usize) -> Self {
         InformationCollection::new()
-        //        InformationCollection::with_capacity(collection.len())
     }
 }
 
@@ -29,21 +26,21 @@ pub fn collection_without_packages(collection: InformationCollection) -> Informa
     new_collection
 }
 
-/// Returns a new Information Collection without Packages
-pub fn collection_without_packages_ref(
-    collection: &InformationCollection,
-) -> InformationCollection {
-    let mut new_collection = InformationCollection::new_with_capacity(collection.len());
-    for (host, information) in collection {
-        new_collection.insert(host.clone(), information.without_packages());
-    }
-
-    new_collection
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// Returns a new Information Collection without Packages
+    pub fn collection_without_packages_ref(
+        collection: &InformationCollection,
+    ) -> InformationCollection {
+        let mut new_collection = InformationCollection::new_with_capacity(collection.len());
+        for (host, information) in collection {
+            new_collection.insert(host.clone(), information.without_packages());
+        }
+
+        new_collection
+    }
 
     fn build_test_collection() -> InformationCollection {
         let mut collection = InformationCollection::new();

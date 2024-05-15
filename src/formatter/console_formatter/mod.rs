@@ -1,11 +1,11 @@
-use std::collections::BTreeMap;
-use crate::information::*;
-use self::matrix::Matrix;
-use self::table::Table;
-
 #[allow(dead_code)]
 mod matrix;
 mod table;
+
+use self::matrix::Matrix;
+use self::table::Table;
+use crate::information::*;
+use std::collections::BTreeMap;
 
 pub struct ConsoleFormatter;
 
@@ -93,12 +93,20 @@ impl Matrix<String> {
             let mut cells: Vec<String> = Vec::with_capacity(HEADERS.len());
 
             cells.push(host);
-            cells.push(format!("{} ({})", info.fleet.provider_name, info.fleet.provider_version));
+            cells.push(format!(
+                "{} ({})",
+                info.fleet.provider_name, info.fleet.provider_version
+            ));
             cells.push(info.system.platform.language);
             cells.push(info.system.platform.version);
             cells.push(info.system.platform.sapi);
             cells.push(info.system.platform.host);
-            cells.push(format!("{} ({} {})", info.system.platform.os.vendor, info.system.platform.os.version, info.system.platform.os.machine));
+            cells.push(format!(
+                "{} ({} {})",
+                info.system.platform.os.vendor,
+                info.system.platform.os.version,
+                info.system.platform.os.machine
+            ));
             cells.push(info.system.application.name);
             cells.push(info.system.application.version);
             cells.push(info.system.application.install_mode.unwrap_or_default());

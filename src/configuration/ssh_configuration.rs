@@ -1,4 +1,3 @@
-use dirs;
 use serde::{Deserialize, Serialize};
 use std::path::*;
 
@@ -21,6 +20,7 @@ fn default_port() -> u16 {
 }
 
 impl SshConfiguration {
+    #[cfg(test)]
     #[allow(clippy::too_many_arguments)]
     pub fn new<S, P>(
         host: S,
@@ -47,6 +47,8 @@ impl SshConfiguration {
             public_key: as_path_buf_option(public_key),
         }
     }
+
+    #[cfg(test)]
     pub fn new_with_password<S>(host: S, port: u16, command: S, username: S, password: S) -> Self
     where
         S: Into<String>,
@@ -63,6 +65,7 @@ impl SshConfiguration {
         }
     }
 
+    #[cfg(test)]
     pub fn new_with_public_key<S, P>(
         host: S,
         port: u16,
@@ -89,6 +92,7 @@ impl SshConfiguration {
         }
     }
 
+    #[cfg(test)]
     pub fn new_empty() -> Self {
         SshConfiguration {
             host: "".to_owned(),
@@ -134,6 +138,7 @@ impl SshConfiguration {
     }
 }
 
+#[cfg(test)]
 fn as_path_buf_option<P: AsRef<Path>>(input: Option<P>) -> Option<PathBuf> {
     input.map(|p| p.as_ref().to_path_buf())
 }
@@ -157,7 +162,7 @@ fn patch_key_path(p: &Path) -> Option<PathBuf> {
 
 #[cfg(test)]
 mod tests {
-    use crate::configuration::Helper;
+    use crate::configuration::helper::Helper;
 
     use super::*;
 

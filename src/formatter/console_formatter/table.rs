@@ -1,8 +1,7 @@
+use super::matrix::*;
 use std::clone::Clone;
 use std::fmt::Debug;
 use std::fmt::Display;
-
-use super::matrix::*;
 
 pub struct Table;
 

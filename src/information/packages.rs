@@ -12,6 +12,7 @@ pub struct Package {
     pub state: String,
 }
 
+#[cfg(test)]
 impl Package {
     pub fn is_active(&self) -> bool {
         self.state == "active"
@@ -52,9 +53,6 @@ impl Packages {
         self.all.iter()
     }
 
-    pub fn get(&self, key: &str) -> Option<&Package> {
-        self.all.get(key)
-    }
 }
 
 impl IntoIterator for Packages {

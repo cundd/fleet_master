@@ -1,7 +1,6 @@
+use crate::error::Error;
 use std::env;
 use std::path::*;
-
-use crate::error::Error;
 
 pub fn detect_configuration_file() -> Result<PathBuf, Error> {
     let pwd = match env::current_dir() {

@@ -1,10 +1,8 @@
-use std::env;
-use std::net::TcpStream;
-
-use ssh2::Session;
-
 use crate::configuration::Configuration;
 use crate::error::*;
+use ssh2::Session;
+use std::env;
+use std::net::TcpStream;
 
 pub struct SshConnector {}
 

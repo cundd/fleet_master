@@ -1,7 +1,6 @@
-use std::collections::HashMap;
-
 use crate::information::Package;
 use crate::information::Packages;
+use std::collections::HashMap;
 
 pub struct PackageFilter {}
 

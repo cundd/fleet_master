@@ -1,8 +1,6 @@
-use std;
+use ssh2::Error as Ssh2Error;
 use std::error::Error as StdError;
 use std::fmt;
-
-use ssh2::Error as Ssh2Error;
 
 #[derive(Debug)]
 pub struct FlatError {

@@ -1,9 +1,8 @@
+use crate::error::Error;
+use crate::information::*;
 use std::fs;
 use std::fs::File;
 use std::path::PathBuf;
-
-use crate::error::Error;
-use crate::information::*;
 
 pub struct FileProvider;
 

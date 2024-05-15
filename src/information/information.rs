@@ -2,8 +2,6 @@ use super::*;
 use crate::constants;
 use serde::{Deserialize, Serialize};
 
-//use super::fleet::Fleet;
-
 #[derive(Serialize, Deserialize, Debug, PartialEq, Clone)]
 pub struct Information {
     pub fleet: Fleet,
@@ -24,15 +22,6 @@ impl Information {
             system: System::new_for_current_env(),
         }
     }
-
-    //    /// Returns a empty information instance
-    //    pub fn new() -> Self {
-    //        Information {
-    //            fleet: Fleet::new("", "", ""),
-    //            packages: Packages::new(),
-    //            system: System::new_for_current_env()
-    //        }
-    //    }
 
     /// Returns a copy of the information without packages
     pub fn without_packages(&self) -> Self {

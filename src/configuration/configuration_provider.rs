@@ -1,13 +1,8 @@
+use crate::configuration::*;
+use crate::error::Error;
 use std::ffi::OsStr;
 use std::fs::File;
 use std::path::*;
-
-use serde_json;
-#[cfg(feature = "yaml")]
-use serde_yaml;
-
-use crate::configuration::*;
-use crate::error::Error;
 
 pub struct ConfigurationProvider;
 

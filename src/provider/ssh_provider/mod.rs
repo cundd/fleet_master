@@ -1,3 +1,5 @@
+mod ssh_connector;
+
 use self::ssh_connector::SshConnector;
 use crate::configuration::*;
 use crate::error::*;
@@ -8,8 +10,6 @@ use std::io::prelude::*;
 use std::net::TcpStream;
 use std::sync::mpsc;
 use std::thread;
-
-mod ssh_connector;
 
 pub struct SshProvider;
 
@@ -172,8 +172,8 @@ impl super::Provider for SshProvider {
 
 #[cfg(test)]
 mod tests {
+    use crate::configuration::helper::Helper;
     use crate::configuration::Configuration;
-    use crate::configuration::Helper;
 
     use super::*;
 
