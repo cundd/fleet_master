@@ -8,6 +8,7 @@ pub struct SshConfiguration {
     #[serde(default = "default_port")]
     port: u16,
     command: String,
+    update_command: Option<String>,
     username: String,
     password: Option<String>,
     passphrase: Option<String>,
@@ -40,6 +41,7 @@ impl SshConfiguration {
             port,
             host: host.into(),
             command: command.into(),
+            update_command: None,
             username: username.into(),
             password: password.map(|s| s.into()),
             passphrase: passphrase.map(|s| s.into()),
@@ -57,6 +59,7 @@ impl SshConfiguration {
             port,
             host: host.into(),
             command: command.into(),
+            update_command: None,
             username: username.into(),
             password: Some(password.into()),
             passphrase: None,
@@ -84,6 +87,7 @@ impl SshConfiguration {
             port,
             host: host.into(),
             command: command.into(),
+            update_command: None,
             username: username.into(),
             password: None,
             passphrase: passphrase_string,
@@ -97,6 +101,7 @@ impl SshConfiguration {
         SshConfiguration {
             host: "".to_owned(),
             port: 0,
+            update_command: None,
             command: "".to_owned(),
             username: "".to_owned(),
             password: None,
@@ -115,6 +120,12 @@ impl SshConfiguration {
     pub fn command(&self) -> &String {
         &self.command
     }
+
+    #[allow(unused)]
+    pub fn update_command(&self) -> Option<String> {
+        self.update_command.clone()
+    }
+
     pub fn username(&self) -> &String {
         &self.username
     }
@@ -182,6 +193,7 @@ mod tests {
                 host: "localhost".to_owned(),
                 port: 22,
                 command: "cmd".to_owned(),
+                update_command: None,
                 username: "daniel".to_owned(),
                 password: None,
                 passphrase: None,
@@ -204,6 +216,7 @@ mod tests {
                 host: "localhost".to_owned(),
                 port: 22,
                 command: "cmd".to_owned(),
+                update_command: None,
                 username: "daniel".to_owned(),
                 password: None,
                 passphrase: None,
@@ -226,6 +239,7 @@ mod tests {
                 host: "localhost".to_owned(),
                 port: 22,
                 command: "cmd".to_owned(),
+                update_command: None,
                 username: "daniel".to_owned(),
                 password: None,
                 passphrase: Some("passphrase".to_owned()),
@@ -251,6 +265,7 @@ mod tests {
                 host: "localhost".to_owned(),
                 port: 22,
                 command: "cmd".to_owned(),
+                update_command: None,
                 username: "daniel".to_owned(),
                 password: Some("password".to_owned()),
                 passphrase: None,
@@ -268,6 +283,7 @@ mod tests {
                 host: "".to_owned(),
                 port: 0,
                 command: "".to_owned(),
+                update_command: None,
                 username: "".to_owned(),
                 password: None,
                 passphrase: None,
