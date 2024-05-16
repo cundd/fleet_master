@@ -8,7 +8,7 @@ use std::path::PathBuf;
 
 #[derive(Args, Debug)]
 pub struct PackagesArgs {
-    /// Comma separated list hosts to fetch the packages
+    /// Hosts to fetch the packages
     #[arg(num_args(0..))]
     pub hosts: Vec<String>,
 
@@ -26,7 +26,7 @@ impl CommandTrait for PackagesCommand {
         &self,
         formatter: &F,
         configuration_file: PathBuf,
-        arguments: &PackagesArgs,
+        arguments: Self::Args,
     ) -> Result<(), Error> {
         let hosts = &arguments.hosts;
 

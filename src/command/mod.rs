@@ -24,7 +24,7 @@ pub trait CommandTrait {
         &self,
         formatter: &F,
         configuration_file: PathBuf,
-        arguments: &Self::Args,
+        arguments: Self::Args,
     ) -> Result<(), Error>;
 }
 

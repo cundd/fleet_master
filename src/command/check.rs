@@ -20,7 +20,7 @@ impl CommandTrait for CheckCommand {
         &self,
         _formatter: &F,
         configuration_file: PathBuf,
-        _arguments: &CheckArgs,
+        _arguments: Self::Args,
     ) -> Result<(), Error> {
         let (information_collection, error_collection) =
             match fetch_information_collection(configuration_file) {

@@ -99,7 +99,7 @@ fn run() -> Result<(), Error> {
 
     let config_file = get_configuration_file(&cli)?;
 
-    match &cli.command {
+    match cli.command {
         Commands::List(args) => ListCommand::default().exec(&formatter, config_file, args),
         Commands::Show(args) => ShowCommand::default().exec(&formatter, config_file, args),
         Commands::Packages(args) => PackagesCommand::default().exec(&formatter, config_file, args),

@@ -25,7 +25,7 @@ impl CommandTrait for ListCommand {
         &self,
         formatter: &F,
         configuration_file: PathBuf,
-        arguments: &ListArgs,
+        arguments: Self::Args,
     ) -> Result<(), Error> {
         let (information_collection, _) = fetch_information_collection(configuration_file)?;
 

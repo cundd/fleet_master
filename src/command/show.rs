@@ -26,7 +26,7 @@ impl CommandTrait for ShowCommand {
         &self,
         formatter: &F,
         configuration_file: PathBuf,
-        arguments: &ShowArgs,
+        arguments: Self::Args,
     ) -> Result<(), Error> {
         let host = &arguments.host;
         let information = fetch_information_for_host(configuration_file, host)?;

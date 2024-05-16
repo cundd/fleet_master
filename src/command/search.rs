@@ -30,7 +30,7 @@ impl CommandTrait for SearchCommand {
         &self,
         formatter: &F,
         configuration_file: PathBuf,
-        arguments: &SearchArgs,
+        arguments: Self::Args,
     ) -> Result<(), Error> {
         let package = &arguments.package;
         let exact = arguments.exact;
