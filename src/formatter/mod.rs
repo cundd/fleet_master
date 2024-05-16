@@ -5,6 +5,7 @@ pub use self::console_formatter::ConsoleFormatter;
 pub use self::json_formatter::JsonFormatter;
 use crate::error::*;
 use crate::information::*;
+use crate::shell::ShellOutputCollection;
 
 type FormatterResult = Result<String, Error>;
 
@@ -37,6 +38,9 @@ pub trait FormatterTrait {
         &self,
         information_collection: InformationCollection,
     ) -> FormatterResult;
+
+    /// Format all the output from shell execution in the collection
+    fn format_shell_output_collection(&self, collection: ShellOutputCollection) -> FormatterResult;
 }
 
 /// Wrapper around the different formatter types
@@ -91,15 +95,14 @@ impl FormatterTrait for Formatter {
             }
         }
     }
+
+    fn format_shell_output_collection(&self, collection: ShellOutputCollection) -> FormatterResult {
+        match self {
+            Formatter::Json(ref f) => f.format_shell_output_collection(collection),
+            Formatter::Console(ref f) => f.format_shell_output_collection(collection),
+        }
+    }
 }
-//
-// /// Returns the formatter for the matches
-// pub fn get_formatter<T: DefaultArgsTrait>(
-//     default_format: &str,
-//     args: T,
-// ) -> Result<Formatter, Error> {
-//     get_formatter_for_format(get_format(default_format, args))
-// }
 
 /// Returns the formatter for the given format string
 pub fn get_formatter(format: &str) -> Result<Formatter, Error> {

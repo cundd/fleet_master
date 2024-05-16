@@ -4,6 +4,7 @@ use self::ssh_connector::SshConnector;
 use crate::configuration::*;
 use crate::error::*;
 use crate::information::*;
+use crate::shell::ShellOutputCollection;
 use ssh2::Channel;
 use ssh2::Session;
 use std::io::prelude::*;
@@ -15,14 +16,7 @@ pub struct SshProvider;
 
 /// Fetch information from the server defined in `configuration`
 fn fetch_information_through_ssh(configuration: &Configuration) -> Result<Information, Error> {
-    let address = format!("{}:{}", configuration.host(), configuration.port());
-    let tcp = TcpStream::connect(address)?;
-    let session: Session = SshConnector::new().connect(configuration, tcp)?;
-
-    let mut command = String::new();
-    command.push_str(configuration.command());
-
-    let content = call_ssh_command(command, &session)?;
+    let content = execute_shell_through_ssh(configuration.command(), configuration)?;
     let information: Information = match serde_json::from_str(&content) {
         Ok(information) => information,
         Err(e) => return Err(Error::with_error_and_details(&e, content)),
@@ -31,10 +25,19 @@ fn fetch_information_through_ssh(configuration: &Configuration) -> Result<Inform
     Ok(information)
 }
 
-fn call_ssh_command<S: Into<String>>(command: S, session: &Session) -> Result<String, Error>
-where
-    S: Into<String>,
-{
+/// Fetch information from the server defined in `configuration`
+fn execute_shell_through_ssh<S: Into<String>>(
+    command: S,
+    configuration: &Configuration,
+) -> Result<String, Error> {
+    let address = format!("{}:{}", configuration.host(), configuration.port());
+    let tcp = TcpStream::connect(address)?;
+    let session: Session = SshConnector::new().connect(configuration, tcp)?;
+
+    call_ssh_command(command.into(), &session)
+}
+
+fn call_ssh_command<S: Into<String>>(command: S, session: &Session) -> Result<String, Error> {
     let command_string: String = command.into();
 
     // Open channel
@@ -85,6 +88,57 @@ impl SshProvider {
             return self.get_information_for_collection_sync(configuration_collection);
         }
         self.get_information_for_collection_async(configuration_collection)
+    }
+
+    /// Fetch the information for all hosts in the given configuration collection asynchronously
+    pub fn execute_shell_for_collection(
+        &self,
+        command: String,
+        configuration_collection: ConfigurationCollection,
+    ) -> (ShellOutputCollection, ErrorCollection) {
+        let mut error_collection = ErrorCollection::new();
+        let mut output_collection = ShellOutputCollection::new();
+
+        let number_of_threads = self.get_number_of_threads();
+
+        let (tx, rx) = mpsc::channel();
+
+        let size_of_chunk: usize =
+            (configuration_collection.len() as f32 / number_of_threads as f32).ceil() as usize;
+        let split_configuration_collection: Vec<ConfigurationCollection> =
+            chunk_configuration_collection(configuration_collection, size_of_chunk);
+        let split_count = split_configuration_collection.len();
+
+        for chunk in split_configuration_collection {
+            let tx = tx.clone();
+            let command_l = command.clone();
+
+            thread::spawn(move || {
+                let mut error_collection_l = ErrorCollection::new();
+                let mut output_collection_l = ShellOutputCollection::new();
+
+                for (host, configuration) in chunk {
+                    match execute_shell_through_ssh(&command_l, &configuration) {
+                        Ok(i) => {
+                            let _ = output_collection_l.insert(host, i);
+                        }
+                        Err(e) => {
+                            let _ = error_collection_l.insert(host, e);
+                        }
+                    };
+                }
+
+                tx.send((output_collection_l, error_collection_l)).unwrap();
+            });
+        }
+
+        for _ in 0..split_count {
+            let (output_collection_l, error_collection_l) = rx.recv().unwrap();
+            error_collection.extend(error_collection_l);
+            output_collection.extend(output_collection_l);
+        }
+
+        (output_collection, error_collection)
     }
 
     /// Fetch the information for all hosts in the given configuration collection synchronously

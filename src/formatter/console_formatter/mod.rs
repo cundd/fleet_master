@@ -5,6 +5,7 @@ mod table;
 use self::matrix::Matrix;
 use self::table::Table;
 use crate::information::*;
+use crate::shell::ShellOutputCollection;
 use std::collections::BTreeMap;
 
 pub struct ConsoleFormatter;
@@ -70,6 +71,21 @@ impl super::FormatterTrait for ConsoleFormatter {
 
         Ok(output)
     }
+
+    fn format_shell_output_collection(
+        &self,
+        collection: crate::shell::ShellOutputCollection,
+    ) -> super::FormatterResult {
+        use comfy_table::Table;
+        let mut table = Table::new();
+        table.set_header(vec!["Host", "Output"]);
+
+        for (host, output) in collection {
+            table.add_row(vec![host, output]);
+        }
+
+        Ok(table.to_string())
+    }
 }
 
 fn crop_cell_content(content: &str) -> String {
@@ -80,10 +96,9 @@ fn crop_cell_content(content: &str) -> String {
 }
 
 impl Matrix<String> {
-    #[allow(unused)]
     fn from_information_collection(
         information_collection: InformationCollection,
-        show_packages: bool,
+        _show_packages: bool,
     ) -> Matrix<String> {
         let mut rows: Vec<Vec<String>> = Vec::with_capacity(information_collection.len() + 1);
 

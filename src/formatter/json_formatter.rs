@@ -1,6 +1,7 @@
 use super::FormatterResult;
 use crate::error::*;
 use crate::information::*;
+use crate::shell::ShellOutputCollection;
 
 pub struct JsonFormatter;
 
@@ -54,5 +55,12 @@ impl super::FormatterTrait for JsonFormatter {
             .collect();
 
         self.format_data(packages_collection)
+    }
+
+    fn format_shell_output_collection(
+        &self,
+        information: ShellOutputCollection,
+    ) -> FormatterResult {
+        self.format_data(information)
     }
 }

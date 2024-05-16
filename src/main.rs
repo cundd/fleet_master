@@ -7,6 +7,7 @@ mod formatter;
 mod information;
 mod printer;
 mod provider;
+mod shell;
 
 #[cfg(test)]
 mod test_helpers;
@@ -51,6 +52,9 @@ enum Commands {
 
     /// Check configurations for all hosts
     Check(CheckArgs),
+
+    /// Execute a shell command on the hosts
+    Exec(ExecArgs),
 }
 
 fn get_format(cli: &Cli) -> &str {
@@ -62,6 +66,7 @@ fn get_format(cli: &Cli) -> &str {
         Commands::Packages(args) => &args.common.format,
         Commands::Search(args) => &args.common.format,
         Commands::Check(args) => &args.common.format,
+        Commands::Exec(args) => &args.common.format,
         Commands::Provide(_) => return "json",
     }
     .as_ref()
@@ -79,6 +84,7 @@ fn get_configuration_file(cli: &Cli) -> Result<PathBuf, Error> {
         Commands::Packages(args) => &args.common.config,
         Commands::Search(args) => &args.common.config,
         Commands::Check(args) => &args.common.config,
+        Commands::Exec(args) => &args.common.config,
         Commands::Provide(_) => &None,
     }
     .as_ref()
@@ -105,6 +111,7 @@ fn run() -> Result<(), Error> {
         Commands::Packages(args) => PackagesCommand::default().exec(&formatter, config_file, args),
         Commands::Search(args) => SearchCommand::default().exec(&formatter, config_file, args),
         Commands::Check(args) => CheckCommand::default().exec(&formatter, config_file, args),
+        Commands::Exec(args) => ExecCommand::default().exec(&formatter, config_file, args),
         Commands::Provide(_) => unreachable!(),
     }
 }

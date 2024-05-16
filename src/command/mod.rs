@@ -1,13 +1,16 @@
 pub mod check;
+pub mod exec;
 pub mod list;
 pub mod packages;
 pub mod provide;
 pub mod search;
 pub mod show;
+mod ssh_execute_shell;
 mod ssh_fetch;
 
 use crate::{error::Error, FormatterTrait};
 pub use check::{CheckArgs, CheckCommand};
+pub use exec::{ExecArgs, ExecCommand};
 pub use list::{ListArgs, ListCommand};
 pub use packages::{PackagesArgs, PackagesCommand};
 pub use provide::{ProvideArgs, ProvideCommand};
