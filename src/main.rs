@@ -53,6 +53,9 @@ enum Commands {
     /// Check configurations for all hosts
     Check(CheckArgs),
 
+    /// Execute the hosts update command
+    Update(UpdateArgs),
+
     /// Execute a shell command on the hosts
     Exec(ExecArgs),
 }
@@ -66,6 +69,7 @@ fn get_format(cli: &Cli) -> &str {
         Commands::Packages(args) => &args.common.format,
         Commands::Search(args) => &args.common.format,
         Commands::Check(args) => &args.common.format,
+        Commands::Update(args) => &args.common.format,
         Commands::Exec(args) => &args.common.format,
         Commands::Provide(_) => return "json",
     }
@@ -84,6 +88,7 @@ fn get_configuration_file(cli: &Cli) -> Result<PathBuf, Error> {
         Commands::Packages(args) => &args.common.config,
         Commands::Search(args) => &args.common.config,
         Commands::Check(args) => &args.common.config,
+        Commands::Update(args) => &args.common.config,
         Commands::Exec(args) => &args.common.config,
         Commands::Provide(_) => &None,
     }
@@ -111,6 +116,7 @@ fn run() -> Result<(), Error> {
         Commands::Packages(args) => PackagesCommand::default().exec(&formatter, config_file, args),
         Commands::Search(args) => SearchCommand::default().exec(&formatter, config_file, args),
         Commands::Check(args) => CheckCommand::default().exec(&formatter, config_file, args),
+        Commands::Update(args) => UpdateCommand::default().exec(&formatter, config_file, args),
         Commands::Exec(args) => ExecCommand::default().exec(&formatter, config_file, args),
         Commands::Provide(_) => unreachable!(),
     }

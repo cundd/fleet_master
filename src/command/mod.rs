@@ -7,6 +7,7 @@ pub mod search;
 pub mod show;
 mod ssh_execute_shell;
 mod ssh_fetch;
+pub mod update;
 
 use crate::{error::Error, FormatterTrait};
 pub use check::{CheckArgs, CheckCommand};
@@ -16,6 +17,7 @@ pub use packages::{PackagesArgs, PackagesCommand};
 pub use provide::{ProvideArgs, ProvideCommand};
 pub use search::{SearchArgs, SearchCommand};
 pub use show::{ShowArgs, ShowCommand};
+pub use update::{UpdateArgs, UpdateCommand};
 
 use clap::Args;
 use std::path::PathBuf;

@@ -42,3 +42,38 @@ pub fn execute_shell_for_hosts(
         Ok(SshProvider::new().execute_shell_for_collection(command, filtered))
     }
 }
+
+/// Execute the update command for all hosts through SSH
+pub fn execute_update_for_collection(
+    configuration_file: PathBuf,
+) -> Result<(ShellOutputCollection, ErrorCollection), Error> {
+    let configuration_collection = ConfigurationProvider::load(configuration_file.as_path())?;
+
+    Ok(SshProvider::new().execute_update_for_collection(configuration_collection))
+}
+
+/// Execute the update command for the given hosts through SSH
+pub fn execute_update_for_hosts(
+    configuration_file: PathBuf,
+    hosts: &[String],
+) -> Result<(ShellOutputCollection, ErrorCollection), Error> {
+    let configuration_collection = ConfigurationProvider::load(configuration_file.as_path())?;
+    let filtered: ConfigurationCollection = configuration_collection
+        .into_iter()
+        .filter(|(host, _)| !host.is_empty() && hosts.contains(host))
+        .collect();
+
+    if filtered.is_empty() {
+        Err(Error::new(format!(
+            "{}: {}",
+            if hosts.len() > 1 {
+                "No configurations found for hosts"
+            } else {
+                "No configuration found for host"
+            },
+            hosts.join(", ")
+        )))
+    } else {
+        Ok(SshProvider::new().execute_update_for_collection(filtered))
+    }
+}
