@@ -33,12 +33,12 @@ impl CommandTrait for ExecCommand {
         arguments: Self::Args,
     ) -> Result<(), Error> {
         let command_string = arguments.command.join(" ");
-        let (collection, _) = match arguments.hosts {
+        let (collection, errors) = match arguments.hosts {
             Some(hosts) => execute_shell_for_hosts(configuration_file, &hosts, command_string)?,
             None => execute_shell_for_collection(configuration_file, command_string)?,
         };
 
-        Printer::print_result(formatter.format_shell_output_collection(collection));
+        Printer::print_result(formatter.format_shell_output_collection(collection, errors));
 
         Ok(())
     }

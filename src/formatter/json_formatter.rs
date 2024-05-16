@@ -2,6 +2,7 @@ use super::FormatterResult;
 use crate::error::*;
 use crate::information::*;
 use crate::shell::ShellOutputCollection;
+use serde::Serialize;
 
 pub struct JsonFormatter;
 
@@ -59,8 +60,20 @@ impl super::FormatterTrait for JsonFormatter {
 
     fn format_shell_output_collection(
         &self,
-        information: ShellOutputCollection,
+        outputs: ShellOutputCollection,
+        errors: ErrorCollection,
     ) -> FormatterResult {
-        self.format_data(information)
+        #[derive(Serialize)]
+        struct ShellOutputJson {
+            outputs: ShellOutputCollection,
+            errors: Vec<String>,
+        }
+        self.format_data(ShellOutputJson {
+            outputs,
+            errors: errors
+                .iter()
+                .map(|(h, e)| format!("{}: {}", h, e))
+                .collect(),
+        })
     }
 }

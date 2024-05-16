@@ -8,6 +8,8 @@ use crate::information::*;
 use crate::shell::ShellOutputCollection;
 use std::collections::BTreeMap;
 
+use super::ErrorCollection;
+
 pub struct ConsoleFormatter;
 
 const HEADERS: &[&str] = &[
@@ -74,14 +76,23 @@ impl super::FormatterTrait for ConsoleFormatter {
 
     fn format_shell_output_collection(
         &self,
-        collection: crate::shell::ShellOutputCollection,
+        outputs: ShellOutputCollection,
+        errors: ErrorCollection,
     ) -> super::FormatterResult {
+        let mut sorted_rows = BTreeMap::new();
+
+        for (host, error) in errors {
+            sorted_rows.insert(host, ("Error".to_string(), error.to_string()));
+        }
+        for (host, output) in outputs {
+            sorted_rows.insert(host, ("Ok".to_string(), output));
+        }
+
         use comfy_table::Table;
         let mut table = Table::new();
-        table.set_header(vec!["Host", "Output"]);
-
-        for (host, output) in collection {
-            table.add_row(vec![host, output]);
+        table.set_header(vec!["Host", "Output", "Type"]);
+        for (host, (result_type, content)) in sorted_rows {
+            table.add_row(vec![host, content, result_type]);
         }
 
         Ok(table.to_string())

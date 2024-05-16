@@ -40,7 +40,11 @@ pub trait FormatterTrait {
     ) -> FormatterResult;
 
     /// Format all the output from shell execution in the collection
-    fn format_shell_output_collection(&self, collection: ShellOutputCollection) -> FormatterResult;
+    fn format_shell_output_collection(
+        &self,
+        outputs: ShellOutputCollection,
+        errors: ErrorCollection,
+    ) -> FormatterResult;
 }
 
 /// Wrapper around the different formatter types
@@ -96,10 +100,14 @@ impl FormatterTrait for Formatter {
         }
     }
 
-    fn format_shell_output_collection(&self, collection: ShellOutputCollection) -> FormatterResult {
+    fn format_shell_output_collection(
+        &self,
+        outputs: ShellOutputCollection,
+        errors: ErrorCollection,
+    ) -> FormatterResult {
         match self {
-            Formatter::Json(ref f) => f.format_shell_output_collection(collection),
-            Formatter::Console(ref f) => f.format_shell_output_collection(collection),
+            Formatter::Json(ref f) => f.format_shell_output_collection(outputs, errors),
+            Formatter::Console(ref f) => f.format_shell_output_collection(outputs, errors),
         }
     }
 }
