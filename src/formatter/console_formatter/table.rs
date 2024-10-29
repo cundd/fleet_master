@@ -1,3 +1,5 @@
+use ansi_term::Colour;
+
 use super::matrix::*;
 use std::clone::Clone;
 use std::fmt::Debug;
@@ -6,34 +8,37 @@ use std::fmt::Display;
 pub struct Table;
 
 impl Table {
-    pub fn top_header<S>(input: &Matrix<S>) -> String
+    pub fn top_header<S>(input: &Matrix<S>, colorize: bool) -> String
     where
         S: Into<String> + Clone + Display + Debug,
     {
         let column_widths = calc_column_widths(input);
-        build_layout_top(&column_widths, input)
+        build_layout_top(&column_widths, input, colorize)
     }
 
-    pub fn left_header<S>(input: &Matrix<S>) -> String
+    pub fn left_header<S>(input: &Matrix<S>, colorize: bool) -> String
     where
         S: Into<String> + Clone + Display + Debug,
     {
         let transposed = input.transpose();
         let column_widths = calc_column_widths(&transposed);
-        build_layout_left(&column_widths, &transposed)
+        build_layout_left(&column_widths, &transposed, colorize)
     }
 }
 
-fn build_layout_top<S>(column_widths: &[usize], input: &Matrix<S>) -> String
+fn build_layout_top<S>(column_widths: &[usize], input: &Matrix<S>, colorize: bool) -> String
 where
     S: Into<String> + Clone + Display + Debug,
 {
     let mut output = "".to_owned();
 
     for (i, row) in input.data().iter().enumerate() {
-        output += "|";
+        let is_even = i % 2 == 0;
+        output += colorize_row("|", is_even, colorize).as_str();
+
         for (cell, width) in row.iter().zip(column_widths) {
-            output += &format!(" {:width$} |", cell, width = width);
+            let text = format!(" {:width$} |", cell, width = width);
+            output += colorize_row(&text, is_even, colorize).as_str()
         }
         output += "\n";
 
@@ -50,16 +55,19 @@ where
     output
 }
 
-fn build_layout_left<S>(column_widths: &[usize], input: &Matrix<S>) -> String
+fn build_layout_left<S>(column_widths: &[usize], input: &Matrix<S>, colorize: bool) -> String
 where
     S: Into<String> + Clone + Display + Debug,
 {
     let mut output = "".to_owned();
 
-    for row in input.data().iter() {
-        output += "|";
+    for (i, row) in input.data().iter().enumerate() {
+        let is_even = i % 2 == 0;
+        output += colorize_row("|", is_even, colorize).as_str();
+
         for (cell, width) in row.iter().zip(column_widths) {
-            output += &format!(" {:width$} |", cell, width = width);
+            let text = format!(" {:width$} |", cell, width = width);
+            output += colorize_row(&text, is_even, colorize).as_str()
         }
         output += "\n";
     }
@@ -90,6 +98,20 @@ where
     column_widths
 }
 
+fn colorize_row(text: &str, is_even: bool, colorize: bool) -> String {
+    if !colorize {
+        return text.to_owned();
+    }
+
+    let black = Colour::RGB(40, 40, 40);
+
+    if is_even {
+        black.on(Colour::RGB(240, 230, 230)).paint(text).to_string()
+    } else {
+        black.on(Colour::RGB(255, 255, 255)).paint(text).to_string()
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -105,7 +127,7 @@ mod tests {
         ];
 
         let matrix = Matrix::from_vec(content);
-        let output = Table::top_header(&matrix);
+        let output = Table::top_header(&matrix, false);
         let expected = "| Fruit  | Color  |\n| ------ | ------ |\n| Apple  | Red    |\n| Pear   | Green  |\n| Banana | Yellow |\n| Orange | Orange |\n";
 
         // println!("A: {}", expected.replace("\n", "\\n"));
@@ -125,7 +147,7 @@ mod tests {
         ];
 
         let matrix = Matrix::from_vec(content);
-        let output = Table::left_header(&matrix);
+        let output = Table::left_header(&matrix, false);
 
         let expected = r"| Fruit | Apple | Pear  | Banana | Orange |
 | Color | Red   | Green | Yellow | Orange |

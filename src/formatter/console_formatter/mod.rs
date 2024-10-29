@@ -1,16 +1,24 @@
 #[allow(dead_code)]
 mod matrix;
 mod table;
-
 use self::matrix::Matrix;
 use self::table::Table;
 use crate::information::*;
 use crate::shell::ShellOutputCollection;
 use std::collections::BTreeMap;
+use std::io::IsTerminal;
 
 use super::ErrorCollection;
 
-pub struct ConsoleFormatter;
+pub struct ConsoleFormatter {
+    pub use_colors: bool,
+}
+
+impl ConsoleFormatter {
+    pub fn new(use_colors: bool) -> Self {
+        Self { use_colors }
+    }
+}
 
 const HEADERS: &[&str] = &[
     "Host",
@@ -38,7 +46,7 @@ impl super::FormatterTrait for ConsoleFormatter {
         information_collection.insert(host.to_owned(), information.clone());
 
         let matrix = Matrix::from_information_collection(information_collection, show_packages);
-        Ok(Table::left_header(&matrix))
+        Ok(Table::left_header(&matrix, self.use_colors))
     }
 
     fn format_information_collection(
@@ -47,12 +55,12 @@ impl super::FormatterTrait for ConsoleFormatter {
         show_packages: bool,
     ) -> super::FormatterResult {
         let matrix = Matrix::from_information_collection(information, show_packages);
-        Ok(Table::top_header(&matrix))
+        Ok(Table::top_header(&matrix, self.use_colors))
     }
 
     fn format_packages(&self, packages: &Packages) -> super::FormatterResult {
         let matrix = Matrix::from_packages(packages);
-        Ok(Table::top_header(&matrix))
+        Ok(Table::top_header(&matrix, self.use_colors))
     }
 
     fn format_packages_from_information_collection(
@@ -60,11 +68,12 @@ impl super::FormatterTrait for ConsoleFormatter {
         information_collection: InformationCollection,
     ) -> super::FormatterResult {
         let mut output = "".to_owned();
+        let is_terminal = std::io::stdin().is_terminal();
         for (host, information) in information_collection {
             if !information.packages.is_empty() {
                 output += &(format!("Packages of host '{}':\n", host));
                 let matrix = Matrix::from_packages(&information.packages);
-                output += &Table::top_header(&matrix);
+                output += &Table::top_header(&matrix, is_terminal);
                 output += "\n\n";
             } else {
                 output += &(format!("No packages found for host '{}'\n\n", host));

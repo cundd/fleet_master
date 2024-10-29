@@ -18,6 +18,7 @@ use crate::formatter::*;
 use crate::printer::*;
 use clap::{Parser, Subcommand};
 use error::Error;
+use std::io::IsTerminal;
 use std::path::PathBuf;
 
 /// Fleet Master
@@ -28,6 +29,10 @@ struct Cli {
     /// Set the configuration file to read
     #[arg(short, long, value_parser=clap::value_parser!(PathBuf))]
     pub config: Option<PathBuf>,
+
+    /// The output format
+    #[arg(value_enum, default_value_t)]
+    pub color: ColorSupport,
 
     #[command(subcommand)]
     command: Commands,
@@ -58,6 +63,24 @@ enum Commands {
 
     /// Execute a shell command on the hosts
     Exec(ExecArgs),
+}
+
+#[derive(Clone, Copy, Default, Debug, clap::ValueEnum)]
+enum ColorSupport {
+    #[default]
+    Auto,
+    Always,
+    No,
+}
+
+impl From<String> for ColorSupport {
+    fn from(value: String) -> Self {
+        match value.as_str() {
+            "always" => ColorSupport::Always,
+            "no" => ColorSupport::No,
+            _ => ColorSupport::default(),
+        }
+    }
 }
 
 fn get_format(cli: &Cli) -> &str {
@@ -102,7 +125,14 @@ fn main() {
 
 fn run() -> Result<(), Error> {
     let cli = Cli::parse();
-    let formatter = get_formatter(get_format(&cli))?;
+    let formatter = get_formatter(
+        get_format(&cli),
+        match cli.color {
+            ColorSupport::Auto => std::io::stdout().is_terminal(),
+            ColorSupport::Always => true,
+            ColorSupport::No => false,
+        },
+    )?;
 
     if let Commands::Provide(_) = cli.command {
         return ProvideCommand::default().provide(&formatter);

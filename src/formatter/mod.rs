@@ -113,10 +113,10 @@ impl FormatterTrait for Formatter {
 }
 
 /// Returns the formatter for the given format string
-pub fn get_formatter(format: &str) -> Result<Formatter, Error> {
+pub fn get_formatter(format: &str, use_colors: bool) -> Result<Formatter, Error> {
     match format {
         "json" => Ok(Formatter::Json(JsonFormatter {})),
-        "console" => Ok(Formatter::Console(ConsoleFormatter {})),
+        "console" => Ok(Formatter::Console(ConsoleFormatter::new(use_colors))),
         _ => Err(Error::new(format!(
             "No formatter found for format {}",
             format
