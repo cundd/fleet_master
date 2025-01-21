@@ -99,6 +99,7 @@ impl super::FormatterTrait for ConsoleFormatter {
 
         use comfy_table::Table;
         let mut table = Table::new();
+        table.load_preset(comfy_table::presets::UTF8_FULL);
         table.set_header(vec!["Host", "Output", "Type"]);
         for (host, (result_type, content)) in sorted_rows {
             table.add_row(vec![host, content, result_type]);

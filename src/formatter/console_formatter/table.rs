@@ -34,21 +34,23 @@ where
 
     for (i, row) in input.data().iter().enumerate() {
         let is_even = i % 2 == 0;
-        output += colorize_row("|", is_even, colorize).as_str();
+        output += colorize_row("│", is_even, colorize).as_str();
 
         for (cell, width) in row.iter().zip(column_widths) {
-            let text = format!(" {:width$} |", cell, width = width);
+            let text = format!(" {:width$} │", cell, width = width);
             output += colorize_row(&text, is_even, colorize).as_str()
         }
         output += "\n";
 
         // Add the line below the headline
         if i == 0 {
-            output += "|";
-            for width in column_widths {
-                output += &format!(" {} |", &String::from_utf8(vec![b'-'; *width]).unwrap());
-            }
-            output += "\n";
+            output += "├";
+            output += &column_widths
+                .iter()
+                .map(|width| "─".repeat(width + 2))
+                .collect::<Vec<String>>()
+                .join("┼");
+            output += "┤\n";
         }
     }
 
@@ -63,10 +65,10 @@ where
 
     for (i, row) in input.data().iter().enumerate() {
         let is_even = i % 2 == 0;
-        output += colorize_row("|", is_even, colorize).as_str();
+        output += colorize_row("│", is_even, colorize).as_str();
 
         for (cell, width) in row.iter().zip(column_widths) {
-            let text = format!(" {:width$} |", cell, width = width);
+            let text = format!(" {:width$} │", cell, width = width);
             output += colorize_row(&text, is_even, colorize).as_str()
         }
         output += "\n";
@@ -128,7 +130,7 @@ mod tests {
 
         let matrix = Matrix::from_vec(content);
         let output = Table::top_header(&matrix, false);
-        let expected = "| Fruit  | Color  |\n| ------ | ------ |\n| Apple  | Red    |\n| Pear   | Green  |\n| Banana | Yellow |\n| Orange | Orange |\n";
+        let expected = "│ Fruit  │ Color  │\n├────────┼────────┤\n│ Apple  │ Red    │\n│ Pear   │ Green  │\n│ Banana │ Yellow │\n│ Orange │ Orange │\n";
 
         // println!("A: {}", expected.replace("\n", "\\n"));
         // println!("B: {}", output.replace("\n", "\\n"));
@@ -149,8 +151,8 @@ mod tests {
         let matrix = Matrix::from_vec(content);
         let output = Table::left_header(&matrix, false);
 
-        let expected = r"| Fruit | Apple | Pear  | Banana | Orange |
-| Color | Red   | Green | Yellow | Orange |
+        let expected = r"│ Fruit │ Apple │ Pear  │ Banana │ Orange │
+│ Color │ Red   │ Green │ Yellow │ Orange │
 ";
         // println!("A: {}", expected.replace("\n", "\\n"));
         // println!("B: {}", output.replace("\n", "\\n"));
