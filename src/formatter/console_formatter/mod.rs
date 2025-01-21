@@ -22,15 +22,15 @@ impl ConsoleFormatter {
 
 const HEADERS: &[&str] = &[
     "Host",
+    "App Name",
+    "App Version",
+    "App Install Mode",
     "Provider",
     "Lang",
     "Version",
     "Sapi",
     "Host",
     "OS",
-    "App Name",
-    "App Version",
-    "App Install Mode",
 ];
 
 const PACKAGE_HEADERS: &[&str] = &["Key", "Version", "State", "Description"];
@@ -129,6 +129,9 @@ impl Matrix<String> {
             let mut cells: Vec<String> = Vec::with_capacity(HEADERS.len());
 
             cells.push(host);
+            cells.push(info.system.application.name);
+            cells.push(info.system.application.version);
+            cells.push(info.system.application.install_mode.unwrap_or_default());
             cells.push(format!(
                 "{} ({})",
                 info.fleet.provider_name, info.fleet.provider_version
@@ -143,9 +146,6 @@ impl Matrix<String> {
                 info.system.platform.os.version,
                 info.system.platform.os.machine
             ));
-            cells.push(info.system.application.name);
-            cells.push(info.system.application.version);
-            cells.push(info.system.application.install_mode.unwrap_or_default());
 
             rows.push(cells);
         }
