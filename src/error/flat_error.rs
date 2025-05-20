@@ -30,24 +30,6 @@ impl FlatError {
     }
 }
 
-impl super::FleetError for FlatError {
-    fn new<S: Into<String>>(message: S) -> Self {
-        Self::new(message)
-    }
-
-    fn from_error(error: &dyn StdError) -> Self {
-        Self::from_error(error)
-    }
-
-    fn with_error_and_details<S: Into<String>>(error: &dyn StdError, message: S) -> Self {
-        Self::with_error_and_details(error, message)
-    }
-
-    fn message(&self) -> &str {
-        Self::message(self)
-    }
-}
-
 impl StdError for FlatError {
     fn description(&self) -> &str {
         self.message()
