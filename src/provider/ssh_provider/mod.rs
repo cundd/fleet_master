@@ -100,7 +100,7 @@ impl SshProvider {
         let mut output_collection = ShellOutputCollection::new();
 
         let (split_count, split_configuration_collection) =
-            self.chunk_configration_collection_for_threads(configuration_collection);
+            self.chunk_configuration_collection_for_threads(configuration_collection);
         let (tx, rx) = mpsc::channel();
 
         for chunk in split_configuration_collection {
@@ -149,7 +149,7 @@ impl SshProvider {
             .collect();
 
         let (split_count, split_configuration_collection) =
-            self.chunk_configration_collection_for_threads(filtered_collection);
+            self.chunk_configuration_collection_for_threads(filtered_collection);
         let (tx, rx) = mpsc::channel();
 
         for chunk in split_configuration_collection {
@@ -225,7 +225,7 @@ impl SshProvider {
         //     chunk_configuration_collection(configuration_collection, size_of_chunk);
         // let split_count = split_configuration_collection.len();
         let (split_count, split_configuration_collection) =
-            self.chunk_configration_collection_for_threads(configuration_collection);
+            self.chunk_configuration_collection_for_threads(configuration_collection);
 
         for chunk in split_configuration_collection {
             let tx = tx.clone();
@@ -263,7 +263,7 @@ impl SshProvider {
         4
     }
 
-    fn chunk_configration_collection_for_threads(
+    fn chunk_configuration_collection_for_threads(
         &self,
         configuration_collection: ConfigurationCollection,
     ) -> (usize, Vec<ConfigurationCollection>) {
