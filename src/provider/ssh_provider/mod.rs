@@ -161,7 +161,7 @@ impl SshProvider {
 
                 for (host, configuration) in chunk {
                     match execute_shell_through_ssh(
-                        &configuration.update_command().unwrap(),
+                        configuration.update_command().unwrap(),
                         &configuration,
                     ) {
                         Ok(i) => {

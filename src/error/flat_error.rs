@@ -42,7 +42,7 @@ impl fmt::Display for FlatError {
     }
 }
 
-impl<'a> From<&'a dyn StdError> for FlatError {
+impl From<&dyn StdError> for FlatError {
     fn from(error: &dyn StdError) -> Self {
         FlatError::from_error(error)
     }
@@ -54,7 +54,7 @@ impl From<Ssh2Error> for FlatError {
     }
 }
 
-impl<'a> From<&'a Ssh2Error> for FlatError {
+impl From<&Ssh2Error> for FlatError {
     fn from(error: &Ssh2Error) -> Self {
         FlatError::from_error(error)
     }
