@@ -28,7 +28,13 @@ impl SshConnector {
         } else if configuration.private_key().is_some() {
             self.authenticate_public_key(configuration, session)
         } else {
-            self.authenticate_agent(configuration, session)
+            match self.authenticate_agent(configuration, session) {
+                Ok(s) => Ok(s),
+                Err(e) => {
+                    eprintln!("{}@{}:{e}", configuration.username(), configuration.host());
+                    Err(e)
+                }
+            }
         }
     }
 
@@ -48,9 +54,25 @@ impl SshConnector {
         configuration: &Configuration,
         session: Session,
     ) -> Result<Session, Error> {
-        session.userauth_agent(configuration.username())?;
+        let username = configuration.username();
 
-        Ok(session)
+        let mut agent = session.agent()?;
+        agent.connect()?;
+        agent.list_identities()?;
+        let identities = agent.identities()?;
+        if identities.is_empty() {
+            return Err(Error::new("no identities found in the ssh agent"));
+        }
+
+        for identity in identities {
+            if agent.userauth(username, &identity).is_ok() {
+                return Ok(session);
+            }
+        }
+
+        Err(Error::new(
+            "no identity did connect successfully using ssh agent",
+        ))
     }
 
     fn get_passphrase(&self, configuration: &Configuration) -> Option<String> {
