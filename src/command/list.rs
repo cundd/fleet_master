@@ -27,11 +27,16 @@ impl CommandTrait for ListCommand {
         configuration_file: PathBuf,
         arguments: Self::Args,
     ) -> Result<(), Error> {
-        let (information_collection, _) = fetch_information_collection(configuration_file)?;
+        let (information_collection, error_collection) =
+            fetch_information_collection(configuration_file)?;
 
         Printer::print_result(
             formatter.format_information_collection(information_collection, arguments.packages),
         );
+
+        if arguments.common.verbosity > 0 {
+            Printer::print_error_collection(error_collection);
+        }
 
         Ok(())
     }

@@ -42,4 +42,8 @@ pub struct DefaultArgs {
     /// The output format
     #[arg(short, long)]
     pub format: Option<String>,
+
+    /// Level of verbosity
+    #[arg(short, long, action = clap::ArgAction::Count)]
+    verbosity: u8,
 }

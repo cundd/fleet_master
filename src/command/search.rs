@@ -39,7 +39,8 @@ impl CommandTrait for SearchCommand {
             return Err(Error::new("Please specify the 'package' argument"));
         }
 
-        let (information_collection, _) = fetch_information_collection(configuration_file)?;
+        let (information_collection, error_collection) =
+            fetch_information_collection(configuration_file)?;
         let filtered_collection =
             InformationCollectionFilter::filter_by_package(information_collection, package, exact);
         for (host, information) in filtered_collection {
@@ -50,6 +51,11 @@ impl CommandTrait for SearchCommand {
                 exact,
             )));
         }
+
+        if arguments.common.verbosity > 0 {
+            Printer::print_error_collection(error_collection);
+        }
+
         Ok(())
     }
 }
