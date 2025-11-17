@@ -9,8 +9,12 @@ use std::path::PathBuf;
 #[derive(Args, Debug)]
 pub struct UpdateArgs {
     /// Hosts to fetch the packages
-    #[arg(long = "host", value_name = "host")]
-    pub hosts: Option<Vec<String>>,
+    #[arg()]
+    pub hosts: Vec<String>,
+
+    /// Update all hosts
+    #[arg(short = 'a', long)]
+    pub update_all: bool,
 
     #[command(flatten)]
     pub common: DefaultArgs,
@@ -28,9 +32,17 @@ impl CommandTrait for UpdateCommand {
         configuration_file: PathBuf,
         arguments: Self::Args,
     ) -> Result<(), Error> {
-        let (collection, errors) = match arguments.hosts {
-            Some(hosts) => execute_update_for_hosts(configuration_file, &hosts)?,
-            None => execute_update_for_collection(configuration_file)?,
+        let hosts = arguments.hosts;
+        if hosts.is_empty() && !arguments.update_all {
+            return Err(Error::new(
+                "At least one host or `update-all` must be given",
+            ));
+        }
+
+        let (collection, errors) = if !hosts.is_empty() {
+            execute_update_for_hosts(configuration_file, &hosts)?
+        } else {
+            execute_update_for_collection(configuration_file)?
         };
 
         Printer::print_result(formatter.format_shell_output_collection(collection, errors));
