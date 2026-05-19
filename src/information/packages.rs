@@ -49,7 +49,7 @@ impl Packages {
         self.all.is_empty()
     }
 
-    pub fn iter(&self) -> Iter<String, Package> {
+    pub fn iter(&self) -> Iter<'_, String, Package> {
         self.all.iter()
     }
 }
