@@ -14,10 +14,16 @@ pub struct SshConfiguration {
     passphrase: Option<String>,
     private_key: Option<PathBuf>,
     public_key: Option<PathBuf>,
+    #[serde(default = "default_disabled")]
+    disabled: bool,
 }
 
 fn default_port() -> u16 {
     22
+}
+
+fn default_disabled() -> bool {
+    false
 }
 
 impl SshConfiguration {
@@ -47,6 +53,7 @@ impl SshConfiguration {
             passphrase: passphrase.map(|s| s.into()),
             private_key: as_path_buf_option(private_key),
             public_key: as_path_buf_option(public_key),
+            disabled: false,
         }
     }
 
@@ -65,6 +72,7 @@ impl SshConfiguration {
             passphrase: None,
             private_key: None,
             public_key: None,
+            disabled: false,
         }
     }
 
@@ -93,6 +101,7 @@ impl SshConfiguration {
             passphrase: passphrase_string,
             private_key: Some(private_key.as_ref().to_path_buf()),
             public_key: as_path_buf_option(public_key),
+            disabled: false,
         }
     }
 
@@ -108,20 +117,22 @@ impl SshConfiguration {
             passphrase: None,
             private_key: None,
             public_key: None,
+            disabled: false,
         }
     }
 
     pub fn host(&self) -> &String {
         &self.host
     }
+
     pub fn port(&self) -> u16 {
         self.port
     }
+
     pub fn command(&self) -> &String {
         &self.command
     }
 
-    #[allow(unused)]
     pub fn update_command(&self) -> Option<String> {
         self.update_command.clone()
     }
@@ -129,23 +140,31 @@ impl SshConfiguration {
     pub fn username(&self) -> &String {
         &self.username
     }
+
     pub fn password(&self) -> Option<String> {
         self.password.clone()
     }
+
     pub fn passphrase(&self) -> Option<String> {
         self.passphrase.clone()
     }
+
     pub fn private_key(&self) -> Option<PathBuf> {
         match self.private_key {
             Some(ref p) => patch_key_path(p),
             None => None,
         }
     }
+
     pub fn public_key(&self) -> Option<PathBuf> {
         match self.public_key {
             Some(ref p) => patch_key_path(p),
             None => None,
         }
+    }
+
+    pub fn disabled(&self) -> bool {
+        self.disabled
     }
 }
 
@@ -199,6 +218,7 @@ mod tests {
                 passphrase: None,
                 private_key: Some(private_key.clone()),
                 public_key: None,
+                disabled: false
             },
             SshConfiguration::new_with_public_key(
                 "localhost",
@@ -222,6 +242,7 @@ mod tests {
                 passphrase: None,
                 private_key: Some(private_key.clone()),
                 public_key: Some(public_key.clone()),
+                disabled: false
             },
             SshConfiguration::new_with_public_key(
                 "localhost",
@@ -245,6 +266,7 @@ mod tests {
                 passphrase: Some("passphrase".to_owned()),
                 private_key: Some(private_key.clone()),
                 public_key: Some(public_key.clone()),
+                disabled: false
             },
             SshConfiguration::new_with_public_key(
                 "localhost",
@@ -271,6 +293,7 @@ mod tests {
                 passphrase: None,
                 private_key: None,
                 public_key: None,
+                disabled: false
             },
             SshConfiguration::new_with_password("localhost", 22, "cmd", "daniel", "password")
         );
@@ -289,6 +312,7 @@ mod tests {
                 passphrase: None,
                 private_key: None,
                 public_key: None,
+                disabled: false
             },
             SshConfiguration::new_empty()
         );

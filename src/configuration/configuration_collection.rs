@@ -26,7 +26,7 @@ pub fn get_configuration_for_host(
         None => Err(Error::new(format!(
             "Host {} not found in configuration file {}",
             host,
-            file.to_str().unwrap()
+            file.to_str().unwrap_or("(non UTF-8 file path)")
         ))),
     }
 }

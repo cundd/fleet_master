@@ -32,5 +32,12 @@
         "passphrase": "passphrase",
         "private_key": "private_key",
         "public_key": "public_key"
+    },
+    "disabled.entry": {
+        "disabled": true,
+        "host": "host",
+        "command": "command",
+        "username": "username"
     }
 }
+

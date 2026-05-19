@@ -20,12 +20,16 @@ impl ConfigurationProvider {
         };
 
         if let Some(extension) = path.extension() {
-            match extension.to_string_lossy().to_string().as_ref() {
+            let collection = match extension.to_str() {
                 #[cfg(feature = "yaml")]
-                "yaml" => ConfigurationProvider::load_yaml(file),
-                "json" => ConfigurationProvider::load_json(file),
+                Some("yaml") => ConfigurationProvider::load_yaml(file),
+                Some("json") => ConfigurationProvider::load_json(file),
                 _ => Err(build_file_format_error(extension)),
-            }
+            }?;
+
+            Ok(ConfigurationCollection::from_iter(
+                collection.into_iter().filter(|(_, c)| !c.disabled()),
+            ))
         } else {
             Err(Error::new(format!(
                 "Could not load configuration from '{}'",
@@ -107,6 +111,8 @@ mod tests {
             ),
             configurations["my.host-with-private_key.local"]
         );
+
+        assert!(!configurations.contains_key("disabled.entry"));
     }
 
     #[test]
@@ -118,7 +124,7 @@ mod tests {
     }
 
     #[test]
-    #[cfg(yaml)]
+    #[cfg(feature = "yaml")]
     fn load_yaml_test() {
         let yaml_file_path = test_helpers::get_test_resource_path("configuration-test-0.2.0.yaml");
         let configurations = ConfigurationProvider::load(yaml_file_path.as_path()).unwrap();
