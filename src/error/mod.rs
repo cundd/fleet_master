@@ -1,5 +1,4 @@
 #[allow(clippy::module_inception)]
-mod error;
 mod flat_error;
 
 use std::collections::HashMap;
