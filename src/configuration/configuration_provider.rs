@@ -11,12 +11,15 @@ impl ConfigurationProvider {
         path: &Path,
         host: &str,
     ) -> Result<Configuration, Error> {
-        let collection = Self::load(path)?;
+        let collection = Self::load(path, false)?;
 
         get_configuration_for_host(collection, host, path)
     }
 
-    pub fn load(path: &Path) -> Result<ConfigurationCollection, Error> {
+    pub fn load(
+        path: &Path,
+        include_disabled: bool,
+    ) -> Result<ConfigurationCollection, Error> {
         let file = match File::open(path) {
             Ok(file) => file,
             Err(e) => {
@@ -32,9 +35,13 @@ impl ConfigurationProvider {
                 _ => Err(build_file_format_error(extension)),
             }?;
 
-            Ok(ConfigurationCollection::from_iter(
-                collection.into_iter().filter(|(_, c)| !c.disabled()),
-            ))
+            if include_disabled {
+                Ok(collection)
+            } else {
+                Ok(ConfigurationCollection::from_iter(
+                    collection.into_iter().filter(|(_, c)| !c.disabled()),
+                ))
+            }
         } else {
             Err(Error::new(format!(
                 "Could not load configuration from '{}'",
@@ -126,7 +133,7 @@ mod tests {
             "configuration-test-0.2.0.json",
         );
         let configurations =
-            ConfigurationProvider::load(json_file_path.as_path());
+            ConfigurationProvider::load(json_file_path.as_path(), false);
         assert!(configurations.is_ok(), "{:?}", configurations.unwrap_err());
         assert_configuration(configurations.unwrap());
     }
@@ -138,7 +145,41 @@ mod tests {
             "configuration-test-0.2.0.yaml",
         );
         let configurations =
-            ConfigurationProvider::load(yaml_file_path.as_path()).unwrap();
+            ConfigurationProvider::load(yaml_file_path.as_path(), false)
+                .unwrap();
         assert_configuration(configurations);
+    }
+
+    #[test]
+    fn load_with_disabled_json_test() {
+        let json_file_path = test_helpers::get_test_resource_path(
+            "configuration-test-0.2.0.json",
+        );
+        let configurations =
+            ConfigurationProvider::load(json_file_path.as_path(), false)
+                .unwrap();
+        assert_eq!(4, configurations.keys().len());
+
+        let configurations =
+            ConfigurationProvider::load(json_file_path.as_path(), true)
+                .unwrap();
+        assert_eq!(5, configurations.keys().len());
+    }
+
+    #[test]
+    #[cfg(feature = "yaml")]
+    fn load_with_disabled_yaml_test() {
+        let yaml_file_path = test_helpers::get_test_resource_path(
+            "configuration-test-0.2.0.yaml",
+        );
+        let configurations =
+            ConfigurationProvider::load(yaml_file_path.as_path(), false)
+                .unwrap();
+        assert_eq!(4, configurations.keys().len());
+
+        let configurations =
+            ConfigurationProvider::load(yaml_file_path.as_path(), true)
+                .unwrap();
+        assert_eq!(5, configurations.keys().len());
     }
 }

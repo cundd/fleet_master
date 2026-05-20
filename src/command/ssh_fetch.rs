@@ -37,7 +37,7 @@ pub fn fetch_information_for_hosts(
     hosts: &[String],
 ) -> CollectionResult {
     let configuration_collection =
-        ConfigurationProvider::load(configuration_file.as_path())?;
+        ConfigurationProvider::load(configuration_file.as_path(), false)?;
     let filtered: ConfigurationCollection = configuration_collection
         .into_iter()
         .filter(|(host, _)| !host.is_empty() && hosts.contains(host))
@@ -61,18 +61,21 @@ pub fn fetch_information_for_hosts(
 /// Fetch the information for all hosts in the configuration collection
 pub fn fetch_information_collection(
     configuration_file: PathBuf,
+    include_disabled: bool,
 ) -> CollectionResult {
-    let configuration_collection =
-        match ConfigurationProvider::load(configuration_file.as_path()) {
-            Ok(c) => c,
-            Err(e) => {
-                return Err(Error::new(format!(
-                    "Error when loading configuration file '{}': {}",
-                    configuration_file.to_string_lossy(),
-                    e
-                )))
-            }
-        };
+    let configuration_collection = match ConfigurationProvider::load(
+        configuration_file.as_path(),
+        include_disabled,
+    ) {
+        Ok(c) => c,
+        Err(e) => {
+            return Err(Error::new(format!(
+                "Error when loading configuration file '{}': {}",
+                configuration_file.to_string_lossy(),
+                e
+            )))
+        }
+    };
 
     Ok(fetch_information_for_configuration_collection(
         configuration_collection,

@@ -42,7 +42,7 @@ impl CommandTrait for SearchCommand {
         }
 
         let (information_collection, error_collection) =
-            fetch_information_collection(configuration_file)?;
+            fetch_information_collection(configuration_file, false)?;
         let filtered_collection =
             InformationCollectionFilter::filter_by_package(
                 information_collection,

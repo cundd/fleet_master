@@ -12,7 +12,7 @@ pub fn execute_shell_for_collection(
     command: String,
 ) -> Result<(ShellOutputCollection, ErrorCollection), Error> {
     let configuration_collection =
-        ConfigurationProvider::load(configuration_file.as_path())?;
+        ConfigurationProvider::load(configuration_file.as_path(), false)?;
 
     Ok(SshProvider::new()
         .execute_shell_for_collection(command, configuration_collection))
@@ -25,7 +25,7 @@ pub fn execute_shell_for_hosts(
     command: String,
 ) -> Result<(ShellOutputCollection, ErrorCollection), Error> {
     let configuration_collection =
-        ConfigurationProvider::load(configuration_file.as_path())?;
+        ConfigurationProvider::load(configuration_file.as_path(), false)?;
     let filtered: ConfigurationCollection = configuration_collection
         .into_iter()
         .filter(|(host, _)| !host.is_empty() && hosts.contains(host))
@@ -51,7 +51,7 @@ pub fn execute_update_for_collection(
     configuration_file: PathBuf,
 ) -> Result<(ShellOutputCollection, ErrorCollection), Error> {
     let configuration_collection =
-        ConfigurationProvider::load(configuration_file.as_path())?;
+        ConfigurationProvider::load(configuration_file.as_path(), false)?;
 
     Ok(SshProvider::new()
         .execute_update_for_collection(configuration_collection))
@@ -63,7 +63,7 @@ pub fn execute_update_for_hosts(
     hosts: &[String],
 ) -> Result<(ShellOutputCollection, ErrorCollection), Error> {
     let configuration_collection =
-        ConfigurationProvider::load(configuration_file.as_path())?;
+        ConfigurationProvider::load(configuration_file.as_path(), false)?;
     let filtered: ConfigurationCollection = configuration_collection
         .into_iter()
         .filter(|(host, _)| !host.is_empty() && hosts.contains(host))

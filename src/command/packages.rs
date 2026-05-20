@@ -31,7 +31,7 @@ impl CommandTrait for PackagesCommand {
         let hosts = &arguments.hosts;
 
         let (information_collection, error_collection) = if hosts.is_empty() {
-            fetch_information_collection(configuration_file)?
+            fetch_information_collection(configuration_file, false)?
         } else {
             fetch_information_for_hosts(configuration_file, hosts)?
         };

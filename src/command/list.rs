@@ -30,7 +30,7 @@ impl CommandTrait for ListCommand {
         arguments: Self::Args,
     ) -> Result<(), Error> {
         let (information_collection, error_collection) =
-            fetch_information_collection(configuration_file)?;
+            fetch_information_collection(configuration_file, false)?;
 
         Printer::print_result(formatter.format_information_collection(
             information_collection,

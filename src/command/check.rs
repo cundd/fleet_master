@@ -10,6 +10,10 @@ use std::path::PathBuf;
 pub struct CheckArgs {
     #[command(flatten)]
     pub common: DefaultArgs,
+
+    /// Check disabled configuration entries
+    #[arg(short, long)]
+    pub include_disabled: bool,
 }
 
 #[derive(Default)]
@@ -22,10 +26,13 @@ impl CommandTrait for CheckCommand {
         &self,
         _formatter: &F,
         configuration_file: PathBuf,
-        _arguments: Self::Args,
+        arguments: Self::Args,
     ) -> Result<(), Error> {
         let (information_collection, error_collection) =
-            fetch_information_collection(configuration_file)?;
+            fetch_information_collection(
+                configuration_file,
+                arguments.include_disabled,
+            )?;
 
         for (host, _) in information_collection {
             println!(
