@@ -1,5 +1,7 @@
 use super::{
-    ssh_execute_shell::{execute_shell_for_collection, execute_shell_for_hosts},
+    ssh_execute_shell::{
+        execute_shell_for_collection, execute_shell_for_hosts,
+    },
     CommandTrait, DefaultArgs,
 };
 use crate::{error::Error, FormatterTrait, Printer};
@@ -34,11 +36,20 @@ impl CommandTrait for ExecCommand {
     ) -> Result<(), Error> {
         let command_string = arguments.command.join(" ");
         let (collection, errors) = match arguments.hosts {
-            Some(hosts) => execute_shell_for_hosts(configuration_file, &hosts, command_string)?,
-            None => execute_shell_for_collection(configuration_file, command_string)?,
+            Some(hosts) => execute_shell_for_hosts(
+                configuration_file,
+                &hosts,
+                command_string,
+            )?,
+            None => execute_shell_for_collection(
+                configuration_file,
+                command_string,
+            )?,
         };
 
-        Printer::print_result(formatter.format_shell_output_collection(collection, errors));
+        Printer::print_result(
+            formatter.format_shell_output_collection(collection, errors),
+        );
 
         Ok(())
     }

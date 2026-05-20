@@ -25,8 +25,12 @@ pub fn get_test_resource_path(resource_name: &str) -> PathBuf {
 
 /// Return [`Packages`] instance for testing
 pub fn get_test_packages() -> Packages {
-    let content = include_str!(concat!(env!("CARGO_MANIFEST_DIR"), "/tests/packages.json"));
-    let packages: HashMap<String, Package> = match serde_json::from_str(content) {
+    let content = include_str!(concat!(
+        env!("CARGO_MANIFEST_DIR"),
+        "/tests/packages.json"
+    ));
+    let packages: HashMap<String, Package> = match serde_json::from_str(content)
+    {
         Ok(collection) => collection,
         Err(e) => panic!("Could not deserialize test packages: {}", e),
     };

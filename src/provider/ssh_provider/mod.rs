@@ -15,8 +15,11 @@ use std::thread;
 pub struct SshProvider;
 
 /// Fetch information from the server defined in `configuration`
-fn fetch_information_through_ssh(configuration: &Configuration) -> Result<Information, Error> {
-    let content = execute_shell_through_ssh(configuration.command(), configuration)?;
+fn fetch_information_through_ssh(
+    configuration: &Configuration,
+) -> Result<Information, Error> {
+    let content =
+        execute_shell_through_ssh(configuration.command(), configuration)?;
     let information: Information = match serde_json::from_str(&content) {
         Ok(information) => information,
         Err(e) => return Err(Error::with_error_and_details(&e, content)),
@@ -37,7 +40,10 @@ fn execute_shell_through_ssh<S: Into<String>>(
     call_ssh_command(command.into(), &session)
 }
 
-fn call_ssh_command<S: Into<String>>(command: S, session: &Session) -> Result<String, Error> {
+fn call_ssh_command<S: Into<String>>(
+    command: S,
+    session: &Session,
+) -> Result<String, Error> {
     let command_string: String = command.into();
 
     // Open channel
@@ -72,7 +78,10 @@ fn call_ssh_command<S: Into<String>>(command: S, session: &Session) -> Result<St
 
 impl SshProvider {
     /// Fetch information from the server defined in `configuration`
-    pub fn get_information(&self, configuration: &Configuration) -> Result<Information, Error> {
+    pub fn get_information(
+        &self,
+        configuration: &Configuration,
+    ) -> Result<Information, Error> {
         fetch_information_through_ssh(configuration)
     }
 
@@ -85,7 +94,8 @@ impl SshProvider {
             return (InformationCollection::new(), ErrorCollection::new());
         }
         if configuration_collection.len() <= self.get_number_of_threads() {
-            return self.get_information_for_collection_sync(configuration_collection);
+            return self
+                .get_information_for_collection_sync(configuration_collection);
         }
         self.get_information_for_collection_async(configuration_collection)
     }
@@ -99,8 +109,10 @@ impl SshProvider {
         let mut error_collection = ErrorCollection::new();
         let mut output_collection = ShellOutputCollection::new();
 
-        let (split_count, split_configuration_collection) =
-            self.chunk_configuration_collection_for_threads(configuration_collection);
+        let (split_count, split_configuration_collection) = self
+            .chunk_configuration_collection_for_threads(
+                configuration_collection,
+            );
         let (tx, rx) = mpsc::channel();
 
         for chunk in split_configuration_collection {
@@ -112,7 +124,8 @@ impl SshProvider {
                 let mut output_collection_l = ShellOutputCollection::new();
 
                 for (host, configuration) in chunk {
-                    match execute_shell_through_ssh(&command_l, &configuration) {
+                    match execute_shell_through_ssh(&command_l, &configuration)
+                    {
                         Ok(i) => {
                             let _ = output_collection_l.insert(host, i);
                         }
@@ -143,13 +156,14 @@ impl SshProvider {
         let mut error_collection = ErrorCollection::new();
         let mut output_collection = ShellOutputCollection::new();
 
-        let filtered_collection: ConfigurationCollection = configuration_collection
-            .into_iter()
-            .filter(|(_, c)| c.update_command().is_some())
-            .collect();
+        let filtered_collection: ConfigurationCollection =
+            configuration_collection
+                .into_iter()
+                .filter(|(_, c)| c.update_command().is_some())
+                .collect();
 
-        let (split_count, split_configuration_collection) =
-            self.chunk_configuration_collection_for_threads(filtered_collection);
+        let (split_count, split_configuration_collection) = self
+            .chunk_configuration_collection_for_threads(filtered_collection);
         let (tx, rx) = mpsc::channel();
 
         for chunk in split_configuration_collection {
@@ -224,8 +238,10 @@ impl SshProvider {
         // let split_configuration_collection: Vec<ConfigurationCollection> =
         //     chunk_configuration_collection(configuration_collection, size_of_chunk);
         // let split_count = split_configuration_collection.len();
-        let (split_count, split_configuration_collection) =
-            self.chunk_configuration_collection_for_threads(configuration_collection);
+        let (split_count, split_configuration_collection) = self
+            .chunk_configuration_collection_for_threads(
+                configuration_collection,
+            );
 
         for chunk in split_configuration_collection {
             let tx = tx.clone();
@@ -251,7 +267,8 @@ impl SshProvider {
         }
 
         for _ in 0..split_count {
-            let (information_collection_l, error_collection_l) = rx.recv().unwrap();
+            let (information_collection_l, error_collection_l) =
+                rx.recv().unwrap();
             error_collection.extend(error_collection_l);
             information_collection.extend(information_collection_l);
         }
@@ -272,10 +289,14 @@ impl SshProvider {
         }
 
         let number_of_threads = self.get_number_of_threads();
-        let size_of_chunk: usize =
-            (configuration_collection.len() as f32 / number_of_threads as f32).ceil() as usize;
+        let size_of_chunk: usize = (configuration_collection.len() as f32
+            / number_of_threads as f32)
+            .ceil() as usize;
         let split_configuration_collection: Vec<ConfigurationCollection> =
-            chunk_configuration_collection(configuration_collection, size_of_chunk);
+            chunk_configuration_collection(
+                configuration_collection,
+                size_of_chunk,
+            );
         let split_count = split_configuration_collection.len();
 
         (split_count, split_configuration_collection)

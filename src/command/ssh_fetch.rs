@@ -1,5 +1,7 @@
 use crate::{
-    configuration::{Configuration, ConfigurationCollection, ConfigurationProvider},
+    configuration::{
+        Configuration, ConfigurationCollection, ConfigurationProvider,
+    },
     error::{Error, ErrorCollection},
     information::{CollectionResult, Information, InformationCollection},
     provider::{Provider, SshProvider},
@@ -16,8 +18,10 @@ pub fn fetch_information_for_host(
     configuration_file: PathBuf,
     host: &str,
 ) -> Result<Information, Error> {
-    let configuration =
-        ConfigurationProvider::get_configuration_for_host(configuration_file.as_path(), host)?;
+    let configuration = ConfigurationProvider::get_configuration_for_host(
+        configuration_file.as_path(),
+        host,
+    )?;
 
     fetch_information(&configuration)
 }
@@ -32,7 +36,8 @@ pub fn fetch_information_for_hosts(
     configuration_file: PathBuf,
     hosts: &[String],
 ) -> CollectionResult {
-    let configuration_collection = ConfigurationProvider::load(configuration_file.as_path())?;
+    let configuration_collection =
+        ConfigurationProvider::load(configuration_file.as_path())?;
     let filtered: ConfigurationCollection = configuration_collection
         .into_iter()
         .filter(|(host, _)| !host.is_empty() && hosts.contains(host))
@@ -54,17 +59,20 @@ pub fn fetch_information_for_hosts(
 }
 
 /// Fetch the information for all hosts in the configuration collection
-pub fn fetch_information_collection(configuration_file: PathBuf) -> CollectionResult {
-    let configuration_collection = match ConfigurationProvider::load(configuration_file.as_path()) {
-        Ok(c) => c,
-        Err(e) => {
-            return Err(Error::new(format!(
-                "Error when loading configuration file '{}': {}",
-                configuration_file.to_string_lossy(),
-                e
-            )))
-        }
-    };
+pub fn fetch_information_collection(
+    configuration_file: PathBuf,
+) -> CollectionResult {
+    let configuration_collection =
+        match ConfigurationProvider::load(configuration_file.as_path()) {
+            Ok(c) => c,
+            Err(e) => {
+                return Err(Error::new(format!(
+                    "Error when loading configuration file '{}': {}",
+                    configuration_file.to_string_lossy(),
+                    e
+                )))
+            }
+        };
 
     Ok(fetch_information_for_configuration_collection(
         configuration_collection,
@@ -79,6 +87,8 @@ fn fetch_information_for_configuration_collection(
 }
 
 /// Fetch information from the host in the given configuration
-fn fetch_information(configuration: &Configuration) -> Result<Information, Error> {
+fn fetch_information(
+    configuration: &Configuration,
+) -> Result<Information, Error> {
     SshProvider::new().get_information(configuration)
 }

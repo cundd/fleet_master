@@ -35,8 +35,10 @@ mod tests {
 
     fn build_test_collection() -> InformationCollection {
         let mut collection = InformationCollection::new();
-        collection.insert("localhost".to_owned(), Information::new_for_current_env());
-        collection.insert("127.0.0.1".to_owned(), Information::new_for_current_env());
+        collection
+            .insert("localhost".to_owned(), Information::new_for_current_env());
+        collection
+            .insert("127.0.0.1".to_owned(), Information::new_for_current_env());
 
         collection
     }
@@ -44,8 +46,11 @@ mod tests {
     #[test]
     fn filter_by_package_test() {
         let collection = build_test_collection();
-        let result =
-            InformationCollectionFilter::filter_by_package(collection, "not-a-package", false);
+        let result = InformationCollectionFilter::filter_by_package(
+            collection,
+            "not-a-package",
+            false,
+        );
 
         assert_eq!(0, result.len());
     }

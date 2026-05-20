@@ -60,7 +60,9 @@ mod tests {
     #[test]
     fn get_configuration_file_test() {
         if is_run_parallel() {
-            println!("Skipping tests based on pwd. Set RUST_TEST_THREADS=1 to run");
+            println!(
+                "Skipping tests based on pwd. Set RUST_TEST_THREADS=1 to run"
+            );
             return;
         }
 
@@ -73,7 +75,9 @@ mod tests {
             configuration_file_result
         );
         assert_eq!(
-            test_helpers::get_test_resource_path("configuration_file/fleet.json"),
+            test_helpers::get_test_resource_path(
+                "configuration_file/fleet.json"
+            ),
             configuration_file_result.unwrap()
         );
     }
@@ -81,7 +85,9 @@ mod tests {
     #[test]
     fn get_configuration_dot_file_test() {
         if is_run_parallel() {
-            println!("Skipping tests based on pwd. Set RUST_TEST_THREADS=1 to run");
+            println!(
+                "Skipping tests based on pwd. Set RUST_TEST_THREADS=1 to run"
+            );
             return;
         }
 
@@ -94,7 +100,9 @@ mod tests {
             configuration_file_result
         );
         assert_eq!(
-            test_helpers::get_test_resource_path("configuration_dot_file/.fleet.json"),
+            test_helpers::get_test_resource_path(
+                "configuration_dot_file/.fleet.json"
+            ),
             configuration_file_result.unwrap()
         );
     }

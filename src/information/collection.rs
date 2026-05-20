@@ -3,7 +3,8 @@ use crate::error::*;
 use std::collections::BTreeMap;
 
 pub type InformationCollection = BTreeMap<String, Information>;
-pub type CollectionResult = Result<(InformationCollection, ErrorCollection), Error>;
+pub type CollectionResult =
+    Result<(InformationCollection, ErrorCollection), Error>;
 
 trait InformationCollectionTrait {
     fn new_with_capacity(capacity: usize) -> Self;
@@ -17,8 +18,11 @@ impl InformationCollectionTrait for InformationCollection {
 }
 
 /// Returns a new Information Collection without Packages
-pub fn collection_without_packages(collection: InformationCollection) -> InformationCollection {
-    let mut new_collection = InformationCollection::new_with_capacity(collection.len());
+pub fn collection_without_packages(
+    collection: InformationCollection,
+) -> InformationCollection {
+    let mut new_collection =
+        InformationCollection::new_with_capacity(collection.len());
     for (host, information) in collection {
         new_collection.insert(host, information.without_packages());
     }
@@ -34,7 +38,8 @@ mod tests {
     pub fn collection_without_packages_ref(
         collection: &InformationCollection,
     ) -> InformationCollection {
-        let mut new_collection = InformationCollection::new_with_capacity(collection.len());
+        let mut new_collection =
+            InformationCollection::new_with_capacity(collection.len());
         for (host, information) in collection {
             new_collection.insert(host.clone(), information.without_packages());
         }
@@ -44,8 +49,10 @@ mod tests {
 
     fn build_test_collection() -> InformationCollection {
         let mut collection = InformationCollection::new();
-        collection.insert("localhost".to_owned(), Information::new_for_current_env());
-        collection.insert("127.0.0.1".to_owned(), Information::new_for_current_env());
+        collection
+            .insert("localhost".to_owned(), Information::new_for_current_env());
+        collection
+            .insert("127.0.0.1".to_owned(), Information::new_for_current_env());
 
         collection
     }

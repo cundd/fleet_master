@@ -61,8 +61,12 @@ impl FormatterTrait for Formatter {
         show_packages: bool,
     ) -> FormatterResult {
         match self {
-            Formatter::Json(ref f) => f.format_information(host, information, show_packages),
-            Formatter::Console(ref f) => f.format_information(host, information, show_packages),
+            Formatter::Json(ref f) => {
+                f.format_information(host, information, show_packages)
+            }
+            Formatter::Console(ref f) => {
+                f.format_information(host, information, show_packages)
+            }
         }
     }
 
@@ -72,7 +76,9 @@ impl FormatterTrait for Formatter {
         show_packages: bool,
     ) -> FormatterResult {
         match self {
-            Formatter::Json(ref f) => f.format_information_collection(information, show_packages),
+            Formatter::Json(ref f) => {
+                f.format_information_collection(information, show_packages)
+            }
             Formatter::Console(ref f) => {
                 f.format_information_collection(information, show_packages)
             }
@@ -91,12 +97,14 @@ impl FormatterTrait for Formatter {
         information_collection: InformationCollection,
     ) -> FormatterResult {
         match self {
-            Formatter::Json(ref f) => {
-                f.format_packages_from_information_collection(information_collection)
-            }
-            Formatter::Console(ref f) => {
-                f.format_packages_from_information_collection(information_collection)
-            }
+            Formatter::Json(ref f) => f
+                .format_packages_from_information_collection(
+                    information_collection,
+                ),
+            Formatter::Console(ref f) => f
+                .format_packages_from_information_collection(
+                    information_collection,
+                ),
         }
     }
 
@@ -106,14 +114,21 @@ impl FormatterTrait for Formatter {
         errors: ErrorCollection,
     ) -> FormatterResult {
         match self {
-            Formatter::Json(ref f) => f.format_shell_output_collection(outputs, errors),
-            Formatter::Console(ref f) => f.format_shell_output_collection(outputs, errors),
+            Formatter::Json(ref f) => {
+                f.format_shell_output_collection(outputs, errors)
+            }
+            Formatter::Console(ref f) => {
+                f.format_shell_output_collection(outputs, errors)
+            }
         }
     }
 }
 
 /// Returns the formatter for the given format string
-pub fn get_formatter(format: &str, use_colors: bool) -> Result<Formatter, Error> {
+pub fn get_formatter(
+    format: &str,
+    use_colors: bool,
+) -> Result<Formatter, Error> {
     match format {
         "json" => Ok(Formatter::Json(JsonFormatter {})),
         "console" => Ok(Formatter::Console(ConsoleFormatter::new(use_colors))),

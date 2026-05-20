@@ -37,7 +37,9 @@ impl CommandTrait for PackagesCommand {
         };
 
         Printer::print_result(
-            formatter.format_packages_from_information_collection(information_collection),
+            formatter.format_packages_from_information_collection(
+                information_collection,
+            ),
         );
 
         if arguments.common.verbosity > 0 {

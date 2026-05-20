@@ -1,5 +1,7 @@
 use super::{
-    ssh_execute_shell::{execute_update_for_collection, execute_update_for_hosts},
+    ssh_execute_shell::{
+        execute_update_for_collection, execute_update_for_hosts,
+    },
     CommandTrait, DefaultArgs,
 };
 use crate::{error::Error, FormatterTrait, Printer};
@@ -45,7 +47,9 @@ impl CommandTrait for UpdateCommand {
             execute_update_for_collection(configuration_file)?
         };
 
-        Printer::print_result(formatter.format_shell_output_collection(collection, errors));
+        Printer::print_result(
+            formatter.format_shell_output_collection(collection, errors),
+        );
 
         Ok(())
     }

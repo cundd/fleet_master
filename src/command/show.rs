@@ -31,9 +31,15 @@ impl CommandTrait for ShowCommand {
         let host = &arguments.host;
         let information = fetch_information_for_host(configuration_file, host)?;
 
-        Printer::print_result(formatter.format_information(host, &information, false));
+        Printer::print_result(formatter.format_information(
+            host,
+            &information,
+            false,
+        ));
         if arguments.packages {
-            Printer::print_result(formatter.format_packages(&information.packages));
+            Printer::print_result(
+                formatter.format_packages(&information.packages),
+            );
         }
 
         Ok(())

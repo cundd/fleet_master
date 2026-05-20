@@ -48,7 +48,8 @@ mod tests {
     fn get_information_for_uri_test() {
         let file_provider = FileProvider {};
 
-        let json_file_path = test_helpers::get_test_resource_path("protocol-test-0.1.0.json");
+        let json_file_path =
+            test_helpers::get_test_resource_path("protocol-test-0.1.0.json");
 
         assert!(json_file_path.as_path().exists(), "{:?}", json_file_path);
         let information = file_provider

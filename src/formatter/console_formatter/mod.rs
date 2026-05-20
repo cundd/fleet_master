@@ -42,10 +42,14 @@ impl super::FormatterTrait for ConsoleFormatter {
         information: &Information,
         show_packages: bool,
     ) -> super::FormatterResult {
-        let mut information_collection: InformationCollection = InformationCollection::new();
+        let mut information_collection: InformationCollection =
+            InformationCollection::new();
         information_collection.insert(host.to_owned(), information.clone());
 
-        let matrix = Matrix::from_information_collection(information_collection, show_packages);
+        let matrix = Matrix::from_information_collection(
+            information_collection,
+            show_packages,
+        );
         Ok(Table::left_header(&matrix, self.use_colors))
     }
 
@@ -54,7 +58,8 @@ impl super::FormatterTrait for ConsoleFormatter {
         information: InformationCollection,
         show_packages: bool,
     ) -> super::FormatterResult {
-        let matrix = Matrix::from_information_collection(information, show_packages);
+        let matrix =
+            Matrix::from_information_collection(information, show_packages);
         Ok(Table::top_header(&matrix, self.use_colors))
     }
 
@@ -76,7 +81,8 @@ impl super::FormatterTrait for ConsoleFormatter {
                 output += &Table::top_header(&matrix, is_terminal);
                 output += "\n\n";
             } else {
-                output += &(format!("No packages found for host '{}'\n\n", host));
+                output +=
+                    &(format!("No packages found for host '{}'\n\n", host));
             }
         }
 
@@ -121,7 +127,8 @@ impl Matrix<String> {
         information_collection: InformationCollection,
         _show_packages: bool,
     ) -> Matrix<String> {
-        let mut rows: Vec<Vec<String>> = Vec::with_capacity(information_collection.len() + 1);
+        let mut rows: Vec<Vec<String>> =
+            Vec::with_capacity(information_collection.len() + 1);
 
         rows.push(HEADERS.iter().map(|x| String::from(x.to_owned())).collect());
 
@@ -131,7 +138,8 @@ impl Matrix<String> {
             cells.push(host);
             cells.push(info.system.application.name);
             cells.push(info.system.application.version);
-            cells.push(info.system.application.install_mode.unwrap_or_default());
+            cells
+                .push(info.system.application.install_mode.unwrap_or_default());
             cells.push(format!(
                 "{} ({})",
                 info.fleet.provider_name, info.fleet.provider_version
@@ -165,7 +173,8 @@ impl Matrix<String> {
 
         let all_packages: BTreeMap<_, _> = packages.iter().collect();
         for (_, package) in all_packages {
-            let mut cells: Vec<String> = Vec::with_capacity(PACKAGE_HEADERS.len());
+            let mut cells: Vec<String> =
+                Vec::with_capacity(PACKAGE_HEADERS.len());
             cells.push(package.key.to_owned());
             cells.push(package.version.to_owned());
             cells.push(package.state.to_owned());

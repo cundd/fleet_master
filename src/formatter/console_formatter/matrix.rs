@@ -75,7 +75,9 @@ where
         //         new_row.push(self.data[new_column_index][new_row_index].clone())
         //     }
         // }
-        for (new_row_index, new_row) in new_data.iter_mut().enumerate().take(self.columns) {
+        for (new_row_index, new_row) in
+            new_data.iter_mut().enumerate().take(self.columns)
+        {
             for new_column_index in 0..self.rows {
                 new_row.push(self.data[new_column_index][new_row_index].clone())
             }
@@ -223,9 +225,14 @@ mod tests {
 
     #[test]
     fn transpose_u8_test() {
-        let m = Matrix::from_vec(vec![vec![11, 12, 13, 14], vec![21, 22, 23, 24]]);
-        let expected_rotated =
-            Matrix::from_vec(vec![vec![11, 21], vec![12, 22], vec![13, 23], vec![14, 24]]);
+        let m =
+            Matrix::from_vec(vec![vec![11, 12, 13, 14], vec![21, 22, 23, 24]]);
+        let expected_rotated = Matrix::from_vec(vec![
+            vec![11, 21],
+            vec![12, 22],
+            vec![13, 23],
+            vec![14, 24],
+        ]);
 
         assert_eq!(expected_rotated, m.transpose());
     }

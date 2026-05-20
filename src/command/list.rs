@@ -3,7 +3,9 @@ use clap::Args;
 use crate::{error::Error, FormatterTrait, Printer};
 use std::path::PathBuf;
 
-use super::{ssh_fetch::fetch_information_collection, CommandTrait, DefaultArgs};
+use super::{
+    ssh_fetch::fetch_information_collection, CommandTrait, DefaultArgs,
+};
 
 #[derive(Args, Debug)]
 pub struct ListArgs {
@@ -30,9 +32,10 @@ impl CommandTrait for ListCommand {
         let (information_collection, error_collection) =
             fetch_information_collection(configuration_file)?;
 
-        Printer::print_result(
-            formatter.format_information_collection(information_collection, arguments.packages),
-        );
+        Printer::print_result(formatter.format_information_collection(
+            information_collection,
+            arguments.packages,
+        ));
 
         if arguments.common.verbosity > 0 {
             Printer::print_error_collection(error_collection);

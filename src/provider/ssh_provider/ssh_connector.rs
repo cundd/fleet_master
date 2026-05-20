@@ -13,7 +13,11 @@ impl SshConnector {
     }
 
     /// Establish a SSH connection with the given configuration
-    pub fn connect(&self, configuration: &Configuration, tcp: TcpStream) -> Result<Session, Error> {
+    pub fn connect(
+        &self,
+        configuration: &Configuration,
+        tcp: TcpStream,
+    ) -> Result<Session, Error> {
         // Connect to the SSH server
         let mut session = Session::new().unwrap();
         session.set_tcp_stream(tcp);
@@ -31,7 +35,11 @@ impl SshConnector {
             match self.authenticate_agent(configuration, session) {
                 Ok(s) => Ok(s),
                 Err(e) => {
-                    eprintln!("{}@{}:{e}", configuration.username(), configuration.host());
+                    eprintln!(
+                        "{}@{}:{e}",
+                        configuration.username(),
+                        configuration.host()
+                    );
                     Err(e)
                 }
             }
@@ -89,7 +97,8 @@ impl SshConnector {
         session: Session,
     ) -> Result<Session, Error> {
         let passphrase_option = self.get_passphrase(configuration);
-        let passphrase: Option<&str> = passphrase_option.as_ref().map(|x| x as _);
+        let passphrase: Option<&str> =
+            passphrase_option.as_ref().map(|x| x as _);
 
         session.userauth_pubkey_file(
             configuration.username(),

@@ -7,7 +7,10 @@ use std::path::*;
 pub struct ConfigurationProvider;
 
 impl ConfigurationProvider {
-    pub fn get_configuration_for_host(path: &Path, host: &str) -> Result<Configuration, Error> {
+    pub fn get_configuration_for_host(
+        path: &Path,
+        host: &str,
+    ) -> Result<Configuration, Error> {
         let collection = Self::load(path)?;
 
         get_configuration_for_host(collection, host, path)
@@ -16,7 +19,9 @@ impl ConfigurationProvider {
     pub fn load(path: &Path) -> Result<ConfigurationCollection, Error> {
         let file = match File::open(path) {
             Ok(file) => file,
-            Err(e) => return Err(Error::with_error_and_details(&e, e.to_string())),
+            Err(e) => {
+                return Err(Error::with_error_and_details(&e, e.to_string()))
+            }
         };
 
         if let Some(extension) = path.extension() {
@@ -117,8 +122,11 @@ mod tests {
 
     #[test]
     fn load_json_test() {
-        let json_file_path = test_helpers::get_test_resource_path("configuration-test-0.2.0.json");
-        let configurations = ConfigurationProvider::load(json_file_path.as_path());
+        let json_file_path = test_helpers::get_test_resource_path(
+            "configuration-test-0.2.0.json",
+        );
+        let configurations =
+            ConfigurationProvider::load(json_file_path.as_path());
         assert!(configurations.is_ok(), "{:?}", configurations.unwrap_err());
         assert_configuration(configurations.unwrap());
     }
@@ -126,8 +134,11 @@ mod tests {
     #[test]
     #[cfg(feature = "yaml")]
     fn load_yaml_test() {
-        let yaml_file_path = test_helpers::get_test_resource_path("configuration-test-0.2.0.yaml");
-        let configurations = ConfigurationProvider::load(yaml_file_path.as_path()).unwrap();
+        let yaml_file_path = test_helpers::get_test_resource_path(
+            "configuration-test-0.2.0.yaml",
+        );
+        let configurations =
+            ConfigurationProvider::load(yaml_file_path.as_path()).unwrap();
         assert_configuration(configurations);
     }
 }

@@ -1,4 +1,6 @@
-use super::{ssh_fetch::fetch_information_collection, CommandTrait, DefaultArgs};
+use super::{
+    ssh_fetch::fetch_information_collection, CommandTrait, DefaultArgs,
+};
 use crate::{
     error::Error,
     filter::{InformationCollectionFilter, PackageFilter},
@@ -42,14 +44,20 @@ impl CommandTrait for SearchCommand {
         let (information_collection, error_collection) =
             fetch_information_collection(configuration_file)?;
         let filtered_collection =
-            InformationCollectionFilter::filter_by_package(information_collection, package, exact);
-        for (host, information) in filtered_collection {
-            Printer::print_result(formatter.format_information(&host, &information, false));
-            Printer::print_result(formatter.format_packages(&PackageFilter::filter(
-                information.packages,
+            InformationCollectionFilter::filter_by_package(
+                information_collection,
                 package,
                 exact,
-            )));
+            );
+        for (host, information) in filtered_collection {
+            Printer::print_result(formatter.format_information(
+                &host,
+                &information,
+                false,
+            ));
+            Printer::print_result(formatter.format_packages(
+                &PackageFilter::filter(information.packages, package, exact),
+            ));
         }
 
         if arguments.common.verbosity > 0 {

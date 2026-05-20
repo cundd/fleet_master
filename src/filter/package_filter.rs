@@ -16,7 +16,8 @@ impl PackageFilter {
                 if exact {
                     package.key == search
                 } else {
-                    package.description.contains(search) || package.key.contains(search)
+                    package.description.contains(search)
+                        || package.key.contains(search)
                 }
             })
             .collect();
@@ -35,14 +36,26 @@ mod tests {
     fn filter_by_package_empty_test() {
         assert_eq!(
             0,
-            PackageFilter::filter(get_test_packages(), "not-a-package", false).len()
+            PackageFilter::filter(get_test_packages(), "not-a-package", false)
+                .len()
         );
-        assert!(PackageFilter::filter(get_test_packages(), "not-a-package", false).is_empty());
+        assert!(PackageFilter::filter(
+            get_test_packages(),
+            "not-a-package",
+            false
+        )
+        .is_empty());
         assert_eq!(
             0,
-            PackageFilter::filter(get_test_packages(), "not-a-package", true).len()
+            PackageFilter::filter(get_test_packages(), "not-a-package", true)
+                .len()
         );
-        assert!(PackageFilter::filter(get_test_packages(), "not-a-package", true).is_empty());
+        assert!(PackageFilter::filter(
+            get_test_packages(),
+            "not-a-package",
+            true
+        )
+        .is_empty());
     }
 
     #[test]
@@ -50,7 +63,8 @@ mod tests {
         let result = PackageFilter::filter(get_test_packages(), "news", false);
         assert_eq!(3, result.len());
 
-        let result = PackageFilter::filter(get_test_packages(), "newsletter", false);
+        let result =
+            PackageFilter::filter(get_test_packages(), "newsletter", false);
         assert_eq!(1, result.len());
         assert!(result.all.get("news").is_none());
         assert!(result.all.get("newsletter").is_some());

@@ -1,4 +1,6 @@
-use super::{ssh_fetch::fetch_information_collection, CommandTrait, DefaultArgs};
+use super::{
+    ssh_fetch::fetch_information_collection, CommandTrait, DefaultArgs,
+};
 use crate::{error::Error, prepare_message, FormatterTrait};
 use ansi_term::Colour;
 use clap::Args;
@@ -26,7 +28,10 @@ impl CommandTrait for CheckCommand {
             fetch_information_collection(configuration_file)?;
 
         for (host, _) in information_collection {
-            println!("{}", Colour::Green.paint(format!("[OK] Host \"{}\"", host)));
+            println!(
+                "{}",
+                Colour::Green.paint(format!("[OK] Host \"{}\"", host))
+            );
         }
         for (host, error) in error_collection {
             eprintln!(

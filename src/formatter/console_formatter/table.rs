@@ -26,7 +26,11 @@ impl Table {
     }
 }
 
-fn build_layout_top<S>(column_widths: &[usize], input: &Matrix<S>, colorize: bool) -> String
+fn build_layout_top<S>(
+    column_widths: &[usize],
+    input: &Matrix<S>,
+    colorize: bool,
+) -> String
 where
     S: Into<String> + Clone + Display + Debug,
 {
@@ -57,7 +61,11 @@ where
     output
 }
 
-fn build_layout_left<S>(column_widths: &[usize], input: &Matrix<S>, colorize: bool) -> String
+fn build_layout_left<S>(
+    column_widths: &[usize],
+    input: &Matrix<S>,
+    colorize: bool,
+) -> String
 where
     S: Into<String> + Clone + Display + Debug,
 {

@@ -58,7 +58,13 @@ impl SshConfiguration {
     }
 
     #[cfg(test)]
-    pub fn new_with_password<S>(host: S, port: u16, command: S, username: S, password: S) -> Self
+    pub fn new_with_password<S>(
+        host: S,
+        port: u16,
+        command: S,
+        username: S,
+        password: S,
+    ) -> Self
     where
         S: Into<String>,
     {
@@ -175,7 +181,8 @@ fn as_path_buf_option<P: AsRef<Path>>(input: Option<P>) -> Option<PathBuf> {
 
 fn patch_key_path(p: &Path) -> Option<PathBuf> {
     if p.starts_with("~/") {
-        let path_relative: String = p.to_string_lossy().chars().skip(2).collect();
+        let path_relative: String =
+            p.to_string_lossy().chars().skip(2).collect();
 
         match dirs::home_dir() {
             Some(mut home) => {
@@ -295,7 +302,13 @@ mod tests {
                 public_key: None,
                 disabled: false
             },
-            SshConfiguration::new_with_password("localhost", 22, "cmd", "daniel", "password")
+            SshConfiguration::new_with_password(
+                "localhost",
+                22,
+                "cmd",
+                "daniel",
+                "password"
+            )
         );
     }
 

@@ -141,13 +141,27 @@ fn run() -> Result<(), Error> {
     let config_file = get_configuration_file(&cli)?;
 
     match cli.command {
-        Commands::List(args) => ListCommand::default().exec(&formatter, config_file, args),
-        Commands::Show(args) => ShowCommand::default().exec(&formatter, config_file, args),
-        Commands::Packages(args) => PackagesCommand::default().exec(&formatter, config_file, args),
-        Commands::Search(args) => SearchCommand::default().exec(&formatter, config_file, args),
-        Commands::Check(args) => CheckCommand::default().exec(&formatter, config_file, args),
-        Commands::Update(args) => UpdateCommand::default().exec(&formatter, config_file, args),
-        Commands::Exec(args) => ExecCommand::default().exec(&formatter, config_file, args),
+        Commands::List(args) => {
+            ListCommand::default().exec(&formatter, config_file, args)
+        }
+        Commands::Show(args) => {
+            ShowCommand::default().exec(&formatter, config_file, args)
+        }
+        Commands::Packages(args) => {
+            PackagesCommand::default().exec(&formatter, config_file, args)
+        }
+        Commands::Search(args) => {
+            SearchCommand::default().exec(&formatter, config_file, args)
+        }
+        Commands::Check(args) => {
+            CheckCommand::default().exec(&formatter, config_file, args)
+        }
+        Commands::Update(args) => {
+            UpdateCommand::default().exec(&formatter, config_file, args)
+        }
+        Commands::Exec(args) => {
+            ExecCommand::default().exec(&formatter, config_file, args)
+        }
         Commands::Provide(_) => unreachable!(),
     }
 }
