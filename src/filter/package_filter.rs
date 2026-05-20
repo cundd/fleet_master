@@ -66,8 +66,8 @@ mod tests {
         let result =
             PackageFilter::filter(get_test_packages(), "newsletter", false);
         assert_eq!(1, result.len());
-        assert!(result.all.get("news").is_none());
-        assert!(result.all.get("newsletter").is_some());
+        assert!(!result.all.contains_key("news"));
+        assert!(result.all.contains_key("newsletter"));
         assert_eq!("newsletter", result["newsletter"].key);
     }
 
