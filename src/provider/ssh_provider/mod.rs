@@ -9,6 +9,7 @@ use ssh2::Channel;
 use ssh2::Session;
 use std::io::prelude::*;
 use std::net::TcpStream;
+use std::num::NonZeroUsize;
 use std::sync::mpsc;
 use std::thread;
 
@@ -281,7 +282,7 @@ impl SshProvider {
     }
 
     fn get_number_of_threads(&self) -> usize {
-        4
+        thread::available_parallelism().map_or(1, NonZeroUsize::get)
     }
 
     fn chunk_configuration_collection_for_threads(
