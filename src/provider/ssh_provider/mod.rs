@@ -94,13 +94,17 @@ impl SshProvider {
             return (InformationCollection::new(), ErrorCollection::new());
         }
         if configuration_collection.len() <= self.get_number_of_threads() {
-            return self
-                .get_information_for_collection_sync(configuration_collection);
+            return self.get_information_for_collection_single_threaded(
+                configuration_collection,
+            );
         }
-        self.get_information_for_collection_async(configuration_collection)
+        self.get_information_for_collection_multi_threaded(
+            configuration_collection,
+        )
     }
 
-    /// Execute the given shell command for all hosts in the given configuration collection asynchronously
+    /// Execute the given shell command for all hosts in the given configuration collection in
+    /// parallel
     pub fn execute_shell_for_collection(
         &self,
         command: String,
@@ -148,7 +152,7 @@ impl SshProvider {
         (output_collection, error_collection)
     }
 
-    /// Execute the update command for all hosts in the given configuration collection asynchronously
+    /// Execute the update command for all hosts in the given configuration collection in parallel
     pub fn execute_update_for_collection(
         &self,
         configuration_collection: ConfigurationCollection,
@@ -200,8 +204,8 @@ impl SshProvider {
         (output_collection, error_collection)
     }
 
-    /// Fetch the information for all hosts in the given configuration collection synchronously
-    fn get_information_for_collection_sync(
+    /// Fetch the information for all hosts in the given configuration collection
+    fn get_information_for_collection_single_threaded(
         &self,
         configuration_collection: ConfigurationCollection,
     ) -> (InformationCollection, ErrorCollection) {
@@ -222,8 +226,8 @@ impl SshProvider {
         (information_collection, error_collection)
     }
 
-    /// Fetch the information for all hosts in the given configuration collection asynchronously
-    fn get_information_for_collection_async(
+    /// Fetch the information for all hosts in the given configuration collection in parallel
+    fn get_information_for_collection_multi_threaded(
         &self,
         configuration_collection: ConfigurationCollection,
     ) -> (InformationCollection, ErrorCollection) {
