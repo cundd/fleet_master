@@ -64,13 +64,13 @@ pub fn execute_update_for_hosts(
 ) -> Result<(ShellOutputCollection, ErrorCollection), Error> {
     let configuration_collection =
         ConfigurationProvider::load(configuration_file.as_path(), false)?;
-    let filtered: ConfigurationCollection = configuration_collection
+    let found_hosts: ConfigurationCollection = configuration_collection
         .into_iter()
         .filter(|(host, _)| !host.is_empty() && hosts.contains(host))
         .collect();
 
-    if filtered.is_empty() {
-        Err(Error::new(format!(
+    if found_hosts.is_empty() {
+        return Err(Error::new(format!(
             "{}: {}",
             if hosts.len() > 1 {
                 "No configurations found for hosts"
@@ -78,8 +78,25 @@ pub fn execute_update_for_hosts(
                 "No configuration found for host"
             },
             hosts.join(", ")
+        )));
+    }
+
+    let hosts_with_update_command: ConfigurationCollection = found_hosts
+        .into_iter()
+        .filter(|(_, configuration)| configuration.update_command().is_some())
+        .collect();
+    if hosts_with_update_command.is_empty() {
+        Err(Error::new(format!(
+            "{}: {}",
+            if hosts.len() > 1 {
+                "No update-configurations found for hosts"
+            } else {
+                "No update-configuration found for host"
+            },
+            hosts.join(", ")
         )))
     } else {
-        Ok(SshProvider::new().execute_update_for_collection(filtered))
+        Ok(SshProvider::new()
+            .execute_update_for_collection(hosts_with_update_command))
     }
 }
