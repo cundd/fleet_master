@@ -21,7 +21,7 @@ impl SshConnector {
         // Connect to the SSH server
         let mut session = Session::new().unwrap();
         session.set_tcp_stream(tcp);
-        session.handshake().unwrap();
+        session.handshake()?;
 
         if session.authenticated() {
             return Ok(session);
