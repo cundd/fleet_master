@@ -178,7 +178,12 @@ impl Matrix<String> {
             cells.push(package.key.to_owned());
             cells.push(package.version.to_owned());
             cells.push(package.state.to_owned());
-            cells.push(crop_cell_content(&package.description));
+            cells.push(
+                package
+                    .description
+                    .as_ref()
+                    .map_or(String::new(), |d| crop_cell_content(d)),
+            );
 
             rows.push(cells);
         }

@@ -16,7 +16,10 @@ impl PackageFilter {
                 if exact {
                     package.key == search
                 } else {
-                    package.description.contains(search)
+                    package
+                        .description
+                        .as_ref()
+                        .is_some_and(|d| d.contains(search))
                         || package.key.contains(search)
                 }
             })

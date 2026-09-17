@@ -8,7 +8,7 @@ use std::ops::Index;
 pub struct Package {
     pub key: String,
     pub version: String,
-    pub description: String,
+    pub description: Option<String>,
     pub state: String,
 }
 
