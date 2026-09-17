@@ -59,7 +59,7 @@ impl ConfigurationProvider {
 
     #[cfg(feature = "yaml")]
     fn load_yaml(file: File) -> Result<ConfigurationCollection, Error> {
-        match serde_yaml::from_reader(file) {
+        match yaml_serde::from_reader(file) {
             Ok(configuration) => Ok(configuration),
             Err(e) => Err(Error::with_error_and_details(&e, e.to_string())),
         }
