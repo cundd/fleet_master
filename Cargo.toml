@@ -1,6 +1,6 @@
 [package]
 name = "fleet"
-version = "0.2.0"
+version = "0.2.1"
 authors = ["Daniel Corn <info@cundd.net>"]
 edition = "2021"
 
